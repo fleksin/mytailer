@@ -1,0 +1,18 @@
+extends layout
+
+block content  
+  if data
+    for el in data
+     div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;')
+       div(class="panel-heading" style="background: rgba(255,255,255,.9)")
+         h3(class="panel-title")= el.title
+            span(style='float:right;color: rgba(77,0,255,0.54)')= el.ownerName
+       div(class='panel-body')
+         img(src= el.img style='max-width:100%;margin: 0 0 10px;')
+         p= el.description
+         if private
+             a(href = '/delete/'+el.uploadTime)
+                img(src='/images/trash.png' style='float:right;max-width:20px')           
+  else
+    p Oops cannot find anything, Try again!
+

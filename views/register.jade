@@ -1,0 +1,17 @@
+extends layout
+
+block content   
+  style(type='text/css') input{margin:8px 0px}
+  form(method='post' action='/signup' class="form-signin" )
+    h2(class="form-signin-heading") Welcome to MyTailer!
+    label(for="inputEmail") Email address
+    input(name='email' type="email" id="inputEmail" class="form-control" placeholder='Email Address' value= session.email required autofocus)
+    label(for="inputEmail") name
+    input(name='id' type="id" id="inputName" class="form-control" placeholder='Pick a name' required)
+    label(for="inputPassword") Password
+    input(name='pw' type="password" id="inputPassword" class="form-control" placeholder="Password" required)
+    label(for="inputPassword") Repeat Password
+    input(name='pwrepeat' type="password" id="repeatPassword" class="form-control" placeholder="Repeat Password" required)
+    button(class="btn btn-lg btn-primary btn-block" type="submit") Sign up
+    a(type="button" class="btn btn-link" href='/login' ) Sign In
+      
