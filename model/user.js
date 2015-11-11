@@ -57,20 +57,39 @@ User.deleteItem = function deleteItem(info, callback){
 
 User.get = function(username, callback){
 	var db = mongoskin.db(url, {native_parser: true});
-	db.collection('users').find({email:username}).toArray(function(err, users){
+	var query ={};
+	if(username){
+		query.email = username;
+	}
+	db.collection('users').find(query).toArray(function(err, users){
 		console.log('the query is ' + username);
 		db.close();
 		if(!users) {
 			callback(err,null);
 			return;
 		}
-		if(users.length > 0){
-			callback(err, users[0]);
-		}
-		else{
-			callback(err, null);
-		}
+		//console.dir(users);
+		callback(err, users);		
 	});
 }
+
+User.getStores = function(username, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	var query ={};
+	if(username){
+		query.email = username;
+	}
+	db.collection('users').find(query).toArray(function(err, users){
+		console.log('the query is ' + username);
+		db.close();
+		if(!users) {
+			callback(err,null);
+			return;
+		}
+		console.dir(users);
+		callback(err, users);		
+	});
+}
+
 
 module.exports = User;

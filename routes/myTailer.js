@@ -34,16 +34,28 @@ function checkFields(model) {
 
 router.get('/',function(req, res) {
 	
-	Item.get(null, function(err, items){
+	// Item.get(null, function(err, items){
+		// //console.log('inside item.get callback: ' + Date());
+		// if(err) {
+			// console.log('Error at myTailer/->item.get: '+err);
+			// item = [];
+		// }		
+		
+		// //var Items = [];
+		// //if(item) Items = items
+		// res.render('plaza', { data: items });
+		
+	// });	
+	user.get(null, function(err, stores){
 		//console.log('inside item.get callback: ' + Date());
 		if(err) {
 			console.log('Error at myTailer/->item.get: '+err);
-			item = [];
 		}		
 		
 		//var Items = [];
 		//if(item) Items = items
-		res.render('plaza', { data: items });
+		//console.dir(stores);
+		res.render('plaza', { data: stores });
 		
 	});	
 });
