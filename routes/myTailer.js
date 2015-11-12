@@ -15,7 +15,9 @@ var storage = multer.diskStorage({
   }
 })
 var upload = multer({storage: storage});
+var fs = require('fs');
 var util = require('util');
+var Parse = require('parse/node');
 
 
 
@@ -72,7 +74,7 @@ router.post('/login', function(req,res,next){
 	user.get(req.body.email, function(err, user){
 		if(user){			
 			if(password == user[0].password){
-			   req.session.user = user;
+			   req.session.user = user[0];
 			   req.flash('success', 'Log in successfully');
 		  	   res.redirect('/');
 				
@@ -160,7 +162,7 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 		return;
 	}
 	if(!req.session.user) {res.redirect('/login'); return;};
-	console.log(util.inspect(req.file));
+	//console.log(util.inspect(req.file));
 	if(req.file){ 
 		var item = {
 			title: req.body.title,
@@ -170,9 +172,12 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 			ownerEmail: req.session.user.email,
 			uploadTime: Date.now()
 			};
-		var newItem = new Item(item);
-		newItem.create(null);
-		console.log('in myTailer.js after create function');
+		var newItem = new Item(item);		
+		var canvasImg = req.body.canvasImg;
+		console.log('the length of dataURL: ' + canvasImg.length);
+		var data = canvasImg.replace(/^data:image\/\w+;base64,/, "");
+		var buf = new Buffer(data, 'base64');
+		//fs.writeFile('uploads/itemImage/resize_'+Date.now() + '.png', buf);
 		var User = new user(req.session.user);
 		User.pushItem(newItem);
 		req.flash('success', 'Post done!');
@@ -188,7 +193,7 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 router.get('/store', function(req, res){
 	if(!req.session.user) {res.redirect('/login'); return;}
 	user.get(req.session.user.email, function(err, userprofile){
-		res.render('plaza', {data: userprofile.items, private:true});
+		res.render('store', {data: userprofile[0].items, private:true});
 	})
 });
 

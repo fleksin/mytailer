@@ -40,9 +40,18 @@ block content
         canvas.height = height;
         var ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, width, height); 
-        localStorage.setItem('resizedImg', canvas.toDataURL('image/png'));
+        console.log(canvas.toDataURL("image/png"));
       };
-      reader.readAsDataURL(this.files[0]);
-      console.dir(this.files[0]);
+      reader.readAsDataURL(this.files[0]);  
+      var canvas = document.getElementById('resize');
+      console.log('the length of dataurl: '+canvas.toDataURL('image/png').length);
+   });
+   $('form.panel').submit(function(){
+       //var fd = new FormData($('form.panel'));
+       var canvas = document.getElementById('resize');
+       var canvasImg = document.createElement('input');
+       $(canvasImg).attr('name', 'canvasImg');
+       $(canvasImg).attr('value', canvas.toDataURL('image/png'));
+       $(this).append(canvasImg);
    });
    
