@@ -97,4 +97,18 @@ User.reset = function(user, callback){
 	callback();
 }
 
+User.getCatag = function(cata, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	var query ={catag:{$elemMatch:{$eq:cata}}};
+	db.collection('users').find(query).toArray(function(err, stores){
+		db.close();
+		if(!stores) {
+			callback(err,null);
+			return;
+		}
+		//console.dir(users);
+		callback(err, stores);		
+	});
+}
+
 module.exports = User;

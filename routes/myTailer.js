@@ -18,11 +18,6 @@ var upload = multer({storage: storage});
 var fs = require('fs');
 var util = require('util');
 
-
-
-
-/* GET users listing. */
-
 function checkFields(model) {
 	for(var key in model){
 		if(model[key] == ''){
@@ -33,32 +28,13 @@ function checkFields(model) {
 	return true;	
 };
 
-
-router.get('/',function(req, res) {
-	
-	// Item.get(null, function(err, items){
-		// //console.log('inside item.get callback: ' + Date());
-		// if(err) {
-			// console.log('Error at myTailer/->item.get: '+err);
-			// item = [];
-		// }		
-		
-		// //var Items = [];
-		// //if(item) Items = items
-		// res.render('plaza', { data: items });
-		
-	// });	
+/* GET all store listing. */
+router.get('/',function(req, res) {		
 	user.get(null, function(err, stores){
-		//console.log('inside item.get callback: ' + Date());
 		if(err) {
 			console.log('Error at myTailer/->item.get: '+err);
-		}		
-		
-		//var Items = [];
-		//if(item) Items = items
-		//console.dir(stores);
-		res.render('plaza', { data: stores });
-		
+		}	
+		res.render('plaza', { data: stores });		
 	});	
 });
 
@@ -225,5 +201,32 @@ router.post('/reset',function(req,res){
 		res.redirect('/');
 	});
 })
+
+router.get('/sweater',function(req, res) {		
+	user.getCatag('sweater', function(err, stores){
+		if(err) {
+			console.log('Error at myTailer/->item.get: '+err);
+		}	
+		res.render('plaza', { data: stores });		
+	});	
+});
+
+router.get('/suit',function(req, res) {		
+	user.getCatag('suit', function(err, stores){
+		if(err) {
+			console.log('Error at myTailer/->item.get: '+err);
+		}	
+		res.render('plaza', { data: stores });		
+	});	
+});
+
+router.get('/cheongsam',function(req, res) {		
+	user.getCatag('Cheongsam', function(err, stores){
+		if(err) {
+			console.log('Error at myTailer/->item.get: '+err);
+		}	
+		res.render('plaza', { data: stores });		
+	});	
+});
 
 module.exports = router;
