@@ -91,5 +91,10 @@ User.getStores = function(username, callback){
 	});
 }
 
+User.reset = function(user, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('users').update({email:user.email}, {$set:{password: user.password}}, function(err,result){db.close();});	
+	callback();
+}
 
 module.exports = User;

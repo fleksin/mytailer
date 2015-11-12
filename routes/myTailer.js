@@ -8,7 +8,7 @@ var Item = require('../model/item');
 var multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/uploads/' + file.fieldname)
+    cb(null, 'public/uploads/' + req.session.user.id)
   },
   filename: function (req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now())
@@ -17,7 +17,7 @@ var storage = multer.diskStorage({
 var upload = multer({storage: storage});
 var fs = require('fs');
 var util = require('util');
-var Parse = require('parse/node');
+
 
 
 
@@ -62,7 +62,7 @@ router.get('/',function(req, res) {
 	});	
 });
 
-router.post('/login', function(req,res,next){
+router.post('/loginM', function(req,res,next){
 	if(!checkFields(req.body)){
 		req.flash('error', 'Please fill out the fields!');
 		res.redirect('/login');
@@ -96,17 +96,17 @@ router.post('/login', function(req,res,next){
 	});	
 });
 
-router.get('/login', function(req, res, next){ 		
-	res.render('Login');
+router.get('/loginM', function(req, res, next){ 		
+	res.render('LoginM');
 });
 
-router.get('/signup', function(req, res){
+router.get('/signupM', function(req, res){
 	// var username = 'Hey New Guy!';
 	// if(req.session.user) username = user.name;
-	res.render('register');
+	res.render('registerM');
 });
 
-router.post('/signup', function(req, res){
+router.post('/signupM', function(req, res){
 	if(!checkFields(req.body)){
 		req.flash('error', 'Please fill out the fields!');
 		res.redirect('/signup');
@@ -129,7 +129,7 @@ router.post('/signup', function(req, res){
 		var newUser = new user({
 			email: req.body.email,
 			password: password,
-                        id: req.body.id
+			id: req.body.id
 		});
 		req.session.user = newUser;
 		newUser.save();
@@ -162,14 +162,15 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 		return;
 	}
 	if(!req.session.user) {res.redirect('/login'); return;};
-	//console.log(util.inspect(req.file));
+	//console.log(util.inspect(req.body));
 	if(req.file){ 
 		var item = {
 			title: req.body.title,
-			img: '/uploads/' + req.file.fieldname + '/' + req.file.filename,
+			//img: '/uploads/' + req.session.user.id + '/' + req.file.filename,
+			img: '/uploads/'+req.session.user.id +'/'+ req.file.filename,
 			description: req.body.description,
-			ownerName: req.session.user.id,
-			ownerEmail: req.session.user.email,
+			// ownerName: req.session.user.id,
+			// ownerEmail: req.session.user.email,
 			uploadTime: Date.now()
 			};
 		var newItem = new Item(item);		
@@ -177,7 +178,7 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 		console.log('the length of dataURL: ' + canvasImg.length);
 		var data = canvasImg.replace(/^data:image\/\w+;base64,/, "");
 		var buf = new Buffer(data, 'base64');
-		//fs.writeFile('uploads/itemImage/resize_'+Date.now() + '.png', buf);
+		fs.writeFile(req.file.destination +'/resize_'+Date.now() + '.png', buf);
 		var User = new user(req.session.user);
 		User.pushItem(newItem);
 		req.flash('success', 'Post done!');
@@ -207,5 +208,22 @@ router.get('/delete/:uploadTime',function(req, res){
 	req.flash('success', 'Delete successfully');
 	res.redirect('/store');
 });
+
+router.get('/reset',function(req,res){
+	res.render('reset');
+})
+
+router.post('/reset',function(req,res){
+    var md5 = crypto.createHash('md5');
+	var password = md5.update(req.body.pw).digest('base64');
+	var userModel = {
+		email: req.body.email,
+		password: password
+	}
+	user.reset(userModel,function(){
+		req.flash('success', 'reset done');
+		res.redirect('/');
+	});
+})
 
 module.exports = router;

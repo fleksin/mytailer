@@ -1,0 +1,21 @@
+extends layout
+
+block content   
+  style(type='text/css') input{margin:8px 0px}
+  form(method='post' action='/signupM' class="form-signin" )
+    h2(class="form-signin-heading") Welcome to MyTailer!
+    label(for="inputEmail") 微信号
+    input(name='email' type="email" id="inputEmail" class="form-control" placeholder='请注意不是昵称' required autofocus)
+    label(for="inputEmail") 昵称
+    input(name='id' type="id" id="inputName" class="form-control" placeholder='为自己取一个名字' required)
+    label(for="inputPassword") 密码
+    input(name='pw' type="password" id="inputPassword" class="form-control" placeholder="Password" required)
+    label 重复密码
+    input(name='pwrepeat' type="password" id="repeatPassword" class="form-control" placeholder="Repeat Password" required)
+    label 真实姓名
+    div(style='display:flex; width=100%;')
+      input(name='lastName' type='text' placeholder='姓' class='form-control')
+      input(name='firstName' type='text' placeholder='名' class='form-control') 
+    button(class="btn btn-lg btn-primary btn-block" type="submit") 注册
+    a(type="button" class="btn btn-link" href='/loginM' ) 卖家登录
+      

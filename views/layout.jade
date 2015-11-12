@@ -59,7 +59,7 @@ html
                if session&&session.user
                   a(href="/logout")= 'Log Out'
                else 
-                  a(href="/login")= 'Log In/Sign Up'
+                  a(href="/loginM")= 'Log In/Sign Up'
             li(style='color:white;') 
                 if session&&session.user
                    a(href='/store')= session.user.id

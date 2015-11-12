@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  form(method='post' action='/loginM' class="form-signin")
+    h2(class="form-signin-heading") Please sign in
+    label(for="inputEmail" class="sr-only") Email address
+    input(name='email' type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus)
+    label(for="inputPassword" class="sr-only") Password
+    input(name='pw' type="password" id="inputPassword" class="form-control" placeholder="Password" required)
+    div(class="checkbox")
+       label
+         input(type="checkbox" value="remember-me")
+         ='Remember me'		
+    button(class="btn btn-lg btn-primary btn-block" type="submit") 登录
+    a(type="button" class="btn btn-link" href='/signupM' ) 卖家注册
+      
