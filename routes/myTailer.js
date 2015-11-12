@@ -71,7 +71,7 @@ router.post('/login', function(req,res,next){
 	
 	user.get(req.body.email, function(err, user){
 		if(user){			
-			if(password == user.password){
+			if(password == user[0].password){
 			   req.session.user = user;
 			   req.flash('success', 'Log in successfully');
 		  	   res.redirect('/');
