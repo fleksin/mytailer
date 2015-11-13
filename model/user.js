@@ -33,9 +33,9 @@ User.prototype.pushItem = function push(item){
 	db.collection('users').update(
 		{email: this.email}, 
 		{$push:{items: item}},
-           function(err, user){
-		if(err) console.dir(err);
-		db.close();
+	    function(err, user){
+			if(err) console.dir(err);
+			db.close();
 	   }
 	);
 	 

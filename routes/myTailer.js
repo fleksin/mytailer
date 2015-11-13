@@ -11,7 +11,7 @@ var storage = multer.diskStorage({
     cb(null, 'public/uploads/' + req.session.user.id)
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
+    cb(null, file.fieldname + '-' + Date.now() + '.png')
   }
 })
 var upload = multer({storage: storage});
@@ -202,29 +202,19 @@ router.post('/reset',function(req,res){
 	});
 })
 
-router.get('/sweater',function(req, res) {		
-	user.getCatag('sweater', function(err, stores){
+router.get('/cata/:catag',function(req, res) {		
+	var catag = req.params.catag;
+	user.getCatag(catag, function(err, stores){
 		if(err) {
 			console.log('Error at myTailer/->item.get: '+err);
 		}	
-		res.render('plaza', { data: stores });		
-	});	
-});
-
-router.get('/suit',function(req, res) {		
-	user.getCatag('suit', function(err, stores){
-		if(err) {
-			console.log('Error at myTailer/->item.get: '+err);
-		}	
-		res.render('plaza', { data: stores });		
-	});	
-});
-
-router.get('/cheongsam',function(req, res) {		
-	user.getCatag('Cheongsam', function(err, stores){
-		if(err) {
-			console.log('Error at myTailer/->item.get: '+err);
-		}	
+		var hint ='欢迎来到';
+		switch(catag){
+			case 'sweater': hint += '羊毛衫区' ;break;
+			case 'suit': hint += '西装区'; break;
+			case 'cheongsam': hint += '旗袍区'; break;
+		}
+		req.flash('success', hint);
 		res.render('plaza', { data: stores });		
 	});	
 });
