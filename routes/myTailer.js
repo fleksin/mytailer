@@ -5,6 +5,7 @@ var crypto = require('crypto');
 var bodyParser = require('body-parser');
 var user = require('../model/user');
 var Item = require('../model/item');
+var Tailer = require('../model/tailer');
 var multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -89,11 +90,11 @@ router.post('/signupM', function(req, res){
 		return;
 	}
 	var md5 = crypto.createHash('md5');
-	var password = md5.update(req.body.pw).digest('base64');
+	var password = md5.update(req.body.password).digest('base64');
 
 	console.log('in myTailer.js: ');
 	
-	if(req.body.pw !== req.body.pwrepeat){
+	if(req.body.password !== req.body.pwrepeat){
 		console.log('not the same pw');
 		
 		req.flash('error', 'Repeat Password is not the same as the other one');
@@ -102,17 +103,22 @@ router.post('/signupM', function(req, res){
 	}
 	else{
 		console.log('will add new user');
-		var newUser = new user({
-			email: req.body.email,
-			password: password,
-			id: req.body.id
+		var tailer = {};
+		for(var field in req.body){
+			if(field != 'pwrepeat')
+				tailer[field]= req.body[field];
+			if(field == 'password')
+				tailer[field] = password;
+		}
+		var newTailer = new Tailer(tailer);
+		newTailer.save(function(){
+			req.flash('success', 'You are good to go!');
+			res.redirect('/');
 		});
-		req.session.user = newUser;
-		newUser.save();
-		
-		req.flash('success', 'You are good to go!');
-		req.session.email = null;
-		res.redirect('/');
+		// req.flash('success', 'You are good to go!');
+		// req.session.email = null;
+		// res.redirect('/');
+		//res.end();
 	}
 	
 });
@@ -120,10 +126,8 @@ router.post('/signupM', function(req, res){
 router.get('/logout', function(req, res){
 	if(req.session){
 		req.session.user = null;
-		
-		// req.session= null;
 	}
-	res.redirect('/login');
+	res.redirect('/loginM');
 });
 
 router.get('/upload', function(req, res){
@@ -167,7 +171,7 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 	}
 });
 
-router.get('/store', function(req, res){
+router.get('/privateStore', function(req, res){
 	if(!req.session.user) {res.redirect('/login'); return;}
 	user.get(req.session.user.email, function(err, userprofile){
 		res.render('store', {data: userprofile[0].items, private:true});

@@ -1,21 +1,46 @@
 extends layout
 
 block content   
-  style(type='text/css') input{margin:8px 0px}
-  form(method='post' action='/signupM' class="form-signin" )
-    h2(class="form-signin-heading") Welcome to MyTailer!
-    label(for="inputEmail") 微信号
-    input(name='email' type="email" id="inputEmail" class="form-control" placeholder='请注意不是昵称' required autofocus)
-    label(for="inputEmail") 昵称
-    input(name='id' type="id" id="inputName" class="form-control" placeholder='为自己取一个名字' required)
-    label(for="inputPassword") 密码
-    input(name='pw' type="password" id="inputPassword" class="form-control" placeholder="Password" required)
-    label 重复密码
-    input(name='pwrepeat' type="password" id="repeatPassword" class="form-control" placeholder="Repeat Password" required)
-    label 真实姓名
-    div(style='display:flex; width=100%;')
-      input(name='lastName' type='text' placeholder='姓' class='form-control')
-      input(name='firstName' type='text' placeholder='名' class='form-control') 
-    button(class="btn btn-lg btn-primary btn-block" type="submit") 注册
-    a(type="button" class="btn btn-link" href='/loginM' ) 卖家登录
+ style(type='text/css') input{margin:8px 0px}
+ div(id='myCarousel' class="carousel slide" data-interval = 'false')
+  div(class="carousel-inner" role="listbox")
+    div(class='item active')
+     form(class="form-signin" id='1st')
+      h2(class="form-signin-heading") Welcome to MyTailer!
+      label(for="inputEmail") 微信号
+      input(name='wechat' type="email" id="inputEmail" class="form-control" placeholder='请注意不是昵称' required autofocus)
+      label(for="inputEmail") 昵称
+      input(name='id' type="id" id="inputName" class="form-control" placeholder='为自己取一个名字' required)
+      label(for="inputPassword") 密码
+      input(name='password' type="password" id="inputPassword" class="form-control" placeholder="Password" required)
+      label 重复密码
+      input(name='pwrepeat' type="password" id="repeatPassword" class="form-control" placeholder="Repeat Password" required)      
+      a(class="btn btn-lg btn-primary btn-block" data-slide='next' href='#myCarousel') 下一步
+      a(type="button" class="btn btn-link" href='/loginM' ) 卖家登录
+    div(class='item')
+     form(class="form-signin" id='2nd')
+      h2(class="form-signin-heading") Welcome to MyTailer!
+      label 真实姓名
+      div(style='display:flex; width=100%;')
+        input(name='lastName' type='text' placeholder='姓' class='form-control')
+        input(name='firstName' type='text' placeholder='名' class='form-control') 
+      label(for="inputEmail") 执照号
+      input(name='email' type="email" id="inputEmail" class="form-control" placeholder='请注意不是昵称' required autofocus)
+      label(for="inputEmail") 身份证
+      input(name='id' type="id" id="inputName" class="form-control" placeholder='为自己取一个名字' required)
+      label(for="inputPassword") 电子邮件
+      input(name='email' type="text" id="inputPassword" class="form-control" placeholder="email" required)
+      div(style='display:flex; width=100%;') 
+         a(class="btn btn-lg btn-primary btn-block" data-slide='prev' href='#myCarousel' style='margin:5px 3px 0px') 上一步
+         a(class="btn btn-lg btn-primary btn-block" data-slide='next' href='#myCarousel') 下一步
+      a(type="button" class="btn btn-link" href='/loginM' ) 卖家登录
+    div(class='item')
+     form(class="form-signin" id='final')
+       h2(class="form-signin-heading") 请同意条约
+       div(style='display:flex; width=100%;' class='well').
+        dfavnaodvfadlvnalvn
+        asdlvnadskvjadsfkljadjsf
+       a(class="btn btn-lg btn-primary btn-block" data-slide='prev' href='#myCarousel') 上一步
+       button(type='submit' class="btn btn-lg btn-primary btn-block") 同意并注册
+ script(src='/javascripts/signupM.js')       
       

@@ -5,6 +5,7 @@ html
     link(rel='stylesheet', href='/stylesheets/bootstrap/css/bootstrap.min.css')
     meta(name="viewport" content="width=device-width, initial-scale=1" charset = 'utf-8')
     script(src='/javascripts/jquery-2.1.4.js')
+    script(src='/stylesheets/bootstrap/js/bootstrap.min.js')
     style.
        .panel{
           max-width:600px;
@@ -52,9 +53,7 @@ html
             span.icon-bar
           a(class="navbar-brand" href="/") My Tailer
         div(id="navbar" class="collapse navbar-collapse")
-          ul(class="nav navbar-nav")
-            li(class="active")
-               a(href="/upload")= 'Post Your Design!'
+          ul(class="nav navbar-nav")           
             li               
                if session&&session.user
                   a(href="/logout")= 'Log Out'
@@ -62,7 +61,7 @@ html
                   a(href="/loginM")= 'Log In/Sign Up'
             li(style='color:white;') 
                 if session&&session.user
-                   a(href='/store')= session.user.id
+                   a(href='/privateStore')= session.user.id
                 else 
                    a= 'Hey New Guy!'
     .container
@@ -76,6 +75,4 @@ html
         - session.flash = null
     block content    
     
-    footer 
-      //p= JSON.stringify(session)
-      script(src='/stylesheets/bootstrap/js/bootstrap.min.js')
+    footer     
