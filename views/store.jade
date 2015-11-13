@@ -1,6 +1,8 @@
 extends layout
 
 block content  
+  a(href = '/upload')
+   button(class='btn btn-info' style='margin:0px auto 30px;display:block;width:50%' ) +添加商品
   if data
     for el in data
      div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;')
