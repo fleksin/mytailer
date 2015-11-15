@@ -20,7 +20,6 @@ User.prototype.save = function save(callback){
 	console.log('in user.js:');
 	
 	var db = mongoskin.db(url, {native_parser: true});
-	db.collection('users').find({email: user.email}).toArray(function(err, users){if(users.length > 0)})
 	db.collection('users').insert(user,function(err,user){
 		db.close();
 		if(err) console.log(err);

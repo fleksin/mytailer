@@ -18,6 +18,7 @@ var storage = multer.diskStorage({
 var upload = multer({storage: storage});
 var fs = require('fs');
 var util = require('util');
+var toolkit = require('../myModules/toolkit');
 
 function checkFields(model) {
 	for(var key in model){
@@ -56,19 +57,16 @@ router.post('/loginM', function(req,res,next){
 		  	   res.redirect('/');
 				
 			}
-			else{
-				
+			else{				
 			   req.flash('error', 'Invalid Password');
 			   res.redirect('/login');			
 			}
 			
 		}
-		else{	
-			
+		else{				
 			req.flash('error', "Email doesn't exist, Sign Up?");
 			req.session.email = req.body.email;
-			res.redirect('/signup');
-			// res.end();
+			res.redirect('/signupM');
 		}		
 	});	
 });
@@ -91,8 +89,6 @@ router.post('/signupM', function(req, res){
 	}
 	var md5 = crypto.createHash('md5');
 	var password = md5.update(req.body.password).digest('base64');
-
-	console.log('in myTailer.js: ');
 	
 	if(req.body.password !== req.body.pwrepeat){
 		console.log('not the same pw');
@@ -102,7 +98,7 @@ router.post('/signupM', function(req, res){
 		res.redirect('/signup');
 	}
 	else{
-		console.log('will add new user');
+		//console.log('will add new user');
 		var tailer = {};
 		for(var field in req.body){
 			if(field != 'pwrepeat')
@@ -110,10 +106,15 @@ router.post('/signupM', function(req, res){
 			if(field == 'password')
 				tailer[field] = password;
 		}
+		//console.log('will add new user');
 		var newTailer = new Tailer(tailer);
-		newTailer.save(function(){
-			req.flash('success', 'You are good to go!');
-			res.redirect('/');
+		newTailer.save(function(duplicated){
+			if(duplicated)
+				res.json({success:false, error: '用户名重复'});
+			else{				
+				req.flash('success', 'You are good to go!');
+				res.json({success:true});
+			}
 		});
 		// req.flash('success', 'You are good to go!');
 		// req.session.email = null;
@@ -183,7 +184,6 @@ router.get('/delete/:uploadTime',function(req, res){
 	if(!req.session.user) {res.redirect('/login'); return}
 	//r items = vareq.sessions.user.items;
 	
-	Item.deleteItem(uploadTime, null);
 	user.deleteItem({email: req.session.user.email, uploadTime: uploadTime}, null);
 	req.flash('success', 'Delete successfully');
 	res.redirect('/store');
@@ -220,6 +220,14 @@ router.get('/cata/:catag',function(req, res) {
 		}
 		req.flash('success', hint);
 		res.render('plaza', { data: stores });		
+	});	
+});
+
+router.get('/checkName/:name', function(req, res){
+	var wechat = req.params.name;
+	toolkit.checkDuplicate('wechat', wechat, 'tailers', function(duplicated){	
+		if(duplicated) res.send('its duplicated');
+		else res.send('its available');
 	});	
 });
 

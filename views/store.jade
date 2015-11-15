@@ -1,6 +1,12 @@
 extends layout
 
 block content  
+  form(class='panel smooth-corner' style='margin:0px auto 20px;')
+    lable 店铺名称
+    br
+    lable 店铺描述
+  a()
+   button(class='btn btn-success' style='margin:0px auto 30px;display:block;width:50%' ) 查看订单
   a(href = '/upload')
    button(class='btn btn-info' style='margin:0px auto 30px;display:block;width:50%' ) +添加商品
   if data

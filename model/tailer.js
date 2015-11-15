@@ -1,8 +1,7 @@
 var mongoskin = require('mongoskin');
 var settings = require('../settings');
 var url = settings.dbhost;
-
-
+var toolkit = require('../myModules/toolkit');
 
 var Tailer = function(tailer){
 	this.password = tailer.password;
@@ -11,13 +10,22 @@ var Tailer = function(tailer){
 	this.model = tailer;
 };
 
-Tailer.prototype.save = function save(callback){	
-	var db = mongoskin.db(url, {native_parser: true});
-	db.collection('tailers').insert(this.model,function(err,user){
-		db.close();
-		if(err) console.log(err);
-		callback();
-	});	
+Tailer.prototype.save = function save(callback){	  
+	var doc = this.model;
+	toolkit.checkDuplicate('wechat', this.model.wechat, 'tailers', function(duplicated){
+		if(duplicated) {
+			callback(duplicated);
+		}
+		else{
+			var db = mongoskin.db(url, {native_parser: true});
+			db.collection('tailers').insert(doc,function(err,user){
+				db.close();
+				if(err) console.log(err);
+				callback(duplicated);
+			});	
+		}
+	})
+	
 
 }
 
@@ -52,7 +60,7 @@ Tailer.get = function(username, callback){
 	var db = mongoskin.db(url, {native_parser: true});
 	var query ={};
 	if(username){
-		query.email = username;
+		query.wechat = username;
 	}
 	db.collection('tailers').find(query).toArray(function(err, users){
 		console.log('the query is ' + username);
