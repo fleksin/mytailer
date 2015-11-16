@@ -11,8 +11,8 @@ $('form#final').submit(function(event){
 	for(var i=0; i < f2.length; i++){
 		data[f2[i].name] = f2[i].value;
 	}
-	console.dir(data);
 	$.post('/signupM', data, function(res){			
+		console.log(res);
 		if(!res.success){
 			$('#prompt').html(res.error).show();			
 		}

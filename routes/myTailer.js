@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var user = require('../model/user');
 var Item = require('../model/item');
 var Tailer = require('../model/tailer');
+var Orders = require('../model/orders');
 var multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -19,6 +20,7 @@ var upload = multer({storage: storage});
 var fs = require('fs');
 var util = require('util');
 var toolkit = require('../myModules/toolkit');
+
 
 function checkFields(model) {
 	for(var key in model){
@@ -49,7 +51,7 @@ router.post('/loginM', function(req,res,next){
 	var md5 = crypto.createHash('md5');
 	var password = md5.update(req.body.pw).digest('base64');
 	
-	user.get(req.body.email, function(err, user){
+	Tailer.get(req.body.wechat, function(err, user){
 		if(user){			
 			if(password == user[0].password){
 			   req.session.user = user[0];
@@ -65,7 +67,6 @@ router.post('/loginM', function(req,res,next){
 		}
 		else{				
 			req.flash('error', "Email doesn't exist, Sign Up?");
-			req.session.email = req.body.email;
 			res.redirect('/signupM');
 		}		
 	});	
@@ -83,8 +84,7 @@ router.get('/signupM', function(req, res){
 
 router.post('/signupM', function(req, res){
 	if(!checkFields(req.body)){
-		req.flash('error', 'Please fill out the fields!');
-		res.redirect('/signup');
+		res.json({success:false, error: '请填入所有信息！'});
 		return;
 	}
 	var md5 = crypto.createHash('md5');
@@ -92,10 +92,7 @@ router.post('/signupM', function(req, res){
 	
 	if(req.body.password !== req.body.pwrepeat){
 		console.log('not the same pw');
-		
-		req.flash('error', 'Repeat Password is not the same as the other one');
-		//req.session.email = req.body.email;
-		res.redirect('/signup');
+		res.json({success:false, error: '密码不匹配'});
 	}
 	else{
 		//console.log('will add new user');
@@ -106,12 +103,13 @@ router.post('/signupM', function(req, res){
 			if(field == 'password')
 				tailer[field] = password;
 		}
-		//console.log('will add new user');
+		
 		var newTailer = new Tailer(tailer);
-		newTailer.save(function(duplicated){
+		newTailer.save(function(duplicated){	
 			if(duplicated)
 				res.json({success:false, error: '用户名重复'});
-			else{				
+			else{	
+				req.session.user = newTailer;
 				req.flash('success', 'You are good to go!');
 				res.json({success:true});
 			}
@@ -174,7 +172,7 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 
 router.get('/privateStore', function(req, res){
 	if(!req.session.user) {res.redirect('/login'); return;}
-	user.get(req.session.user.email, function(err, userprofile){
+	Tailer.get(req.session.user.wechat, function(err, userprofile){
 		res.render('store', {data: userprofile[0].items, private:true});
 	})
 });
@@ -230,5 +228,27 @@ router.get('/checkName/:name', function(req, res){
 		else res.send('its available');
 	});	
 });
+
+router.post('/updateStore', function(req,res){
+	var profile = req.body;		
+	profile.wechat = req.session.user.wechat;
+	console.log(profile);	
+	Tailer.updateStore(profile, function(success){
+		Tailer.get(profile.wechat, function(err, users){
+			req.session.user = users[0];
+			if(success) res.send('done!');
+			else res.send('error!');
+		});		
+	});
+});
+
+router.get('/myorders',function(req,res){
+	var wechat = req.session.user.wechat;
+	console.log(wechat);
+	Orders.getByWechat(wechat, function(err,orders){
+		console.dir(orders);
+		res.render('myOrders', {orders: orders});
+	});
+})
 
 module.exports = router;

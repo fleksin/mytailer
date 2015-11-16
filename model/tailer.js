@@ -4,14 +4,17 @@ var url = settings.dbhost;
 var toolkit = require('../myModules/toolkit');
 
 var Tailer = function(tailer){
-	this.password = tailer.password;
-	this.id = tailer.id;
-	this.wechat = tailer.wechat;
+	for(var field in tailer){
+		this[field]=tailer[field];
+	}
 	this.model = tailer;
 };
 
 Tailer.prototype.save = function save(callback){	  
 	var doc = this.model;
+	doc.store = {};
+	doc.store.name='暂无';
+	doc.store.description = '暂无';	
 	toolkit.checkDuplicate('wechat', this.model.wechat, 'tailers', function(duplicated){
 		if(duplicated) {
 			callback(duplicated);
@@ -92,7 +95,7 @@ Tailer.getStores = function(username, callback){
 
 Tailer.reset = function(user, callback){
 	var db = mongoskin.db(url, {native_parser: true});
-	db.collection('users').update({email:user.email}, {$set:{password: user.password}}, function(err,result){db.close();callback();});		
+	db.collection('users').update({wechat:user.wechat}, {$set:{password: user.password}}, function(err,result){db.close();callback();});		
 }
 
 Tailer.getCatag = function(cata, callback){
@@ -107,6 +110,19 @@ Tailer.getCatag = function(cata, callback){
 		//console.dir(tailers);
 		callback(err, stores);		
 	});
+}
+
+Tailer.updateStore = function(profile, callback){
+	var db = mongoskin.db(url, {native_parser: true});	
+	db.collection('tailers').update(
+		{wechat: profile.wechat},
+		{$set:{'store.name':profile.name, 'store.description': profile.description}},
+		function(err,result){
+			db.close();
+			if(err) callback(false);
+			else callback(true);
+		}
+	);
 }
 
 module.exports = Tailer;
