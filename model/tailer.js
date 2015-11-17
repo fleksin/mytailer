@@ -32,14 +32,15 @@ Tailer.prototype.save = function save(callback){
 
 }
 
-Tailer.prototype.pushItem = function push(item){
+Tailer.pushItem = function push(wechat, item, callback){
 	var db = mongoskin.db(url, {native_parser: true});
 	db.collection('tailers').update(
-		{wechat: this.wechat}, 
-		{$push:{items: item}},
+		{wechat: wechat}, 
+		{$push:{'store.items': item}},
 	    function(err, user){
 			if(err) console.dir(err);
 			db.close();
+            callback();
 	   }
 	);
 	 

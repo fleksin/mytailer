@@ -150,19 +150,22 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 			description: req.body.description,
 			// ownerName: req.session.user.id,
 			// ownerEmail: req.session.user.email,
-			uploadTime: Date.now()
+			uploadTime: Date.now(),
+			price: req.body.price
 			};
-		var newItem = new Item(item);		
+			
 		var canvasImg = req.body.canvasImg;
 		console.log('the length of dataURL: ' + canvasImg.length);
 		var data = canvasImg.replace(/^data:image\/\w+;base64,/, "");
 		var buf = new Buffer(data, 'base64');
-		fs.writeFile(req.file.destination +'/resize_'+Date.now() + '.png', buf);
-		var User = new user(req.session.user);
-		User.pushItem(newItem);
-		req.flash('success', 'Post done!');
-		res.redirect('/');
-		//res.render('upload', {img: item.img});
+		var preview = '/resize_'+Date.now() + '.png';
+		console.log(req.file.destination);
+		fs.writeFile(req.file.destination + preview, buf);		
+		item.preview = '/uploads/'+ req.session.user.id + preview;
+		Tailer.pushItem(req.session.user.wechat,item, function(){
+			req.flash('success', 'Post done!');
+			res.redirect('/privateStore');
+		});
 	}	
 	else{
 		req.flash('error', 'Post failed!');
@@ -173,7 +176,8 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 router.get('/privateStore', function(req, res){
 	if(!req.session.user) {res.redirect('/login'); return;}
 	Tailer.get(req.session.user.wechat, function(err, userprofile){
-		res.render('store', {data: userprofile[0].items, private:true});
+		req.session.user = userprofile[0];
+		res.render('store', {private:true});
 	})
 });
 

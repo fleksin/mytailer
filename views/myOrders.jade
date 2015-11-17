@@ -4,12 +4,15 @@ block content
   if orders
    div(id='myCarousel' class="carousel slide" data-interval = 'false')
     div(class="carousel-inner" role="listbox")
-     div(class="list-group")
-      for order in orders
-       div(class='item active')
+     div(class='item active')
+      div(class="list-group")      
+       for order in orders
         div(class='list-group-item' style='width:60%;margin:0 auto')
          a(href="#myCarousel" data-slide='next' class="list-group-item")
           h4(class="list-group-item-heading") 来自 #{order.buyer} 的订单
           p(class="list-group-item-text") 于 #{order.createDate} 下单
-       
-     
+     div(class='item')  
+       div(class='panel smooth-corner' style='margin:0 auto; width:60%')
+        h4 来自 buyer 的订单
+        p 于 Date 下单
+         a(href="#myCarousel" data-slide='prev' class="list-group-item")
