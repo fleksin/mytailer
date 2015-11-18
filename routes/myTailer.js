@@ -38,7 +38,6 @@ router.get('/',function(req, res) {
 		if(err) {
 			console.log('Error at myTailer/->item.get: '+err);
 		}	
-        console.dir(stores);
 		res.render('plaza', { data: stores });		
 	});	
 });

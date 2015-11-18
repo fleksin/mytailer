@@ -18,7 +18,8 @@ block content
           h4(id='detail-buyer')
         p 下单日期：
           p(id='detail-createDate')
-        span(href="#myCarousel" data-slide='prev' class="glyphicon glyphicon-chevron-left")         
+        span(href="#myCarousel" data-slide='prev' class="glyphicon glyphicon-chevron-left")
+      button(class='btn btn-info' onclick='reload()' style='margin:10px auto;display:block') 完成         
   script.
    $(document).ready(function(){
        $('.order').click(function(){
@@ -27,3 +28,4 @@ block content
            $('#detail-createDate').html(data.createDate);
        });
    });   
+   function reload(){location.reload()};
