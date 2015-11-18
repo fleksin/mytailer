@@ -34,6 +34,7 @@ $(document).ready(function(){
     });
     $('form.panel').submit(function(event){
        //var fd = new FormData($('form.panel'));
+		$('button').attr('disable', true);
 	   $.each($('input'),function(key, input){
 		     if($(input).val() == null){
 				alert('请输入所有信息！');
@@ -46,8 +47,7 @@ $(document).ready(function(){
        $(canvasImg).attr('value', canvas.toDataURL('image/png'));
        $(this).append(canvasImg);
     });
-    $('input#price').keyup(function(){
-        
+    $('input#price').keyup(function(){        
         var value = $(this).val();
         if($.isNumeric(value)){$('label.price').text('价格').css('color','black');$('button').prop('disabled',false);}
         else {$('label.price').text('请输入正常价格！').css('color','red');$('button').prop('disabled',true);}

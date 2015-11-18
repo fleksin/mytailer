@@ -176,6 +176,7 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 router.get('/privateStore', function(req, res){
 	if(!req.session.user) {res.redirect('/login'); return;}
 	Tailer.get(req.session.user.wechat, function(err, userprofile){
+		req.session.user = userprofile[0];
 		res.render('store', {private:true});
 	})
 });
@@ -192,9 +193,11 @@ router.get('/delete/:uploadTime',function(req, res){
 	if(!req.session.user) {res.redirect('/login'); return}
 	//r items = vareq.sessions.user.items;
 	
-	user.deleteItem({email: req.session.user.email, uploadTime: uploadTime}, null);
-	req.flash('success', 'Delete successfully');
-	res.redirect('/privateStore');
+	Tailer.deleteItem({wechat: req.session.user.wechat, uploadTime: uploadTime}, function(){
+		req.flash('success', 'Delete successfully');
+		res.redirect('/privateStore');
+	});
+	
 });
 
 router.get('/reset',function(req,res){

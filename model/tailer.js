@@ -51,11 +51,11 @@ Tailer.deleteItem = function deleteItem(info, callback){
 	console.log('inside user.deleteitem'); 
 	db.collection('tailers').update(
 		{wechat: info.wechat},
-		{$pull:{ items: {'uploadTime': parseFloat(info.uploadTime)}}},
+		{$pull:{ 'store.items': {'uploadTime': parseFloat(info.uploadTime)}}},
 		function(err, user){
 			if(err) console.dir(err);
 			db.close();
-			//callback();
+			callback();
 		}
 	);
 }
