@@ -1,0 +1,35 @@
+extends layout
+
+block content
+ if session.user
+  - items = session.user.store.items  
+ if(private) 
+   form(id='user' class='panel smooth-corner' style='margin:0px auto 20px;')
+    button(class='btn btn-primary btn-xs' type = 'submit' style='display: none;float:right;margin:0 20px 10px') 保存
+    a(id='edit' class='glyphicon glyphicon-pencil' style='float:right')
+    lable 店铺名称:
+    input(id='name' name='name' style='text-align:center' class='form-control' readonly='true' value=session.user.store.name)
+    lable 店铺描述:
+    input(id='description' name='description' style='text-align:center' class='form-control' readonly='true' value=session.user.store.description)
+   a(href='/myorders')
+    button(class='btn btn-success' style='margin:0px auto 30px;display:block;width:50%' ) 查看订单
+   a(href = '/upload')
+    button(class='btn btn-info' style='margin:0px auto 30px;display:block;width:50%' ) +添加商品
+ if items
+   for el in items
+    div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;')
+      div(class="panel-heading" style="background: rgba(255,255,255,.9)")
+        h3(class="panel-title")= el.title
+            span(style='float:right;color: rgba(77,0,255,0.54)')= el.ownerName
+      div(class='panel-body')
+          a(href=el.img)
+           img(src= el.preview style='max-width:100%;margin: 0 0 10px;')
+          p= el.description  
+          if(private)
+           a(href='/delete/'+el.uploadTime)
+            img(src='/images/trash.png' style='float:right;height:30px')        
+ else
+    p Oops cannot find anything, Try again!
+  script(src='/javascripts/store.js')
+ 
+   

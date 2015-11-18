@@ -1,8 +1,8 @@
 extends layout
 
-block content
- -var items = session.user.store.items  
+block content    
  if(private) 
+   - items = session.user.store.items
    form(id='user' class='panel smooth-corner' style='margin:0px auto 20px;')
     button(class='btn btn-primary btn-xs' type = 'submit' style='display: none;float:right;margin:0 20px 10px') 保存
     a(id='edit' class='glyphicon glyphicon-pencil' style='float:right')
@@ -27,7 +27,7 @@ block content
           if(private)
            a(href='/delete/'+el.uploadTime)
             img(src='/images/trash.png' style='float:right;height:30px')        
-  else
+ else
     p Oops cannot find anything, Try again!
   script(src='/javascripts/store.js')
  

@@ -176,7 +176,6 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 router.get('/privateStore', function(req, res){
 	if(!req.session.user) {res.redirect('/login'); return;}
 	Tailer.get(req.session.user.wechat, function(err, userprofile){
-		req.session.user = userprofile[0];
 		res.render('store', {private:true});
 	})
 });
@@ -184,7 +183,7 @@ router.get('/privateStore', function(req, res){
 router.get('/store/:tailer', function(req, res){
 	var wechat = req.params.tailer;
 	Tailer.get(wechat, function(err, user){
-		res.render('store', {private:false});
+		res.render('store', {private:false, items: user[0].store.items});
 	});
 });
 
