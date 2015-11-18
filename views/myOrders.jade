@@ -7,12 +7,23 @@ block content
      div(class='item active')
       div(class="list-group")      
        for order in orders
-        div(class='list-group-item' style='width:60%;margin:0 auto')
-         a(href="#myCarousel" data-slide='next' class="list-group-item")
+        div(class='list-group-item order' style='width:80%;margin:10px auto' href="#myCarousel" data-slide='next' data=order)
+          span(class="glyphicon glyphicon-chevron-right" style='float:right')   
           h4(class="list-group-item-heading") 来自 #{order.buyer} 的订单
-          p(class="list-group-item-text") 于 #{order.createDate} 下单
+          p(class="list-group-item-text") 于 #{order.createDate} 下单          
      div(class='item')  
-       div(class='panel smooth-corner' style='margin:0 auto; width:60%')
-        h4 来自 buyer 的订单
-        p 于 Date 下单
-         a(href="#myCarousel" data-slide='prev' class="list-group-item")
+      div(id='detail' class='panel smooth-corner' style='margin:0 auto; width:80%')
+       div(class='panel-body')
+        h4 订单来自：
+          h4(id='detail-buyer')
+        p 下单日期：
+          p(id='detail-createDate')
+        span(href="#myCarousel" data-slide='prev' class="glyphicon glyphicon-chevron-left")         
+  script.
+   $(document).ready(function(){
+       $('.order').click(function(){
+           var data = $.parseJSON($(this).attr('data'));
+           $('#detail-buyer').html(data.buyer);
+           $('#detail-createDate').html(data.createDate);
+       });
+   });   

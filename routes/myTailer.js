@@ -34,10 +34,11 @@ function checkFields(model) {
 
 /* GET all store listing. */
 router.get('/',function(req, res) {		
-	user.get(null, function(err, stores){
+	Tailer.get(null, function(err, stores){
 		if(err) {
 			console.log('Error at myTailer/->item.get: '+err);
 		}	
+        console.dir(stores);
 		res.render('plaza', { data: stores });		
 	});	
 });
@@ -155,11 +156,11 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 			};
 			
 		var canvasImg = req.body.canvasImg;
-		console.log('the length of dataURL: ' + canvasImg.length);
+		//console.log('the length of dataURL: ' + canvasImg.length);
 		var data = canvasImg.replace(/^data:image\/\w+;base64,/, "");
 		var buf = new Buffer(data, 'base64');
 		var preview = '/resize_'+Date.now() + '.png';
-		console.log(req.file.destination);
+		//console.log(req.file.destination);
 		fs.writeFile(req.file.destination + preview, buf);		
 		item.preview = '/uploads/'+ req.session.user.id + preview;
 		Tailer.pushItem(req.session.user.wechat,item, function(){
@@ -181,6 +182,13 @@ router.get('/privateStore', function(req, res){
 	})
 });
 
+router.get('/store/:tailer', function(req, res){
+	var wechat = req.params.tailer;
+	Tailer.get(wechat, function(err, user){
+		res.render('store', {private:false});
+	});
+});
+
 router.get('/delete/:uploadTime',function(req, res){
 	var uploadTime = req.params.uploadTime;
 	if(!req.session.user) {res.redirect('/login'); return}
@@ -188,7 +196,7 @@ router.get('/delete/:uploadTime',function(req, res){
 	
 	user.deleteItem({email: req.session.user.email, uploadTime: uploadTime}, null);
 	req.flash('success', 'Delete successfully');
-	res.redirect('/store');
+	res.redirect('/privateStore');
 });
 
 router.get('/reset',function(req,res){
@@ -236,7 +244,7 @@ router.get('/checkName/:name', function(req, res){
 router.post('/updateStore', function(req,res){
 	var profile = req.body;		
 	profile.wechat = req.session.user.wechat;
-	console.log(profile);	
+	//console.log(profile);	
 	Tailer.updateStore(profile, function(success){
 		Tailer.get(profile.wechat, function(err, users){
 			req.session.user = users[0];
@@ -248,9 +256,9 @@ router.post('/updateStore', function(req,res){
 
 router.get('/myorders',function(req,res){
 	var wechat = req.session.user.wechat;
-	console.log(wechat);
+	//console.log(wechat);
 	Orders.getByWechat(wechat, function(err,orders){
-		console.dir(orders);
+		//console.dir(orders);
 		res.render('myOrders', {orders: orders});
 	});
 })
