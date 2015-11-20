@@ -10,7 +10,6 @@ function checkNum(){
 }
 
 function removeFabric(){
-	console.log($(this).id);
 	$(this).parent('div').remove();	
 }
 
@@ -54,17 +53,24 @@ $(document).ready(function(){
        //var fd = new FormData($('form.panel'));
 		$('button').attr('disable', true);
 		$('#uploading').show();
-	   $.each($('input'),function(key, input){
-		     if($(input).val() == null){
-				alert('请输入所有信息！');
+		$('input').each(function(key, input){
+		     if(!$(input).val()){
+				console.log('miss: ' + $(input).attr('name'));
 				event.preventDefault();
+				$('div#hint').html('请填写所有信息');
+				return;
 			}
 		});
-       var canvas = document.getElementById('resize');
-       var canvasImg = document.createElement('input');
-       $(canvasImg).attr('name', 'canvasImg');
-       $(canvasImg).attr('value', canvas.toDataURL('image/png'));
-       $(this).append(canvasImg);
+		if(!$("input[name='name']:checked").val()){
+			event.preventDefault();
+			$('div#hint').html('请选一个商品类别');
+			return;
+		}
+		var canvas = document.getElementById('resize');
+		var canvasImg = document.createElement('input');
+		$(canvasImg).attr('name', 'canvasImg');
+		$(canvasImg).attr('value', canvas.toDataURL('image/png'));
+		$(this).append(canvasImg);
     });
     $('input#price').keyup(function(){        
         var value = $(this).val();
@@ -83,11 +89,6 @@ $(document).ready(function(){
               $('span#total').html(''); }
      });
 	$('#addParam').click(function(){
-		// var input = document.createElement('input');
-		// $(input).attr('class','form-control');
-		// $(input).attr('id','param');
-        // $(input).attr('placeholder', '参数名');
-		// $(input).attr('style','margin:0 0 5px');
         var input ="<div style='display:flex;width=100%;margin:0 0 5px' id='oneOption'>" + 
                "<label class='glyphicon glyphicon-trash' id='remove' ></label>" +
                "<input name='optionalFabric' type='text' placeholder='面料' class='form-control'>" + 
@@ -97,5 +98,6 @@ $(document).ready(function(){
 		$('.parameters').append(input);
 		$('.parameters #plus').keyup(checkNum);
 		$('.parameters #remove').click(removeFabric);
+		
 	});		
 });
