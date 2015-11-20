@@ -52,7 +52,6 @@ $(document).ready(function(){
     $('form.panel').submit(function(event){
        //var fd = new FormData($('form.panel'));
 		$('button').attr('disable', true);
-		$('#uploading').show();
 		$('input').each(function(key, input){
 		     if(!$(input).val()){
 				console.log('miss: ' + $(input).attr('name'));
@@ -61,7 +60,8 @@ $(document).ready(function(){
 				return;
 			}
 		});
-		if(!$("input[name='name']:checked").val()){
+		if($('div#hint').html()) return;
+		if(!$("input[name='catag']:checked").val()){
 			event.preventDefault();
 			$('div#hint').html('请选一个商品类别');
 			return;
@@ -69,8 +69,10 @@ $(document).ready(function(){
 		var canvas = document.getElementById('resize');
 		var canvasImg = document.createElement('input');
 		$(canvasImg).attr('name', 'canvasImg');
+		$(canvasImg).attr('style', 'display:none');
 		$(canvasImg).attr('value', canvas.toDataURL('image/png'));
 		$(this).append(canvasImg);
+		$('#uploading').show();
     });
     $('input#price').keyup(function(){        
         var value = $(this).val();
