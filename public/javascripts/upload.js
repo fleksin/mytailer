@@ -1,4 +1,22 @@
+function checkNum(){
+	if (isNaN($(this).val())){ 
+		$('label#error').html(' 价格必须是数字!');
+		$('button').prop('disabled',true);
+	} 
+	else {
+		$('label#error').html('');
+		$('button').prop('disabled',false);
+	}
+}
+
+function removeFabric(){
+	console.log($(this).id);
+	$(this).parent('div').remove();	
+}
+
 $(document).ready(function(){
+	var numfields = $('input').length;
+	console.log(numfields);
     document.getElementById('myFileInput').addEventListener('change',function(){
       console.log('file info');
       var reader = new FileReader();
@@ -50,15 +68,34 @@ $(document).ready(function(){
     });
     $('input#price').keyup(function(){        
         var value = $(this).val();
-        if($.isNumeric(value)){$('label.price').text('价格').css('color','black');$('button').prop('disabled',false);}
-        else {$('label.price').text('请输入正常价格！').css('color','red');$('button').prop('disabled',true);}
+        if($.isNumeric(value)){
+			$('label.price').text('价格').css('color','black');
+			$('button').prop('disabled',false);
+			var price = parseFloat(value);
+			var charge = (price * 0.2).toFixed(2);
+			var total = (price * 1.2).toFixed(2);
+			$('span#charge').html(charge);
+            $('span#total').html(total);
+		}
+        else {$('label.price').text('请输入正常价格！').css('color','red');
+              $('button').prop('disabled',true);
+              $('span#charge').html('');
+              $('span#total').html(''); }
      });
 	$('#addParam').click(function(){
-		var input = document.createElement('input');
-		$(input).attr('class','form-control');
-		$(input).attr('id','param');
-        $(input).attr('placeholder', '参数名');
-		$(input).attr('style','margin:0 0 5px');
+		// var input = document.createElement('input');
+		// $(input).attr('class','form-control');
+		// $(input).attr('id','param');
+        // $(input).attr('placeholder', '参数名');
+		// $(input).attr('style','margin:0 0 5px');
+        var input ="<div style='display:flex;width=100%;margin:0 0 5px' id='oneOption'>" + 
+               "<label class='glyphicon glyphicon-trash' id='remove' ></label>" +
+               "<input name='optionalFabric' type='text' placeholder='面料' class='form-control'>" + 
+               "<label>+</label>"+
+               "<input id='plus' name='plus' type='text' placeholder='价格' class='form-control'>" +               
+            "</div>" ;
 		$('.parameters').append(input);
-	});
+		$('.parameters #plus').keyup(checkNum);
+		$('.parameters #remove').click(removeFabric);
+	});		
 });

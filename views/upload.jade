@@ -13,9 +13,30 @@ block content
       label 描述
       input(id='description' name='description' class="form-control" placeholder="make your item appealing" required)
       label(class='price') 价格
-      input(id='price' name='price' class="form-control" placeholder="make your item appealing" required)
+      input(id='price' name='price' class="form-control" placeholder="定一个价格" required)      
+      label(class='form-control')
+        span(style='float:right') +原价的20%
+        span(style='float:left' id='charge')
+      span(id='total' style='float:right')
+      label 总价 =        
+      br
+      label 商品类别
+      br
+      label
+       input(type='radio' name='catag' value='sweater')   
+       羊毛衫
+      label
+       input(type='radio' name='catag' value='suit')   
+       西装
+      label
+       input(type='radio' name='catag' value='chaongsam')   
+       旗袍
+      br 
+      label 默认面料
+      input(id='fabric' name='fabric' class="form-control" placeholder="请输入默认的面料名称" required) 
       span(class='glyphicon glyphicon-plus' id='addParam' style='float:right')
-      label 具体参数
+      label 可选面料
+      label(style='color:red' id='error')
       div(class='parameters')
       button(class="btn btn-lg btn-primary btn-block" type="submit") submit
       //div(class='panel smooth-corner' style='width:100%;height:100%;top:0;left:0; position:absolute')

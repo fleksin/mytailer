@@ -136,8 +136,8 @@ router.get('/upload', function(req, res){
 
 router.post('/upload', upload.single('itemImage'),function(req, res, next){
 	if(!checkFields(req.body)){
-		req.flash('error', 'Please fill out the fields!');
-		res.redirect('/profile');
+		req.flash('error', '请填写所有信息！');
+		res.redirect('/upload');
 		return;
 	}
 	if(!req.session.user) {res.redirect('/login'); return;};
