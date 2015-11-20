@@ -7,9 +7,9 @@ block content
     button(class='btn btn-primary btn-xs' type = 'submit' style='display: none;float:right;margin:0 20px 10px') 保存
     a(id='edit' class='glyphicon glyphicon-pencil' style='float:right')
     lable 店铺名称:
-    input(id='name' name='name' style='text-align:center' class='form-control' readonly='true' value=session.user.store.name)
+    input(id='name' name='name' style='text-align:center' class='form-control' readonly='true' placeholder='还没有店名，赶紧取一个' value=session.user.store.name)
     lable 店铺描述:
-    input(id='description' name='description' style='text-align:center' class='form-control' readonly='true' value=session.user.store.description)
+    input(id='description' name='description' style='text-align:center' class='form-control' readonly='true' placeholder='写点描述吧' value=session.user.store.description)
    a(href='/myorders')
     button(class='btn btn-success' style='margin:0px auto 30px;display:block;width:50%' ) 查看订单
    a(href = '/upload')
@@ -19,7 +19,7 @@ block content
     div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;')
       div(class="panel-heading" style="background: rgba(255,255,255,.9)")
         h3(class="panel-title")= el.title
-            span(style='float:right;color: rgba(77,0,255,0.54)')= el.ownerName
+            span(style='float:right;color: rgba(77,0,255,0.54)')= '$ ' + el.price
       div(class='panel-body')
           a(href=el.img)
            img(src= el.preview style='max-width:100%;margin: 0 0 10px;')
@@ -28,7 +28,7 @@ block content
            a(href='/delete/'+el.uploadTime)
             img(src='/images/trash.png' style='float:right;height:30px')        
  else
-    p Oops cannot find anything, Try again!
+    div(class='panel' style='margin:0px auto')还没有任何商品摆出
   script(src='/javascripts/store.js')
  
    

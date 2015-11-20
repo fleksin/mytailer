@@ -45,23 +45,23 @@ router.get('/',function(req, res) {
 router.post('/loginM', function(req,res,next){
 	if(!checkFields(req.body)){
 		req.flash('error', 'Please fill out the fields!');
-		res.redirect('/login');
+		res.redirect('/loginM');
 		return;
 	}
 	var md5 = crypto.createHash('md5');
 	var password = md5.update(req.body.pw).digest('base64');
 	
 	Tailer.get(req.body.wechat, function(err, user){
-		if(user){			
+		if(user.length>0){			
 			if(password == user[0].password){
 			   req.session.user = user[0];
 			   req.flash('success', 'Log in successfully');
-		  	   res.redirect('/');
+		  	   res.redirect('/privateStore');
 				
 			}
 			else{				
 			   req.flash('error', 'Invalid Password');
-			   res.redirect('/login');			
+			   res.redirect('/loginM');			
 			}
 			
 		}
