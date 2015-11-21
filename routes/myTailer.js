@@ -141,7 +141,8 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 		return;
 	}
 	if(!req.session.user) {res.redirect('/login'); return;};
-	//console.log(util.inspect(req.body));
+	var fabricPlus = JSON.parse(req.body.fabricPlus);
+	var price = (parseFloat(req.body.price) * 1.2).toFixed(2);
 	if(req.file){ 
 		var item = {
 			title: req.body.title,
@@ -151,7 +152,10 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 			// ownerName: req.session.user.id,
 			// ownerEmail: req.session.user.email,
 			uploadTime: Date.now(),
-			price: req.body.price
+			price: price,
+			fabricPlus:fabricPlus,
+			catag: req.body.catag,
+			fabric: req.body.fabric
 			};
 			
 		var canvasImg = req.body.canvasImg;
@@ -263,5 +267,13 @@ router.get('/myorders',function(req,res){
 		res.render('myOrders', {orders: orders});
 	});
 })
+
+router.post('/test', function(req, res){
+	var result = JSON.parse(req.body.fabricPlus);
+	console.dir(result);
+	console.dir(result.length);
+	console.log(result[0].name);
+	res.send('success');
+});
 
 module.exports = router;

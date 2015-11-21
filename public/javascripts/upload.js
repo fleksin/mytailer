@@ -11,9 +11,12 @@ function checkNum(){
 
 function removeFabric(){
 	$(this).parent('div').remove();	
+	options--;
 }
 
 $(document).ready(function(){
+	$('input').prop('required', false); // comment this out later, its for test
+
 	var numfields = $('input').length;
 	console.log(numfields);
     document.getElementById('myFileInput').addEventListener('change',function(){
@@ -51,10 +54,24 @@ $(document).ready(function(){
     });
     $('form.panel').submit(function(event){
        //var fd = new FormData($('form.panel'));
+		var Form = this;
+		var options =[];
+		
 		$('button').attr('disable', true);
+		$('.options').each(function(key, one){
+			var name = $(this).find('#fabricPlus').val();
+			var price = $(this).find('#pricePlus').val();
+			options.push({'name':name, 'price':price});
+		});
+		$(Form).append("<input id='test' name='fabricPlus' value="+ JSON.stringify(options) +" style='display:none'>");
+		// console.log('length of $(div): '+ $('.options').length);
+		// console.dir(options);
+		// var arr = $('#test').val();
+		// var data = {fabricPlus: arr};
+		// $.post('/test', data, function(res){console.log(res)});
+		
 		$('input').each(function(key, input){
 		     if(!$(input).val()){
-				console.log('miss: ' + $(input).attr('name'));
 				event.preventDefault();
 				$('div#hint').html('请填写所有信息');
 				return;
@@ -91,15 +108,14 @@ $(document).ready(function(){
               $('span#total').html(''); }
      });
 	$('#addParam').click(function(){
-        var input ="<div style='display:flex;width=100%;margin:0 0 5px' id='oneOption'>" + 
+        var input ="<div style='display:flex;width=100%;margin:0 0 5px' class='options'>" + 
                "<label class='glyphicon glyphicon-trash' id='remove' ></label>" +
-               "<input name='optionalFabric' type='text' placeholder='面料' class='form-control'>" + 
+               "<input id='fabricPlus' type='text' placeholder='面料' class='form-control'>" + 
                "<label>+</label>"+
-               "<input id='plus' name='plus' type='text' placeholder='价格' class='form-control'>" +               
+               "<input id='pricePlus' type='text' placeholder='价格' class='form-control'>" +               
             "</div>" ;
 		$('.parameters').append(input);
-		$('.parameters #plus').keyup(checkNum);
+		$('.parameters #pricePlus').keyup(checkNum);
 		$('.parameters #remove').click(removeFabric);
-		
 	});		
 });
