@@ -163,7 +163,7 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 		var data = canvasImg.replace(/^data:image\/\w+;base64,/, "");
 		var buf = new Buffer(data, 'base64');
 		var preview = '/resize_'+Date.now() + '.png';
-		//console.log(req.file.destination);
+		console.log(req.file.destination);
 		fs.writeFile(req.file.destination + preview, buf);		
 		item.preview = '/uploads/'+ req.session.user.id + preview;
 		Tailer.pushItem(req.session.user.wechat,item, function(){
