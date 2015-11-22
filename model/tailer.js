@@ -125,4 +125,27 @@ Tailer.updateStore = function(profile, callback){
 	);
 }
 
+Tailer.getItem = function(query, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	console.dir(query);
+	var uploadTime= parseFloat(query.uploadTime);
+	db.collection('tailers').find({'store.name': query.storename}).toArray(function(err, users){
+		db.close();
+		console.log(users);		
+		if(!users) {
+			callback(err,null);
+			return;
+		}
+		var items = users[0].store.items;
+		var item={};
+		for(var key in items){
+			if(items[key].uploadTime == uploadTime){	
+				item = items[key];
+				break;
+			}
+		}
+		callback(err, item);		
+	});
+}
+
 module.exports = Tailer;

@@ -188,8 +188,9 @@ router.get('/privateStore', function(req, res){
 router.get('/store/:tailer', function(req, res){
 	var wechat = req.params.tailer;
 	Tailer.get(wechat, function(err, user){
-		res.render('store', {private:false, items: user[0].store.items});
+		res.render('store', {private:false, items: user[0].store.items, storename:user[0].store.name});
 	});
+	
 });
 
 router.get('/delete/:uploadTime',function(req, res){
@@ -275,5 +276,17 @@ router.post('/test', function(req, res){
 	console.log(result[0].name);
 	res.send('success');
 });
+
+router.get('/items/:name/:uploadTime', function(req, res){
+	var name = req.params.name;
+	var uploadTime = req.params.uploadTime;
+	var query={
+		storename: name,
+		uploadTime: uploadTime
+	}
+	Tailer.getItem(query, function(err, item){
+		res.render('item', {item: item});
+	});	
+})
 
 module.exports = router;

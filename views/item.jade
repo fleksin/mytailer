@@ -1,0 +1,19 @@
+extend layout
+
+block content
+  if item
+    div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;')
+      div(class="panel-heading" style="background: rgba(255,255,255,.9)")
+        h3(class="panel-title")= item.title           
+      div(class='panel-body')
+        a(href=item.img)
+          img(src= item.preview style='max-width:100%;margin: 0 0 10px;')
+        p= item.description
+        p= '默认面料：' + item.fabric
+        p(class='well')
+        if item.fabricPlus
+         each el in item.fabricPlus
+          label
+           input(type='radio' name='option' value='sweater')   
+           =el.name + ' + ' + el.price 
+       button(class='btn btn-primary' style='width:100%')下单
