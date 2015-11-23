@@ -21,7 +21,7 @@ block content
             for item in el.store.items
               if(i++<3)
                img(src=item.preview style='height:60px;margin:0 5px')
-            a(href='/store') 进入店铺
+            a(href='/store/'+el.wechat) 进入店铺
         div(class="btn-group btn-group-justified" role="group")
             div(class="btn-group" role="group")
               button(type="button" class="btn btn-default" id='seeMore') 更多衣服

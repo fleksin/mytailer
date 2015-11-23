@@ -14,19 +14,25 @@ block content
     button(class='btn btn-success' style='margin:0px auto 30px;display:block;width:50%' ) 查看订单
    a(href = '/upload')
     button(class='btn btn-info' style='margin:0px auto 30px;display:block;width:50%' ) +添加商品
- if items
+  if items
    for el in items
-    div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;')
+    div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;' data=el)
       div(class="panel-heading" style="background: rgba(255,255,255,.9)")
         h3(class="panel-title")= el.title
             span(style='float:right;color: rgba(77,0,255,0.54)')= '$ ' + el.price
       div(class='panel-body')
           a(href=el.img)
            img(src= el.preview style='max-width:100%;margin: 0 0 10px;')
-          p= el.description  
+          p= el.description 
+          a(class='btn btn-primary' href='/items/'+storename+'/'+el.uploadTime style='width:100%') 
+           if(private)
+            编辑
+           else 
+            下单
           if(private)
            a(href='/delete/'+el.uploadTime)
-            img(src='/images/trash.png' style='float:right;height:30px')        
+            img(src='/images/trash.png' style='float:right;height:30px')   
+          
  else
     div(class='panel' style='margin:0px auto')还没有任何商品摆出
   script(src='/javascripts/store.js')
