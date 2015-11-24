@@ -1,23 +1,31 @@
 extend layout
 
 block content
-  if item   
-    div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;')    
-     form 
+ script(src='/javascripts/item.js')
+ if item   
+  div(id='myCarousel' class="carousel slide" data-interval = 'false')
+   div(class="carousel-inner" role="listbox")
+    div(class='panel panel-default smooth-corner item active' style='margin:0px auto')    
       div(class="panel-heading" style="background: rgba(255,255,255,.9)")
-        h3(class="panel-title")= item.title           
+        h3(class="panel-title" id='title')= item.title           
       div(class='panel-body')
         a(href=item.img)
           img(src= item.preview style='max-width:100%;margin: 0 0 10px;')
         p(class='well')= item.description
-        p= '默认面料：' + item.fabric
+        p(id='fabric')= '默认面料：' + item.fabric
         p 可选面料
         p(class='well')
          if item.fabricPlus
           each el in item.fabricPlus
            label
-            input(type='radio' name='option' value='sweater')   
+            input(type='radio' name='fabric' value='sweater' price=el.price)   
             =el.name + ' + ' + el.price 
-        p(style='text-align:center')= '￥ '+item.price
-       button(type='submit' class='btn btn-primary' style='width:100%')下单
-  script(src='/javascripts/item.js')
+        p(style='text-align:center' id='price' price=item.price)= '￥' + item.price
+       button(class='btn btn-primary' href='#myCarousel' data-slide='next' style='width:100%')下单
+    div(class='panel panel-default smooth-corner item' style='margin:0px auto')
+     div(class="panel-heading" style="background: rgba(255,255,255,.9)")
+      h3(class="panel-title" id='title') test    
+     div(class='panel-body')
+        a(href=item.img)
+          img(src= item.preview style='max-width:100%;margin: 0 0 10px;')
+      span(class='btn btn-primary' href='#myCarousel' data-slide='prev' style='width:100%')返回
