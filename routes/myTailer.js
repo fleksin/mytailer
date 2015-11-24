@@ -289,4 +289,13 @@ router.get('/items/:name/:uploadTime', function(req, res){
 	});	
 })
 
+router.post('/placeOrder', function(req, res){
+	var order = {};
+	for(var key in req.body){
+		order[key] = req.body[key];
+	}
+	console.log(order);
+	res.end();
+});
+
 module.exports = router;

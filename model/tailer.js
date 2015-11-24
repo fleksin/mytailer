@@ -131,7 +131,7 @@ Tailer.getItem = function(query, callback){
 	var uploadTime= parseFloat(query.uploadTime);
 	db.collection('tailers').find({'store.name': query.storename}).toArray(function(err, users){
 		db.close();
-		console.log(users);		
+		//console.log(users);		
 		if(!users) {
 			callback(err,null);
 			return;
