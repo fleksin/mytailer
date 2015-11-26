@@ -1,8 +1,12 @@
-extend layout
+extend layout_Customer
 
 block content
  script(src='/javascripts/item.js')
  style.
+  form{
+    margin: 0 auto 10px;
+    max-width: 80%;
+  }
   form input{
     border:none;
     background: transparent;
@@ -20,10 +24,11 @@ block content
  if item   
   div(id='myCarousel' class="carousel slide" data-interval = 'false')
    div(class="carousel-inner" role="listbox")
-    div(class='panel panel-default smooth-corner item active' style='margin:0px auto')    
-      div(class="panel-heading" style="background: rgba(255,255,255,.9)")
+    div(class='item active')
+     div(class='panel panel-default smooth-corner' style='margin:0px auto')    
+       div(class="panel-heading" style="background: rgba(255,255,255,.9)")
         h3(class="panel-title" id='title')= item.title           
-      div(class='panel-body')
+       div(class='panel-body')
         a(href=item.img)
           img(src= item.preview style='max-width:100%;margin: 0 0 10px;')
         p(class='well')= item.description
@@ -37,13 +42,14 @@ block content
             =el.name + ' + ' + el.price 
         p(style='text-align:center' id='price' price=item.price)= '￥' + item.price
        button(id='next' class='btn btn-primary' href='#myCarousel' data-slide='next' style='width:100%')下单
-    div(class='panel panel-default smooth-corner item' style='margin:0px auto')
-     div(class="panel-heading" style="background: rgba(255,255,255,.9)")
-      h3(class="panel-title" id='title') 订单详情    
-     div(class='panel-body')
+    div(class='item')
+     div(class='panel panel-default smooth-corner' style='margin:0px auto')
+      div(class="panel-heading" style="background: rgba(255,255,255,.9)")
+       h3(class="panel-title" id='title') 订单详情    
+      div(class='panel-body')
         a(href=item.img)
           img(src= item.preview style='max-width:100%;margin: 0 0 10px;')
-      form(method='post' action='/placeOrder')
+       form(method='post' action='/placeOrder' class='well')
         input(pos='left' name='title' value=item.title)
         input(pos='right' name='price' value=item.price)
         br
@@ -56,5 +62,5 @@ block content
         input(pos='right' name='total' value=item.price)    
         br
         button(type='submit' class='btn btn-success btn-block' ) 确认并付款    
-      span(class='btn btn-primary' href='#myCarousel' data-slide='prev' style='width:100%')返回
+       span(class='btn btn-primary' href='#myCarousel' data-slide='prev' style='width:100%')返回
      

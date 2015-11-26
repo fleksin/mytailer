@@ -1,0 +1,45 @@
+extends layout_Customer
+
+block content
+  div(class="logo-customerEntry")
+    img(src='/images/sample.jpg' alt="logo" class="img-rounded" height="100%" width="100%")  
+  div(class="3Btn-customerEntry")
+    p
+        a(href="/myCustomer/chooseType" class="entryBtn btn btn-primary btn-lg" role="button") 逛裁缝铺
+        button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal1") 说明
+        //Modal
+        div(class="modal fade" id="myModal1" role="dialog")
+            div(class="modal-dialog")
+            //Modal content
+            div(class="modal-content")
+                div(class="modal-header")
+                    button(type="button" class="close" data-dismiss="modal")&times
+                    h4(class="modal-title")裁缝铺
+                div(class="modal-body")
+                    p   您可以从各式各样的裁缝铺中挑选您中意的款式，然后通过沟通，裁缝可以根据您的需求，做出最大限度的修改，定制出为您量身打造的服装
+    p
+        button(class="entryBtn btn btn-primary btn-lg" disabled="disabled") 逛设计师店
+        button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal2") 说明
+        //Modal
+        div(class="modal fade" id="myModal2" role="dialog")
+            div(class="modal-dialog")
+            //Modal content
+            div(class="modal-content")
+                div(class="modal-header")
+                    button(type="button" class="close" data-dismiss="modal")&times
+                    h4(class="modal-title")设计师店（功能开发中）
+                div(class="modal-body")
+                    p   您可以浏览到各个出色设计师晒出的特制款式服装，但是设计师款的服装可以接受的修改选项相对较少
+    p
+        button(class="entryBtn btn btn-primary btn-lg" disabled="disabled") 我有设计图
+        button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal3") 说明
+        //Modal
+        div(class="modal fade" id="myModal3" role="dialog")
+            div(class="modal-dialog")
+            //Modal content
+            div(class="modal-content")
+                div(class="modal-header")
+                    button(type="button" class="close" data-dismiss="modal")&times
+                    h4(class="modal-title")我有设计图（功能开发中）
+                div(class="modal-body")
+                    p   上传自己精心设计或者心怡的款式图片，我们将为您寻找出色的裁缝将其变为现实

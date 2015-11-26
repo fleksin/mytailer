@@ -129,7 +129,7 @@ Tailer.getItem = function(query, callback){
 	var db = mongoskin.db(url, {native_parser: true});
 	console.dir(query);
 	var uploadTime= parseFloat(query.uploadTime);
-	db.collection('tailers').find({'store.name': query.storename}).toArray(function(err, users){
+	db.collection('tailers').find({wechat: query.name}).toArray(function(err, users){
 		db.close();
 		//console.log(users);		
 		if(!users) {

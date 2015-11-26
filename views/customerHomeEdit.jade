@@ -1,0 +1,70 @@
+extends layout_Customer
+
+block content
+    if Customer
+        form(method='post' action='/myCustomer/customerHomeEdit' class="form-customerHome" )
+            div
+                h3  基本信息
+                    button(class="btn btn-success edit" type="submit") 保存
+            table(class="table")
+                tbody
+                    tr
+                        td(width="30%")
+                            h4(class="customerInfo-label") 邮箱
+                        td(width="70%")
+                            button(name="email" class="btn btn-default" type="button" disabled="disabled" )= Customer.email
+                    tr
+                        td(width="30%")
+                            h4(class="customerInfo-label") 用户名
+                        td(width="70%")
+                            button(name="id" class="btn btn-default" type="button" disabled="disabled")= Customer.id
+                    tr
+                        td(width="30%")
+                            h4(class="customerInfo-label") 微信
+                        td(width="70%")
+                            if Customer.weChat                            
+                                input(name="weChat" type="text" class="form-control" id="customerEditWeChat" value= Customer.weChat)= Customer.weChat
+                            else
+                                input(name="weChat" type="text" class="form-control" id="customerEditWeChat" placeholder="输入微信")
+                    tr
+                        td(width="30%")
+                            h4(class="customerInfo-label") 住宅
+                        td(width="70%")
+                            if Customer.apt                            
+                                input(name="apt" type="text" class="form-control" id="customerEditAddress" value= Customer.apt)= Customer.apt
+                            else
+                                input(name="apt" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX大厦XX幢XX室")
+                    tr
+                        td(width="30%")
+                            h4(class="customerInfo-label") 街道
+                        td(width="70%")
+                            if Customer.street                            
+                                input(name="street" type="text" class="form-control" id="customerEditAddress" value= Customer.street)= Customer.street
+                            else
+                                input(name="street" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX街道")
+                    tr
+                        td(width="30%")
+                            h4(class="customerInfo-label") 市县
+                        td(width="70%")
+                            if Customer.city                            
+                                input(name="city" type="text" class="form-control" id="customerEditAddress" value= Customer.city)= Customer.city
+                            else
+                                input(name="city" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX市XX县")
+                    tr
+                        td(width="30%")
+                            h4(class="customerInfo-label") 省
+                        td(width="70%")
+                            if Customer.state                            
+                                input(name="state" type="text" class="form-control" id="customerEditAddress" value= Customer.state)= Customer.state
+                            else
+                                input(name="state" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX市XX县")
+                    tr
+                        td(width="30%")
+                            h4(class="customerInfo-label") 国家
+                        td(width="70%")
+                            if Customer.country                            
+                                input(name="country" type="text" class="form-control" id="customerEditAddress" value= Customer.country)= Customer.country
+                            else
+                                input(name="country" type="text" class="form-control" id="customerEditAddress" placeholder="例：中国")								
+    else
+        p Oops cannot find anything, Try again!

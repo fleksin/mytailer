@@ -1,0 +1,72 @@
+extends layout_Customer
+
+block content
+    if Customer
+        form(class="form-customerHome" )
+            div
+                h3  基本信息
+                    a(class="btn btn-success edit" href="/myCustomer/customerHomeEdit" role="button") 编辑
+                    &nbsp&nbsp&nbsp
+                    button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#basicInfo" aria-expanded="false" aria-controls="basicInfo") 展开
+            div(class="collapse" id="basicInfo")
+                table(class="table")
+                    tbody
+                        tr
+                            td(width="30%")
+                                h4(class="customerInfo-label") 邮箱
+                            td(width="70%")
+                                button(name="email" class="btn btn-primary" type="button")= Customer.email
+                        tr
+                            td(width="30%")
+                                h4(class="customerInfo-label") 用户名
+                            td(width="70%" valign="middle")
+                                button(name="id" class="btn btn-primary" type="button")= Customer.id
+                        tr
+                            td(width="30%")
+                                h4(name="weChat" class="customerInfo-label") 微信
+                            td(width="70%")
+                                if Customer.weChat                            
+                                    button(name="weChat" class="btn btn-primary" type="button")= Customer.weChat
+                        tr
+                            td(width="30%")
+                                h4(name="apt" class="customerInfo-label") 住宅
+                            td(width="70%")
+                                if Customer.apt                            
+                                    button(name="apt" class="btn btn-primary" type="button")= Customer.apt
+                        tr
+                            td(width="30%")
+                                h4(name="street" class="customerInfo-label") 街道
+                            td(width="70%")
+                                if Customer.street                            
+                                    button(name="street" class="btn btn-primary" type="button")= Customer.street
+                        tr
+                            td(width="30%")
+                                h4(name="city" class="customerInfo-label") 市县
+                            td(width="70%")
+                                if Customer.city                            
+                                    button(name="city" class="btn btn-primary" type="button")= Customer.city
+                        tr
+                            td(width="30%")
+                                h4(name="state" class="customerInfo-label") 省
+                            td(width="70%")
+                                if Customer.state                            
+                                    button(name="state" class="btn btn-primary" type="button")= Customer.state
+                        tr
+                            td(width="30%")
+                                h4(name="country" class="customerInfo-label") 国家
+                            td(width="70%")
+                                if Customer.country                            
+                                    button(name="country" class="btn btn-primary" type="button")= Customer.country
+        form(class="form-customerHome" )
+            div
+                h3  订单信息
+                    &nbsp&nbsp
+                    button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#billInfo" aria-expanded="false" aria-controls="billInfo") 展开
+            div(class="collapse" id="billInfo")
+                div(id="billList" class="container")
+
+        script.
+            document.getElementById("billList").innerHTML = "haha" + Customer.weChat;
+            
+    else
+        p Oops cannot find anything, Try again!
