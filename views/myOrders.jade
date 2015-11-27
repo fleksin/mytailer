@@ -15,9 +15,20 @@ block content
       div(id='detail' class='panel smooth-corner' style='margin:0 auto; width:80%')
        div(class='panel-body')
         h4 订单来自：
-          h4(id='detail-buyer')
+        h4(id='detail-buyer')
         p 下单日期：
-          p(id='detail-createDate')
+        p(id='detail-createDate')
+        div(class='well')
+          p 物品名称:
+          p(id='detail-title')
+          p 已选面料：
+          p(id='detail-fabric')
+          p 原价
+          p(id='detail-price')
+          p 面料价格
+          p(id='detail-plus')
+          p 总价
+          p(id='detail-total')
         span(href="#myCarousel" data-slide='prev' class="glyphicon glyphicon-chevron-left")
       button(class='btn btn-info' onclick='reload()' style='margin:10px auto;display:block') 完成         
   script.
@@ -26,6 +37,11 @@ block content
            var data = $.parseJSON($(this).attr('data'));
            $('#detail-buyer').html(data.buyer);
            $('#detail-createDate').html(data.createDate);
+           $('#detail-title').html(data.title);
+           $('#detail-fabric').html(data.fabric);
+           $('#detail-price').html(data.price);
+           $('#detail-plus').html(data.pricePlus);
+           $('#detail-total').html(data.total);
        });
    });   
    function reload(){location.reload()};
