@@ -1,0 +1,117 @@
+doctype html
+html
+  head
+    title= 'MyTailer'
+    link(rel='stylesheet', href='/stylesheets/bootstrap/css/bootstrap.min.css')
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    script(src='/javascripts/jquery-2.1.4.js')
+    style.
+       .panel{
+          max-width:600px;
+          background-color: rgba(255,255,255,0.7);
+       }
+       .alert{
+          max-width: 70%;
+          margin: 0px auto 10px auto;
+        }
+       body{
+         background:url('/images/fabric.jpg');
+         background-size: contain;
+       }
+       .form-signin{
+         background: rgba(235,235,235,0.7);		 
+         border-radius: 10px 10px 10px 10px;
+         -moz-border-radius: 10px 10px 10px 10px;
+         -webkit-border-radius: 10px 10px 10px 10px;
+         border: 0px solid #000000;
+         max-width: 330px; 
+         margin:0px auto; 
+         padding: 15px
+       }
+       .form-customerHome{
+         background: rgba(235,235,235,0.7);		 
+         border-radius: 10px 10px 10px 10px;
+         -moz-border-radius: 10px 10px 10px 10px;
+         -webkit-border-radius: 10px 10px 10px 10px;
+         border: 0px solid #000000;
+         max-width: 330px; 
+         margin:0px auto; 
+         padding: 15px
+       }
+       .logo-customerEntry{
+         max-width: 330px; 
+         margin:0px auto 20px auto;
+       }
+       .3Btn-customerEntry{
+         max-width: 330px; 
+         margin:0px auto; 
+         padding: 15px
+       }
+       .customerInfo-label{
+            padding-right: 5px;
+        }
+       .customerForm{
+         max-width: 330px; 
+         margin:0px auto;
+       }	   
+       @media only screen  
+          and (max-device-width: 736px) { 
+               .panel{
+                  max-width: 80%;
+            }
+       }
+       .smooth-corner{
+           border-radius: 10px 10px 10px 10px; 
+           -moz-border-radius: 10px 10px 10px 10px;
+           -webkit-border-radius: 10px 10px 10px 10px;
+           border: 0px solid #000000;
+        }
+       .entryBtn{
+            width: 80%;
+        }
+       .entryExp{
+            width: 20%;
+        }
+        th{
+            text-align: center;
+        }
+       .typeExample{
+            margin: 0px 5%;
+        }
+       .edit{
+            margin-left: 20px;
+        }
+       
+  body
+    nav(class='navbar navbar-inverse navbar-fixed-top')
+      .container
+        .navbar-header
+          button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar")
+            span(class="sr-only")= 'Toggle navigation'
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a(class="navbar-brand" href="/myCustomer") My Customer
+        div(id="navbar" class="collapse navbar-collapse")
+          ul(class="nav navbar-nav")
+            li               
+               if session&&session.customer
+                  a(href="/myCustomer/logout")= 'Log Out'
+               else 
+                  a(href="/myCustomer/login")= 'Log In/Sign Up'
+            li
+                a(href="/myCustomer/customerEntry")= 'Enter'			
+    .container
+     .starter-template(style='padding:40px 0px')
+   
+    if(session&&session.flash)	
+        if(session.flash.success)        
+           div(class='alert alert-success')= session.flash.success
+        else if(session.flash.error)
+           div(class='alert alert-danger')= session.flash.error
+        - session.flash = null
+    block content    
+    
+    footer 
+      //p= JSON.stringify(session)
+      script(src='/stylesheets/bootstrap/js/bootstrap.min.js')

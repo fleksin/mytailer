@@ -1,23 +1,66 @@
-extend layout
+extend layout_Customer
 
 block content
-  if item   
-    div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;')    
-     form 
-      div(class="panel-heading" style="background: rgba(255,255,255,.9)")
-        h3(class="panel-title")= item.title           
-      div(class='panel-body')
+ script(src='/javascripts/item.js')
+ style.
+  form{
+    margin: 0 auto 10px;
+    max-width: 80%;
+  }
+  form input{
+    border:none;
+    background: transparent;
+  }
+  input[pos='right']{
+    width:50%;
+    float:right;
+    text-align:right;
+  }
+  input[pos='left']{
+    width:50%;
+    float:left;
+    text-align:left;
+  }
+ if item   
+  div(id='myCarousel' class="carousel slide" data-interval = 'false')
+   div(class="carousel-inner" role="listbox")
+    div(class='item active')
+     div(class='panel panel-default smooth-corner' style='margin:0px auto')    
+       div(class="panel-heading" style="background: rgba(255,255,255,.9)")
+        h3(class="panel-title" id='title')= item.title           
+       div(class='panel-body')
         a(href=item.img)
           img(src= item.preview style='max-width:100%;margin: 0 0 10px;')
         p(class='well')= item.description
-        p= '默认面料：' + item.fabric
+        p(id='fabric')= '默认面料：' + item.fabric
         p 可选面料
         p(class='well')
          if item.fabricPlus
           each el in item.fabricPlus
            label
-            input(type='radio' name='option' value='sweater')   
+            input(type='radio' name='fabric' value=el.name price=el.price)   
             =el.name + ' + ' + el.price 
-        p(style='text-align:center')= '￥ '+item.price
-       button(type='submit' class='btn btn-primary' style='width:100%')下单
-  script(src='/javascripts/item.js')
+        p(style='text-align:center' id='price' price=item.price)= '￥' + item.price
+       button(id='next' class='btn btn-primary' href='#myCarousel' data-slide='next' style='width:100%')下单
+    div(class='item')
+     div(class='panel panel-default smooth-corner' style='margin:0px auto')
+      div(class="panel-heading" style="background: rgba(255,255,255,.9)")
+       h3(class="panel-title" id='title') 订单详情    
+      div(class='panel-body')
+        a(href=item.img)
+          img(src= item.preview style='max-width:100%;margin: 0 0 10px;')
+       form(method='post' action='/placeOrder' class='well')
+        input(pos='left' name='title' value=item.title)
+        input(pos='right' name='price' value=item.price)
+        br
+        //label(id='fabric')= item.fabric
+        input(pos='left' name='fabric' value=item.fabric)   
+        input(pos='right' name='pricePlus' value='0')
+        br
+        hr(style='border: 1px solid black;')
+        label 总价：
+        input(pos='right' name='total' value=item.price)    
+        br
+        button(type='submit' class='btn btn-success btn-block' ) 确认并付款    
+       span(class='btn btn-primary' href='#myCarousel' data-slide='prev' style='width:100%')返回
+     

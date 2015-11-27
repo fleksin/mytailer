@@ -181,14 +181,14 @@ router.get('/privateStore', function(req, res){
 	if(!req.session.user) {res.redirect('/login'); return;}
 	Tailer.get(req.session.user.wechat, function(err, userprofile){
 		req.session.user = userprofile[0];
-		res.render('store', {private:true});
+		res.render('privateStore', {private:true});
 	})
 });
 
 router.get('/store/:tailer', function(req, res){
 	var wechat = req.params.tailer;
 	Tailer.get(wechat, function(err, user){
-		res.render('store', {private:false, items: user[0].store.items, storename:user[0].store.name});
+		res.render('store', {private:false, items: user[0].store.items, wechat: user[0].wechat});
 	});
 	
 });
@@ -224,7 +224,7 @@ router.post('/reset',function(req,res){
 
 router.get('/cata/:catag',function(req, res) {		
 	var catag = req.params.catag;
-	user.getCatag(catag, function(err, stores){
+	Tailer.getCatag(catag, function(err, stores){
 		if(err) {
 			console.log('Error at myTailer/->item.get: '+err);
 		}	
@@ -277,16 +277,33 @@ router.post('/test', function(req, res){
 	res.send('success');
 });
 
-router.get('/items/:name/:uploadTime', function(req, res){
+router.get('/items/:name/:uploadTime', function(req, res){	
 	var name = req.params.name;
 	var uploadTime = req.params.uploadTime;
+	console.log('/items:')
+    console.log(name);
+	if(!req.session.customer){
+		req.session.dest = null;
+		req.session.dest = '/items/'+name+'/'+uploadTime;
+		res.redirect('/mycustomer/login');
+		return;
+	}
 	var query={
-		storename: name,
+		name: name,
 		uploadTime: uploadTime
 	}
 	Tailer.getItem(query, function(err, item){
 		res.render('item', {item: item});
 	});	
 })
+
+router.post('/placeOrder', function(req, res){
+	var order = {};
+	for(var key in req.body){
+		order[key] = req.body[key];
+	}
+	console.log(order);
+	res.end();
+});
 
 module.exports = router;

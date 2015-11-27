@@ -13,6 +13,7 @@ var multer = require('multer');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var myTailer = require('./routes/myTailer');
+var myCustomer = require('./routes/myCustomer');
 
 var app = express();
 
@@ -46,6 +47,7 @@ app.use(function(req,res,next){
 
 app.use('/', myTailer);
 app.use('/wechat', users);
+app.use('/mycustomer', myCustomer);
 
 
 // catch 404 and forward to error handler

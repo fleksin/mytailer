@@ -1,0 +1,32 @@
+extends layout_Customer
+
+block content
+  div(class="container logo-costumerEntry")
+    h4(style="font-weight: bold; text-align:center")   请选择您心怡的服装款式
+    table(class="table table-hover")
+        thead
+            tr
+                th   款式
+                th   样品
+        tbody
+            tr(onclick="location.href='/cata/suit'")
+                td(width="30%")
+                    img(src='/images/xizhuang.jpg' alt="logo" height="60px" width="100%")
+                td(width="70%")
+                    img(src='/images/xizhuang1.jpeg' alt="logo" height="60px" width="30%")
+                    img(class="typeExample" src='/images/xizhuang2.jpeg' alt="logo" height="60px" width="30%")
+                    img(src='/images/xizhuang3.jpg' alt="logo" height="60px" width="30%")
+            tr(onclick="location.href='/login'")
+                td(width="30%")
+                    img(src='/images/qipao.jpg' alt="logo" height="60px" width="100%")
+                td(width="70%")
+                    img(src='/images/qipao1.jpg' alt="logo" height="60px" width="30%")
+                    img(class="typeExample" src='/images/qipao.jpg' alt="logo" height="60px" width="30%")
+                    img(src='/images/qipao3.jpeg' alt="logo" height="60px" width="30%")
+            tr(onclick="location.href='/login'")
+                td(width="30%")
+                    img(src='/images/yangmaoshan.jpg' alt="logo" height="60px" width="100%")
+                td(width="70%")
+                    img(src='/images/yangmaoshan1.jpg' alt="logo" height="60px" width="30%")
+                    img(class="typeExample" src='/images/yangmaoshan2.jpg' alt="logo" height="60px" width="30%")
+                    img(src='/images/yangmaoshan3.jpg' alt="logo" height="60px" width="30%")					

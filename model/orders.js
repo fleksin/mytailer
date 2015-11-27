@@ -9,7 +9,7 @@ var Orders = function(order){
 
 Orders.getAll = function(callback){
 	var db = mongoskin.db(url, {native_parser: true});
-	db.collection('orders').find(query).toArray(function(err, users){
+	db.collection('orders').find({}).toArray(function(err, users){
 		db.close();
 		callback(err, users);		
 	});
