@@ -42,8 +42,7 @@ Tailer.pushItem = function push(wechat, item, callback){
 			db.close();
             callback();
 	   }
-	);
-	 
+	);	 
 }
 
 Tailer.deleteItem = function deleteItem(info, callback){
