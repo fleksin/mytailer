@@ -4,17 +4,14 @@ block content
   if data
    for el in data
     if el.store&&el.store.items
-     div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;')
+     div(class='panel smooth-corner' style='margin:0px auto 30px;')
        div(class="panel-heading" style="background: rgba(255,255,255,.9)")
          h3(class="panel-title")= el.store.name
             span(style='float:right;color: rgba(77,0,255,0.54)')
              a(href='/store/'+el.id)= el.id
        div(class='panel-body')
-         if(el.store.items)
-          img(src= el.store.items[0].img style='max-width:100%;margin: 0 0 10px;')
-          p(class='well')= el.store.description  
-         else 
-          p 裁缝还没有放出任何东西     
+         img(src= el.store.items[0].img style='max-width:100%;margin: 0 0 10px;')
+         p(class='well')= el.store.description  
          div(id='moreItem' style='display:none;max-height:30%')
           if(el.store.items)
             -var i = 0

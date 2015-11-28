@@ -1,0 +1,10 @@
+@media only screen  
+	and (max-device-width: 736px) { 
+	.product{
+		max-width: 80%;
+	}
+}
+
+.product{
+	
+}

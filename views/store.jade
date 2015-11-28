@@ -1,6 +1,7 @@
 extends layout_Customer
 
-block content    
+block content  
+ style(src='/stylesheets/store.css')  
  if(private) 
    - items = session.user.store.items
    form(id='user' class='panel smooth-corner' style='margin:0px auto 20px;')
@@ -16,13 +17,12 @@ block content
     button(class='btn btn-info' style='margin:0px auto 30px;display:block;width:50%' ) +添加商品
   if items
    for el in items
-    div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;' data=el)
-      div(class="panel-heading" style="background: rgba(255,255,255,.9)")
-        h3(class="panel-title")= el.title
-            span(style='float:right;color: rgba(77,0,255,0.54)')= '$ ' + el.price
+    div(class='panel smooth-corner' style='margin:0px auto 30px;' data=el)
       div(class='panel-body')
           a(href=el.img)
            img(src= el.preview style='max-width:100%;margin: 0 0 10px;')
+          h3(class="panel-title" style='font-weight: 900;margin:0 0 5px')= el.title
+           span(style='float:right;color: rgba(77,0,255,0.54)')= '$ ' + el.price
           p= el.description 
           a(class='btn btn-primary' href='/items/'+wechat+'/'+el.uploadTime style='width:100%') 
            if(private) 
