@@ -1,26 +1,13 @@
 extends layout_Customer
 
 block content  
- style(src='/stylesheets/store.css')  
- if(private) 
-   - items = session.user.store.items
-   form(id='user' class='panel smooth-corner' style='margin:0px auto 20px;')
-    button(class='btn btn-primary btn-xs' type = 'submit' style='display: none;float:right;margin:0 20px 10px') 保存
-    a(id='edit' class='glyphicon glyphicon-pencil' style='float:right')
-    lable 店铺名称:
-    input(id='name' name='name' style='text-align:center' class='form-control' readonly='true' placeholder='还没有店名，赶紧取一个' value=session.user.store.name)
-    lable 店铺描述:
-    input(id='description' name='description' style='text-align:center' class='form-control' readonly='true' placeholder='写点描述吧' value=session.user.store.description)
-   a(href='/myorders')
-    button(class='btn btn-success' style='margin:0px auto 30px;display:block;width:50%' ) 查看订单
-   a(href = '/upload')
-    button(class='btn btn-info' style='margin:0px auto 30px;display:block;width:50%' ) +添加商品
+  link(rel='stylesheet' href='/stylesheets/store.css')  
   if items
    for el in items
-    div(class='panel smooth-corner' style='margin:0px auto 30px;' data=el)
+    div(class='product smooth-corner' style='margin:0px auto 30px;' data=el)
+      a(href=el.img)
+        img(src= el.preview style='max-width:100%;margin: 10px 0 10px;')
       div(class='panel-body')
-          a(href=el.img)
-           img(src= el.preview style='max-width:100%;margin: 0 0 10px;')
           h3(class="panel-title" style='font-weight: 900;margin:0 0 5px')= el.title
            span(style='float:right;color: rgba(77,0,255,0.54)')= '$ ' + el.price
           p(style='word-wrap:break-word')= el.description 
@@ -32,9 +19,6 @@ block content
           if(private)
            a(href='/delete/'+el.uploadTime)
             img(src='/images/trash.png' style='float:right;height:30px')   
-          
- else
-    div(class='panel' style='margin:0px auto') 还没有任何商品摆出
   script(src='/javascripts/store.js')
  
    
