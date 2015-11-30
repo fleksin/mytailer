@@ -20,14 +20,14 @@ var upload = multer({storage: storage});
 var fs = require('fs');
 var util = require('util');
 var toolkit = require('../myModules/toolkit');
-
+var gm = require('gm');
 
 function checkFields(model) {
 	for(var key in model){
 		if(model[key] == ''){
 			console.log('field missing');
  			return false;
-                }
+	    }
 	}
 	return true;	
 };
@@ -158,18 +158,25 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 			fabric: req.body.fabric
 			};
 			
-		var canvasImg = req.body.canvasImg;
-		//console.log('the length of dataURL: ' + canvasImg.length);
-		var data = canvasImg.replace(/^data:image\/\w+;base64,/, "");
-		var buf = new Buffer(data, 'base64');
+		// var canvasImg = req.body.canvasImg;
+		// //console.log('the length of dataURL: ' + canvasImg.length);
+		// var data = canvasImg.replace(/^data:image\/\w+;base64,/, "");
+		// var buf = new Buffer(data, 'base64');
 		var preview = '/resize_'+Date.now() + '.png';
 		console.log(req.file.destination);
-		fs.writeFile(req.file.destination + preview, buf);		
+		// fs.writeFile(req.file.destination + preview, buf);	
+		gm('public/uploads/'+ req.session.user.id +'/'+ req.file.filename).resize(480)
+		  .write('public/uploads/'+ req.session.user.id +'/' + preview, function(err){
+			if(err) console.log(err);
+			else console.log('resize done!');
+		})
+
 		item.preview = '/uploads/'+ req.session.user.id + preview;
 		Tailer.pushItem(req.session.user.wechat,item, function(){
 			req.flash('success', 'Post done!');
 			res.redirect('/privateStore');
 		});
+		
 	}	
 	else{
 		req.flash('error', 'Post failed!');
@@ -178,7 +185,7 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 });
 
 router.get('/privateStore', function(req, res){
-	if(!req.session.user) {res.redirect('/login'); return;}
+	if(!req.session.user) {res.redirect('/loginM'); return;}
 	Tailer.get(req.session.user.wechat, function(err, userprofile){
 		req.session.user = userprofile[0];
 		res.render('privateStore', {private:true});
@@ -269,10 +276,15 @@ router.get('/myorders',function(req,res){
 	});
 })
 
-router.get('/test/:orderID', function(req, res){
-	Orders.getByID('zhaochiw194574959fleksin', function(err, order){
-		res.send(order);
+router.get('/test', function(req, res){
+	gm('public/uploads/fleksin/'+'itemImage-1448912537763.png').resize(480).write('public/uploads/fleksin/test.png',function(err){
+		if(err) {
+			console.log(err);
+			res.send(err);			
+		}
+		else res.end('done!');
 	});
+	
 });
 
 router.get('/items/:name/:uploadTime', function(req, res){	

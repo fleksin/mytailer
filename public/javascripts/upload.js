@@ -56,7 +56,7 @@ $(document).ready(function(){
 		var Form = this;
 		var options =[];
 		
-		$('button').attr('disable', true);
+		$('button').attr('disabled', true);
 		$('.options').each(function(key, one){
 			var name = $(this).find('#fabricPlus').val();
 			var price = $(this).find('#pricePlus').val();
