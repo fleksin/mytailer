@@ -4,8 +4,8 @@ block content
   
   form(class='panel' method ='post' action='/upload' enctype="multipart/form-data" style='position:relative')
       h3(class="panel-title") upload here
-      canvas(id='resize' style='max-width:100%;margin: 0 0 10px')
-      //img(id='uploadImg' style='max-width:100%;margin: 0 0 10px' )
+      //canvas(id='resize' style='max-width:100%;margin: 0 0 10px')
+      img(id='uploadImg' style='max-width:100%;margin: 0 0 10px' )
       input(id="myFileInput" type="file" accept="image/*;capture=camera" name='itemImage' required)
       span(style='float:right')
       label 名称
