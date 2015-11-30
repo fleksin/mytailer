@@ -269,12 +269,10 @@ router.get('/myorders',function(req,res){
 	});
 })
 
-router.post('/test', function(req, res){
-	var result = JSON.parse(req.body.fabricPlus);
-	console.dir(result);
-	console.dir(result.length);
-	console.log(result[0].name);
-	res.send('success');
+router.get('/test/:orderID', function(req, res){
+	Orders.getByID('zhaochiw194574959fleksin', function(err, order){
+		res.send(order);
+	});
 });
 
 router.get('/items/:name/:uploadTime', function(req, res){	

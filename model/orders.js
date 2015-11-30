@@ -23,6 +23,14 @@ Orders.getByWechat = function(wechat,callback){
 	});
 }
 
+Orders.getByID = function(ID, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('orders').find({orderID: ID}).toArray(function(err, orders){
+		db.close();
+		callback(err, orders);		
+	});
+}
+
 module.exports = Orders;
 
 

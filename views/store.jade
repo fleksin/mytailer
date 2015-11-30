@@ -23,7 +23,7 @@ block content
            img(src= el.preview style='max-width:100%;margin: 0 0 10px;')
           h3(class="panel-title" style='font-weight: 900;margin:0 0 5px')= el.title
            span(style='float:right;color: rgba(77,0,255,0.54)')= '$ ' + el.price
-          p= el.description 
+          p(style='word-wrap:break-word')= el.description 
           a(class='btn btn-primary' href='/items/'+wechat+'/'+el.uploadTime style='width:100%') 
            if(private) 
              编辑
