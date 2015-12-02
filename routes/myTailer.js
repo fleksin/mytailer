@@ -156,7 +156,8 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 			price: price,
 			fabricPlus:fabricPlus,
 			catag: req.body.catag,
-			fabric: req.body.fabric
+			fabric: req.body.fabric,
+			style: req.body.style
 			};
 			
 		// var canvasImg = req.body.canvasImg;
