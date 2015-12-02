@@ -17,7 +17,7 @@ $('form#final').submit(function(event){
 			$('#prompt').html(res.error).show();			
 		}
 		else{	
-			location.href='/';
+			location.href='/privateStore';
 		}
 	});
 });
