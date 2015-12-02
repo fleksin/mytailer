@@ -204,8 +204,16 @@ router.get('/delete/:uploadTime',function(req, res){
 	var uploadTime = req.params.uploadTime;
 	if(!req.session.user) {res.redirect('/login'); return}
 	//r items = vareq.sessions.user.items;
-	
+	Tailer.getItem({name:req.session.user.wechat, uploadTime: uploadTime},
+		function(err, item){
+			if(err) console.log(err);
+			fs.unlinkSync('public'+ item.img);
+			fs.unlinkSync('public'+ item.preview);
+		}
+	);
+
 	Tailer.deleteItem({wechat: req.session.user.wechat, uploadTime: uploadTime}, function(){
+		//fs.unlinkSync('/tmp/hello');
 		req.flash('success', 'Delete successfully');
 		res.redirect('/privateStore');
 	});
