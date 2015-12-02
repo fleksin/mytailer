@@ -20,14 +20,14 @@ var upload = multer({storage: storage});
 var fs = require('fs');
 var util = require('util');
 var toolkit = require('../myModules/toolkit');
-
+var gm = require('gm');
 
 function checkFields(model) {
 	for(var key in model){
 		if(model[key] == ''){
 			console.log('field missing');
  			return false;
-                }
+	    }
 	}
 	return true;	
 };
@@ -45,23 +45,23 @@ router.get('/',function(req, res) {
 router.post('/loginM', function(req,res,next){
 	if(!checkFields(req.body)){
 		req.flash('error', 'Please fill out the fields!');
-		res.redirect('/login');
+		res.redirect('/loginM');
 		return;
 	}
 	var md5 = crypto.createHash('md5');
 	var password = md5.update(req.body.pw).digest('base64');
 	
 	Tailer.get(req.body.wechat, function(err, user){
-		if(user){			
+		if(user.length>0){			
 			if(password == user[0].password){
 			   req.session.user = user[0];
 			   req.flash('success', 'Log in successfully');
-		  	   res.redirect('/');
+		  	   res.redirect('/privateStore');
 				
 			}
 			else{				
 			   req.flash('error', 'Invalid Password');
-			   res.redirect('/login');			
+			   res.redirect('/loginM');			
 			}
 			
 		}
@@ -136,12 +136,13 @@ router.get('/upload', function(req, res){
 
 router.post('/upload', upload.single('itemImage'),function(req, res, next){
 	if(!checkFields(req.body)){
-		req.flash('error', 'Please fill out the fields!');
-		res.redirect('/profile');
+		req.flash('error', '请填写所有信息！');
+		res.redirect('/upload');
 		return;
 	}
 	if(!req.session.user) {res.redirect('/login'); return;};
-	//console.log(util.inspect(req.body));
+	var fabricPlus = JSON.parse(req.body.fabricPlus);
+	var price = (parseFloat(req.body.price) * 1.2).toFixed(2);
 	if(req.file){ 
 		var item = {
 			title: req.body.title,
@@ -151,21 +152,31 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 			// ownerName: req.session.user.id,
 			// ownerEmail: req.session.user.email,
 			uploadTime: Date.now(),
-			price: req.body.price
+			price: price,
+			fabricPlus:fabricPlus,
+			catag: req.body.catag,
+			fabric: req.body.fabric
 			};
 			
-		var canvasImg = req.body.canvasImg;
-		//console.log('the length of dataURL: ' + canvasImg.length);
-		var data = canvasImg.replace(/^data:image\/\w+;base64,/, "");
-		var buf = new Buffer(data, 'base64');
+		// var canvasImg = req.body.canvasImg;
+		// //console.log('the length of dataURL: ' + canvasImg.length);
+		// var data = canvasImg.replace(/^data:image\/\w+;base64,/, "");
+		// var buf = new Buffer(data, 'base64');
 		var preview = '/resize_'+Date.now() + '.png';
-		//console.log(req.file.destination);
-		fs.writeFile(req.file.destination + preview, buf);		
+		console.log(req.file.destination);
+		// fs.writeFile(req.file.destination + preview, buf);	
+		gm('public/uploads/'+ req.session.user.id +'/'+ req.file.filename).resize(480)
+		  .write('public/uploads/'+ req.session.user.id +'/' + preview, function(err){
+			if(err) console.log(err);
+			else console.log('resize done!');
+		})
+
 		item.preview = '/uploads/'+ req.session.user.id + preview;
 		Tailer.pushItem(req.session.user.wechat,item, function(){
 			req.flash('success', 'Post done!');
 			res.redirect('/privateStore');
 		});
+		
 	}	
 	else{
 		req.flash('error', 'Post failed!');
@@ -174,30 +185,39 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 });
 
 router.get('/privateStore', function(req, res){
-	if(!req.session.user) {res.redirect('/login'); return;}
+	if(!req.session.user) {res.redirect('/loginM'); return;}
 	Tailer.get(req.session.user.wechat, function(err, userprofile){
 		req.session.user = userprofile[0];
-		res.render('store', {private:true});
+		res.render('privateStore', {private:true});
 	})
 });
 
 router.get('/store/:tailer', function(req, res){
 	var wechat = req.params.tailer;
 	Tailer.get(wechat, function(err, user){
-		console.log(user[0].store);
-		console.log(user[0].store.items);
-		res.render('store', {private:false, items: user[0].store.items});
+		res.render('store', {private:false, items: user[0].store.items, wechat: user[0].wechat});
 	});
+	
 });
 
 router.get('/delete/:uploadTime',function(req, res){
 	var uploadTime = req.params.uploadTime;
 	if(!req.session.user) {res.redirect('/login'); return}
 	//r items = vareq.sessions.user.items;
+	Tailer.getItem({name:req.session.user.wechat, uploadTime: uploadTime},
+		function(err, item){
+			if(err) console.log(err);
+			fs.unlinkSync('public'+ item.img);
+			fs.unlinkSync('public'+ item.preview);
+		}
+	);
+
+	Tailer.deleteItem({wechat: req.session.user.wechat, uploadTime: uploadTime}, function(){
+		//fs.unlinkSync('/tmp/hello');
+		req.flash('success', 'Delete successfully');
+		res.redirect('/privateStore');
+	});
 	
-	user.deleteItem({email: req.session.user.email, uploadTime: uploadTime}, null);
-	req.flash('success', 'Delete successfully');
-	res.redirect('/privateStore');
 });
 
 router.get('/reset',function(req,res){
@@ -219,7 +239,7 @@ router.post('/reset',function(req,res){
 
 router.get('/cata/:catag',function(req, res) {		
 	var catag = req.params.catag;
-	user.getCatag(catag, function(err, stores){
+	Tailer.getCatag(catag, function(err, stores){
 		if(err) {
 			console.log('Error at myTailer/->item.get: '+err);
 		}	
@@ -263,5 +283,46 @@ router.get('/myorders',function(req,res){
 		res.render('myOrders', {orders: orders});
 	});
 })
+
+router.get('/test', function(req, res){
+	gm('public/uploads/fleksin/'+'itemImage-1448912537763.png').resize(480).write('public/uploads/fleksin/test.png',function(err){
+		if(err) {
+			console.log(err);
+			res.send(err);			
+		}
+		else res.end('done!');
+	});
+	
+});
+
+router.get('/items/:name/:uploadTime', function(req, res){	
+	var name = req.params.name;
+	var uploadTime = req.params.uploadTime;
+	console.log('/items:')
+    console.log(name);
+	if(!req.session.customer){
+		req.session.dest = null;
+		req.session.dest = '/items/'+name+'/'+uploadTime;
+		res.redirect('/mycustomer/login');
+		return;
+	}
+	var query={
+		name: name,
+		uploadTime: uploadTime
+	}
+	Tailer.getItem(query, function(err, item){
+		res.render('item', {item: item});
+	});	
+})
+
+router.post('/placeOrder', function(req, res){
+	var order = {};
+	for(var key in req.body){
+		order[key] = req.body[key];
+	}
+	console.log(order);
+	res.end();
+});
+
 
 module.exports = router;

@@ -72,8 +72,9 @@ router.post('/loginM', function(req,res,next){
 	});	
 });
 
-router.get('/loginM', function(req, res, next){ 		
-	res.render('LoginM');
+router.get('/loginM', function(req, res, next){ 
+	if(req.session.user) res.redirect('/privateStore');		
+	else res.render('LoginM');
 });
 
 router.get('/signupM', function(req, res){
