@@ -160,7 +160,7 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 			fabricPlus:fabricPlus,
 			catag: req.body.catag,
 			fabric: req.body.fabric,
-			style: req.body.style
+			style: JSON.parse(req.body.style)
 			};
 			
 		// var canvasImg = req.body.canvasImg;

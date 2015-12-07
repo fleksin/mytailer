@@ -43,7 +43,7 @@ $(document).ready(function(){
 		$('.styleOpt').each(function(key, one){
 			var name = $(this).find('#optName').val();
 			var price = $(this).find('#optPrice').val();
-			options.push({'name':name, 'price':price});
+			styleOpt.push({'name':name, 'price':price});
 		});
 		$(Form).append("<input id='test' name='fabricPlus' value="
                  + JSON.stringify(options) +" style='display:none'>");
