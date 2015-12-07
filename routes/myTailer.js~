@@ -21,6 +21,9 @@ var fs = require('fs');
 var util = require('util');
 var toolkit = require('../myModules/toolkit');
 var gm = require('gm');
+var wechatAPI = require('wechat-api');
+var appid = 'wxaaa2eb5129f710a5';
+var appsecret = 'd15fb1721506a73cd77ca23e1060170a';
 
 function checkFields(model) {
 	for(var key in model){
@@ -72,8 +75,9 @@ router.post('/loginM', function(req,res,next){
 	});	
 });
 
-router.get('/loginM', function(req, res, next){ 		
-	res.render('LoginM');
+router.get('/loginM', function(req, res, next){ 
+	if(req.session.user) res.redirect('/privateStore');		
+	else res.render('LoginM');
 });
 
 router.get('/signupM', function(req, res){
@@ -155,7 +159,8 @@ router.post('/upload', upload.single('itemImage'),function(req, res, next){
 			price: price,
 			fabricPlus:fabricPlus,
 			catag: req.body.catag,
-			fabric: req.body.fabric
+			fabric: req.body.fabric,
+			style: req.body.style
 			};
 			
 		// var canvasImg = req.body.canvasImg;
@@ -276,6 +281,11 @@ router.post('/updateStore', function(req,res){
 });
 
 router.get('/myorders',function(req,res){
+	if(!req.session.user){
+		req.session.dest = '/myorders';
+		res.redirect('/loginM');
+		return;
+	}
 	var wechat = req.session.user.wechat;
 	//console.log(wechat);
 	Orders.getByWechat(wechat, function(err,orders){
@@ -285,14 +295,33 @@ router.get('/myorders',function(req,res){
 })
 
 router.get('/test', function(req, res){
-	gm('public/uploads/fleksin/'+'itemImage-1448912537763.png').resize(480).write('public/uploads/fleksin/test.png',function(err){
-		if(err) {
-			console.log(err);
-			res.send(err);			
+	var templateId = '9lZRf9WlDz9mgcChIna8fZDBfbSBZPKVlRAy0jY0Meo';
+	var url = 'http://thirdtry.cloudapp.net/myorders';
+	var data = {
+	   "first": {
+	     "value":"Dear tailer, you have a new order placed",
+	     "color":"#173177"
+	   },
+	   "OrderSn":{
+	     "value":"111111",
+	     "color":"#173177"
+	   },
+	   "OrderStatus": {
+	     "value":"The buyer has placed an order",
+	     "color":"#173177"
+	   },
+	   "remark":{
+	     "value":"let's try",
+	     "color":"#173177"
+	   }
+	};
+	var api = new wechatAPI(appid, appsecret);
+	api.sendTemplate('fleksin', templateId, url, data,   
+		function(err, result){
+			if(err) res.send(err);
+			else res.send(result);
 		}
-		else res.end('done!');
-	});
-	
+	);	
 });
 
 router.get('/items/:name/:uploadTime', function(req, res){	

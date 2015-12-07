@@ -10,7 +10,7 @@ block content
             span(style='float:right;color: rgba(77,0,255,0.54)')
              a(href='/store/'+el.id)= el.id
        div(class='panel-body')
-         img(src= el.store.items[0].img style='max-width:100%;margin: 0 0 10px;')
+         img(src= el.store.items[0].preview style='max-width:100%;margin: 0 0 10px;')
          p(class='well')= el.store.description  
          div(id='moreItem' style='display:none;max-height:30%')
           if(el.store.items)

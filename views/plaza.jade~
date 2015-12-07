@@ -1,17 +1,44 @@
-extends layout
+extends layout_Customer
 
 block content  
   if data
-    for el in data
-     div(class='panel panel-default smooth-corner' style='margin:0px auto 30px;')
+   for el in data
+    if el.store&&el.store.items
+     div(class='panel smooth-corner' style='margin:0px auto 30px;')
        div(class="panel-heading" style="background: rgba(255,255,255,.9)")
-         h3(class="panel-title")= el.title
-            span(style='float:right;color: rgba(77,0,255,0.54)')= el.ownerName
+         h3(class="panel-title")= el.store.name
+            span(style='float:right;color: rgba(77,0,255,0.54)')
+             a(href='/store/'+el.id)= el.id
        div(class='panel-body')
-         img(src= el.img style='max-width:100%;margin: 0 0 10px;')
-         p= el.description
-         if private
-             img(src='/images/trash.png' href = '/delete/'+el.uploadTime style='float:right;max-width:20px')           
+         img(src= el.store.items[0].img style='max-width:100%;margin: 0 0 10px;')
+         p(class='well')= el.store.description  
+         div(id='moreItem' style='display:none;max-height:30%')
+          if(el.store.items)
+            -var i = 0
+            for item in el.store.items
+              if(i++<3)
+               img(src=item.preview style='height:60px;margin:0 5px')
+            a(href='/store/'+el.wechat) 进入店铺
+        div(class="btn-group btn-group-justified" role="group")
+            div(class="btn-group" role="group")
+              button(type="button" class="btn btn-default" id='seeMore') 更多衣服
   else
     p Oops cannot find anything, Try again!
-
+  script. //(src='/javascripts/plaza.js')
+   var $panel = $('.panel');
+    $panel.each(function(index,el){
+      $(el).find('#seeMore').click(function(){
+       var $moreItem = $(el).find('#moreItem');
+        if($moreItem.is(':hidden')){
+          $moreItem.slideDown(200,function(){
+              $(this).css('display','flex');
+          });
+          $(this).text('隐藏更多');
+        }
+        else{
+          $moreItem.slideUp(200);
+          $(this).text('更多衣服');
+        }
+      })
+   });
+ 
