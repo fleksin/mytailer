@@ -328,13 +328,7 @@ router.get('/items/:name/:uploadTime', function(req, res){
 	var name = req.params.name;
 	var uploadTime = req.params.uploadTime;
 	console.log('/items:')
-    console.log(name);
-	if(!req.session.customer){
-		req.session.dest = null;
-		req.session.dest = '/items/'+name+'/'+uploadTime;
-		res.redirect('/mycustomer/login');
-		return;
-	}
+    console.log(name);	
 	var query={
 		name: name,
 		uploadTime: uploadTime
@@ -345,6 +339,14 @@ router.get('/items/:name/:uploadTime', function(req, res){
 })
 
 router.post('/placeOrder', function(req, res){
+	var name = req.params.name;
+	var uploadTime = req.params.uploadTime;
+	if(!req.session.customer){
+		req.session.dest = null;
+		req.session.dest = '/placeOrder';
+		res.redirect('/mycustomer/login');
+		return;
+	}
 	var order = {};
 	for(var key in req.body){
 		order[key] = req.body[key];

@@ -1,0 +1,25 @@
+@media only screen 
+	and (max-device-width: 736px) { 
+	.product, 
+	.store{
+		max-width: 96%;
+	}
+}
+
+@media only screen  
+	and (min-device-width: 736px){
+	.product,
+	.store{
+		max-width:600px;
+		background-color: rgba(255,255,255,0.7);
+	}
+}
+
+.product,
+.store{
+	background-color: rgba(255,255,255,0.7);
+}
+
+div.starter-template{
+	padding: 28px 0;
+}

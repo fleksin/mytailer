@@ -1,12 +1,12 @@
 extends layout_Customer
 
 block content  
-  link(rel='stylesheet' href='/stylesheets/store.css')  
+  link(rel='stylesheet' href='/stylesheets/seller/style.css')  
   if items
    for el in items
-    div(class='product smooth-corner' style='margin:0px auto 30px;' data=el)
+    div(class='product' style='margin:0px auto 5px;padding:2px' data=el)
       a(href=el.img)
-        img(src= el.preview style='max-width:100%;margin: 10px 0 10px;')
+        img(src= el.preview style='max-width:100%;margin:5px auto 2px;')
       div(class='panel-body')
           h3(class="panel-title" style='font-weight: 900;margin:0 0 5px')= el.title
            span(style='float:right;color: rgba(77,0,255,0.54)')= '$ ' + el.price
@@ -20,5 +20,7 @@ block content
            a(href='/delete/'+el.uploadTime)
             img(src='/images/trash.png' style='float:right;height:30px')   
   script(src='/javascripts/store.js')
+  script(src='/javascripts/seller/fixLayout.js')
+  
  
    
