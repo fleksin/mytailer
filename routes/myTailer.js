@@ -24,6 +24,12 @@ var gm = require('gm');
 var wechatAPI = require('wechat-api');
 var appid = 'wxaaa2eb5129f710a5';
 var appsecret = 'd15fb1721506a73cd77ca23e1060170a';
+var paypal = require('paypal-rest-sdk');
+paypal.configure({
+	'mode': 'sandbox',
+	'client_id': 'AeSxKOP_HokaYoGNm3PyxJ9oY6RcHEPq0pVbhSEtJk43t_sAF9WfgCoFPWGsuZMEF4OGgd2BgLnzwgBu',
+	'client_secret': 'EIuD8v62A381GjGmDe4qitKqf3uXnFDn4QWk1IwY_cdhnrtxAmlIsn81uPjPU9JKxoa92QNymBgZ8CUW'
+});
 
 function checkFields(model) {
 	for(var key in model){
@@ -294,7 +300,7 @@ router.get('/myorders',function(req,res){
 	});
 })
 
-router.get('/test', function(req, res){
+router.get('/testTem', function(req, res){
 	var templateId = '9lZRf9WlDz9mgcChIna8fZDBfbSBZPKVlRAy0jY0Meo';
 	var url = 'http://thirdtry.cloudapp.net/myorders';
 	var data = {
@@ -355,5 +361,72 @@ router.post('/placeOrder', function(req, res){
 	res.end();
 });
 
+router.get('/testPay', function(req, res){
+	var create_payment_json = {
+    "intent": "authorize",
+    "payer": {
+        "payment_method": "paypal"
+    },
+    "redirect_urls": {
+        "return_url": "http://return.url",
+        "cancel_url": "http://cancel.url"
+    },
+    "transactions": [{
+        "item_list": {
+            "items": [{
+                "name": "item",
+                "sku": "item",
+                "price": "1.00",
+                "currency": "USD",
+                "quantity": 1
+            }]
+        },
+        "amount": {
+            "currency": "USD",
+            "total": "1.00"
+        },
+        "description": "This is the payment description."
+    }]
+};
 
+var paymentId;
+
+
+paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+        console.log(error.response);
+        throw error;
+    } else {
+        for (var index = 0; index < payment.links.length; index++) {
+        //Redirect user to this endpoint for redirect url
+            if (payment.links[index].rel === 'approval_url') {
+                console.log(payment.links[index].href);
+            }
+        }
+        console.log(payment);
+		paymentId = payment.id;
+    }
+});
+
+// var execute_payment_json = {
+    // "payer_id": "Appended to redirect url",
+    // "transactions": [{
+        // "amount": {
+            // "currency": "USD",
+            // "total": "1.00"
+        // }
+    // }]
+// };
+
+
+// paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+    // if (error) {
+        // console.log(error.response);
+        // throw error;
+    // } else {
+        // console.log("Get Payment Response");
+        // console.log(JSON.stringify(payment));
+    // }
+// });
+});
 module.exports = router;
