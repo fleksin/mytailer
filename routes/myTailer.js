@@ -405,6 +405,7 @@ paypal.payment.create(create_payment_json, function (error, payment) {
         }
         console.log(payment);
 		paymentId = payment.id;
+		res.redirect(payment[1].href);
     }
 });
 
@@ -429,4 +430,9 @@ paypal.payment.create(create_payment_json, function (error, payment) {
     // }
 // });
 });
+
+router.get('/returnUrl', function(req, res){
+	res.send(req.query.paymentId);
+});
+
 module.exports = router;
