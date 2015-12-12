@@ -1,48 +1,50 @@
 extends layout
 
 block content
- form(class='panel' method ='post' action='/upload' enctype="multipart/form-data")
+  
+  form(class='panel' method ='post' action='/upload' enctype="multipart/form-data" style='position:relative')
       h3(class="panel-title") upload here
-      canvas(id='resize' style='max-width:100%;margin: 0 0 10px')
-      //img(id='uploadImg' style='max-width:100%;margin: 0 0 10px' )
+      //canvas(id='resize' style='max-width:100%;margin: 0 0 10px')
+      img(id='uploadImg' style='max-width:100%;margin: 0 0 10px' )
       input(id="myFileInput" type="file" accept="image/*;capture=camera" name='itemImage' required)
       span(style='float:right')
-      label name
-      input(name='title' class="form-control" placeholder="set a name for you item" required)
-      label description
-      input(name='description' class="form-control" placeholder="make your item appealing" required)
-      button(class="btn btn-lg btn-primary btn-block" type="submit") submit
-  script.
-   document.getElementById('myFileInput').addEventListener('change',function(){
-      console.log('file info');
-      var reader = new FileReader();
-      reader.onload = function(e){
-        //document.getElementById('uploadImg').src = e.target.result;
-        var img = new Image;
-	img.src = e.target.result;
-        var canvas = document.getElementById('resize');
-        var MAX_WIDTH = 800;
-        var MAX_HEIGHT = 600;
-        var width = img.width;
-        var height = img.height;
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-             height *= MAX_WIDTH / width;
-             width = MAX_WIDTH;
-          }
-        } else {
-          if (height > MAX_HEIGHT) {
-             width *= MAX_HEIGHT / height;
-             height = MAX_HEIGHT;
-          }
-        } 
-        canvas.width = width;
-        canvas.height = height;
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, height); 
-        localStorage.setItem('resizedImg', canvas.toDataURL('image/png'));
-      };
-      reader.readAsDataURL(this.files[0]);
-      console.dir(this.files[0]);
-   });
+      label 名称
+      input(id='title' name='title' class="form-control" placeholder="set a name for you item" required)
+      label 描述
+      input(id='description' name='description' class="form-control" placeholder="make your item appealing" required)
+      label(class='price') 价格
+      input(id='price' name='price' class="form-control" placeholder="定一个价格" required)      
+      label(class='form-control')
+        span(style='float:right') +原价的20%
+        span(style='float:left' id='charge')
+      span(id='total' style='float:right')
+      label 总价 =        
+      br
+      label 商品类别
+      br
+      label
+       input(type='radio' name='catag' value='sweater')   
+       羊毛衫
+      label
+       input(type='radio' name='catag' value='suit')   
+       西装
+      label
+       input(type='radio' name='catag' value='chaongsam')   
+       旗袍
+      br 
+      label 默认面料
+      input(id='fabric' name='fabric' class="form-control" placeholder="请输入默认的面料名称" required) 
+      span(class='glyphicon glyphicon-plus' id='addParam' style='float:right')
+      label 可选面料
+      label(style='color:red' id='error')
+      div(class='parameters')
+      span(class='glyphicon glyphicon-plus' id='addstyle' style='float:right')
+      label 其他选项
+      div(class='styles')
+      div(id='hint' style='color:red')
+      button(class="btn btn-lg btn-primary btn-block" type="submit" style='margin:20px auto 10px') 上传
+      //div(class='panel smooth-corner' style='width:100%;height:100%;top:0;left:0; position:absolute')
+      p(style='text-align:center;display:none' id='uploading')正在上传，请不要刷新页面
+  script(src='/javascripts/upload.js')
+   
    

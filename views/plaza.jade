@@ -6,23 +6,17 @@ block content
    for el in data
     if el.store&&el.store.items
      -var link = "window.location.href='/store/" + el.wechat + "'"
-     div(class='store' style='margin:0px auto 30px;' onclick=link) 
-       //div(class="panel-heading" style="background: rgba(255,255,255,.9)")
-         //h3(class="panel-title")= el.store.name
-           //span(style='float:right;color: rgba(77,0,255,0.54)')
-            // a(href='/store/'+el.id)= el.id
-       div(style='padding: 2px')
-         img(src= el.store.items[0].preview style='max-width:100%;margin:0 auto 2px;')
+     div(class='store' onclick=link)
+       div(style='padding:2%;display:flex')
+         img(src= el.store.items[0].preview style='max-width:70%;height:auto;margin:0;')
          //p(class='well')= el.store.description  
-         div(id='moreItem' style='display:flex;max-height:30%')
+         div(id='moreItem' style='display:flex;max-width:30%;flex-direction:column;margin-left:2%')
           if(el.store.items)
             -var i = 0
             for item in el.store.items
               if(i++<3)
-               img(src=item.preview style='height:60px;margin:0 0px 2px')
-        div(class="btn-group btn-group-justified" role="group")
-            div(class="btn-group" role="group")
-              button(type="button" class="btn btn-default" id='seeMore')= el.store.name
+               img(src=item.preview style='width:100%;margin:0 0px 2px')
+        div(class="float-bottom")= el.store.name
   else
     p Oops cannot find anything, Try again!
   script(src='/javascripts/seller/fixLayout.js')

@@ -1,8 +1,15 @@
 @media only screen 
 	and (max-device-width: 736px) { 
-	.product, 
+	.fullsize,	
 	.store{
-		max-width: 96%;
+		max-width: 100%;
+		margin:0px auto 5px;
+		padding:1%;
+	}
+	.product{
+		width:48%;
+		margin:1%;
+		padding:0.5%;
 	}
 }
 
@@ -12,14 +19,40 @@
 	.store{
 		max-width:600px;
 		background-color: rgba(255,255,255,0.7);
+		margin:0px auto 5px;
+		padding:2%;
 	}
 }
 
 .product,
 .store{
 	background-color: rgba(255,255,255,0.7);
+	position:relative;
+}
+
+.product p,
+.store p{
+	margin:0px;
 }
 
 div.starter-template{
 	padding: 28px 0;
 }
+
+.float-bottom{
+	background:rgba(238,238,238,0.7);
+	position: absolute;
+	text-align: center;
+	width:100%;
+	font-size:200%;
+	bottom: 0px;
+}
+
+/*.carousel img{*/
+/*	max-height:250px;*/
+/*	width: 100%;*/
+/*}*/
+
+/*.carousel {*/
+/*	margin-bottom: 50px;*/
+/*}*/

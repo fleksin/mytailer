@@ -66,6 +66,7 @@ Tailer.get = function(username, callback){
 		query.wechat = username;
 	}
 	db.collection('tailers').find(query).toArray(function(err, users){
+		if(err) console.log(err);
 		db.close();
 		if(!users) {
 			callback(err,null);

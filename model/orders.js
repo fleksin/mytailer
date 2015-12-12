@@ -24,10 +24,27 @@ Orders.getByWechat = function(wechat,callback){
 }
 
 Orders.getByID = function(ID, callback){
-	var db = mongoskin.db(url, {native_parser: true});
+	var db = mongoskin.db(url, {native_parser: true});o
 	db.collection('orders').find({orderID: ID}).toArray(function(err, orders){
 		db.close();
 		callback(err, orders);		
+	});
+}
+
+Orders.create = function(order, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('orders').insert(order).toArray(function(err, orders){
+		db.close();
+		//callback(err, orders);		
+	});
+}
+
+Orders.update = function(query, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('orders').update({orderID:query.orderID}, {$set:{status:query.status}}, 
+		function(err, result){
+			db.close();
+			callback(err, result);		
 	});
 }
 

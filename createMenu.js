@@ -48,7 +48,7 @@ var templateId = '9lZRf9WlDz9mgcChIna8fZDBfbSBZPKVlRAy0jY0Meo';
 	   }
 	};
 	//var api = new wechatAPI(appid, appsecret);
-	api.sendTemplate('OPENID', templateId, url, data,   
+	api.sendTemplate('fleksin', templateId, url, data,   
 		function(err, result){
 			if(err) console.log(err);
 			else console.log(result);

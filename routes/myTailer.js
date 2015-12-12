@@ -206,7 +206,8 @@ router.get('/privateStore', function(req, res){
 router.get('/store/:tailer', function(req, res){
 	var wechat = req.params.tailer;
 	Tailer.get(wechat, function(err, user){
-		res.render('store', {private:false, items: user[0].store.items, wechat: user[0].wechat});
+		if(err) console.log(err);
+		res.render('store', {private:false, items: user[0].store.items, wechat: user[0].wechat, storename: user[0].store.name});
 	});
 	
 });
@@ -333,14 +334,13 @@ router.get('/testTem', function(req, res){
 router.get('/items/:name/:uploadTime', function(req, res){	
 	var name = req.params.name;
 	var uploadTime = req.params.uploadTime;
-	console.log('/items:')
-    console.log(name);	
+	req.session.lastview = '/items/'+name+'/'+ uploadTime;	
 	var query={
 		name: name,
 		uploadTime: uploadTime
 	}
 	Tailer.getItem(query, function(err, item){
-		res.render('item', {item: item});
+		res.render('item', {item: item, seller: name});
 	});	
 })
 
@@ -349,7 +349,7 @@ router.post('/placeOrder', function(req, res){
 	var uploadTime = req.params.uploadTime;
 	if(!req.session.customer){
 		req.session.dest = null;
-		req.session.dest = '/placeOrder';
+		req.session.dest = req.session.lastview;
 		res.redirect('/mycustomer/login');
 		return;
 	}
@@ -368,8 +368,8 @@ router.get('/testPay', function(req, res){
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "http://return.url",
-        "cancel_url": "http://cancel.url"
+        "return_url": "http://thirdtry.cloudapp.net:3100/returnUrl",
+        "cancel_url": "http://thirdtry.cloudapp.net:3100" + req.session.lastview
     },
     "transactions": [{
         "item_list": {
@@ -389,9 +389,6 @@ router.get('/testPay', function(req, res){
     }]
 };
 
-var paymentId;
-
-
 paypal.payment.create(create_payment_json, function (error, payment) {
     if (error) {
         console.log(error.response);
@@ -403,14 +400,115 @@ paypal.payment.create(create_payment_json, function (error, payment) {
                 console.log(payment.links[index].href);
             }
         }
-        console.log(payment);
-		paymentId = payment.id;
-		res.redirect(payment[1].href);
+        //console.log(payment);
+		
+		res.redirect(payment.links[1].href);
+    }
+});
+
+
+});
+
+router.get('/returnUrl', function(req, res){
+	var payerId = req.query.PayerID;
+	var paymentId = req.query.paymentId;
+	var execute_payment_json = {
+		"payer_id": payerId,
+//     		"transactions": [{
+//			"amount": {
+//    			"currency": "USD",
+//             		"total": "1.00"
+//         		}
+//     		}]
+ 	};
+
+
+ paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+     if (error) {
+         console.log(error.response);
+	 res.send(error.response);
+         //throw error;
+     } else {
+         console.log("Get Payment Response");
+         res.send(JSON.stringify(payment));
+     }
+ });
+});
+
+router.post('/createPay', function(req, res){
+	var name = req.params.name;
+	var uploadTime = req.params.uploadTime;
+	if(!req.session.customer){
+		req.session.dest = null;
+		req.session.dest = req.session.lastview;
+		res.redirect('/mycustomer/login');
+		return;
+	}
+	var price = parseFloat(req.body.price).toFixed(2);
+	var total = parseFloat(req.body.total).toFixed(2);
+	var title = req.body.title;
+	var order = {
+		buyer: req.session.customer.email,
+		createDate: new Date(),
+		seller: req.body.seller,
+		title: title,
+		price: price,
+		pricePlus: req.body.pricePlus,
+		total: total,
+		fabric: req.body.fabric,
+		orderID: req.session.customer.email+Date.now()+req.body.seller,
+		status:0
+	};
+	console.log('total:' + total);
+	var create_payment_json = {
+    "intent": "authorize",
+    "payer": {
+        "payment_method": "paypal"
+    },
+    "redirect_urls": {
+        "return_url": "http://thirdtry.cloudapp.net:3100/returnUrl",
+        "cancel_url": "http://thirdtry.cloudapp.net:3100" + req.session.lastview
+    },
+    "transactions": [{
+        "item_list": {
+            "items": [{
+                "name": title,
+                "sku": "item",
+                "price": price,
+                "currency": "USD",
+                "quantity": 1
+            }]
+        },
+        "amount": {
+            "currency": "USD",
+            "total": total
+        },
+        "description": "This is the payment description."
+    }]
+};
+
+var paymentId;
+
+
+paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+        console.log(error.response);
+	res.send(error.response);
+    } else {
+	Orders.create(order, function(){});
+	var i = 0;
+        for (var index = 0; index < payment.links.length; index++) {
+        //Redirect user to this endpoint for redirect url
+            if (payment.links[index].rel === 'approval_url') {
+                i = index;
+            }
+        }
+	res.redirect(payment.links[i].href);
     }
 });
 
 // var execute_payment_json = {
-    // "payer_id": "Appended to redirect url",
+    // "payer_id": "Appended to redirect url",=
     // "transactions": [{
         // "amount": {
             // "currency": "USD",
@@ -429,10 +527,6 @@ paypal.payment.create(create_payment_json, function (error, payment) {
         // console.log(JSON.stringify(payment));
     // }
 // });
-});
-
-router.get('/returnUrl', function(req, res){
-	res.send(req.query.paymentId);
 });
 
 module.exports = router;

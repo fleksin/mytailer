@@ -78,8 +78,8 @@ $(document).ready(function(){
 			$('label.price').text('价格').css('color','black');
 			$('button').prop('disabled',false);
 			var price = parseFloat(value);
-			var charge = (price * 0.2).toFixed(2);
-			var total = (price * 1.2).toFixed(2);
+			var charge = (price * 0.25).toFixed(2);
+			var total = (price * 1.25).toFixed(2);
 			$('span#charge').html(charge);
             $('span#total').html(total);
 		}

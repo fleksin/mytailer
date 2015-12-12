@@ -32,13 +32,16 @@ router.get('/test', function(req, res){
 	     "color":"#173177"
 	   }
 	};
-	//var api = new wechatAPI(appid, appsecret);
-	api.sendTemplate('fleksin', templateId, url, data,   
-		function(err, result){
-			if(err) res.send(err);
-			else res.send(result);
-		}
-	);	
+//	api.sendTemplate('fleksin', templateId, url, data,   
+//		function(err, result){
+//			if(err) res.send(err);
+//			else res.send(result);
+//		}
+//	);	
+	api.sendText("fleksin", 'hello world', function(err, result){
+		if(err) res.send(err);
+		else res.send(result);
+	});
 });
 
 module.exports = router;

@@ -1,14 +1,36 @@
 extends layout_Customer
 
 block content  
-  link(rel='stylesheet' href='/stylesheets/seller/style.css')  
-  if items
+ link(rel='stylesheet' href='/stylesheets/seller/style.css') 
+ div(class='carousel slide' id='carousel-example-generic' data-ride='carousel')
+  ol(class="carousel-indicators")
+   li(class="active" data-target="#carousel-example-generic" data-slide-to="0")
+   li(class="" data-target="#carousel-example-generic" data-slide-to="1")
+   li(class="" data-target="#carousel-example-generic" data-slide-to="2")
+  div(class='carousel-inner' role='listbox')
+   div(class='item active')
+    img(src='/images/covers/golden.jpg')
+   div(class='item')
+    img(src='/images/covers/classic.jpg')
+   div(class='item')
+    img(src='/images/covers/couple.jpg')
+   a(class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev")
+    span(class="glyphicon glyphicon-chevron-left" aria-hidden="true")
+    span(class="sr-only") Previous
+   a(class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next")
+    span(class="glyphicon glyphicon-chevron-right" aria-hidden="true")
+    span(class="sr-only") Next
+ div(style='height:50px;background:white')
+  p(style='text-align:center;font-size:200%;padding:10px 0 0')= 'Welcome to '+ storename
+ if items
+  div(style='display:flex;flex-wrap:wrap;background:white') 
    for el in items
     -var href = '/items/'+wechat+'/'+el.uploadTime
-    div(class='product' style='margin:0px auto 5px;padding:2px' data=el onclick="window.location.href='"+href+"'")
-      img(src= el.preview style='max-width:100%;margin:5px auto 2px;')
-      h3(class="panel-title" style='font-weight: 600;margin:0 3px 2px;font-size:100%')= el.title
-       span(style='float:right;color: rgba(77,0,255,0.54)')= '$ ' + el.price 
+    div(class='product'  data=el onclick="window.location.href='"+href+"'")
+      img(src= el.preview style='max-width:100%;margin:0px auto 5px;')
+      h3(style='font-weight: 600;margin:0 3px 2px;font-size:100%;text-align:center')
+       p= el.title
+       p(style='color:rgba(77,0,255,0.54)')= '$ ' + el.price 
       
   script(src='/javascripts/store.js')
   script(src='/javascripts/seller/fixLayout.js')
