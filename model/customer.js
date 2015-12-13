@@ -57,6 +57,19 @@ Customer.prototype.pushItem = function push(item){
 	 
 }
 
+Customer.prototype.addShow = function push(show){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('customers').update(
+		{email: this.email}, 
+		{$push:{myShows: show}},
+        function(err, customer){
+		    if(err) console.dir(err);
+		    db.close();
+	    }
+	);
+	 
+}
+
 Customer.deleteItem = function deleteItem(info, callback){
 	var db = mongoskin.db(url, {native_parser: true});
 	console.log('inside customer.deleteitem'); 

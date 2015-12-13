@@ -24,27 +24,18 @@ Orders.getByWechat = function(wechat,callback){
 }
 
 Orders.getByID = function(ID, callback){
-	var db = mongoskin.db(url, {native_parser: true});o
+	var db = mongoskin.db(url, {native_parser: true});
 	db.collection('orders').find({orderID: ID}).toArray(function(err, orders){
 		db.close();
-		callback(err, orders);		
+		callback(err, orders[0]);		
 	});
 }
 
-Orders.create = function(order, callback){
+Orders.getByBuyer = function(email, callback){
 	var db = mongoskin.db(url, {native_parser: true});
-	db.collection('orders').insert(order).toArray(function(err, orders){
+	db.collection('orders').find({buyer: email}).toArray(function(err, orders){
 		db.close();
-		//callback(err, orders);		
-	});
-}
-
-Orders.update = function(query, callback){
-	var db = mongoskin.db(url, {native_parser: true});
-	db.collection('orders').update({orderID:query.orderID}, {$set:{status:query.status}}, 
-		function(err, result){
-			db.close();
-			callback(err, result);		
+		callback(err, orders);		
 	});
 }
 

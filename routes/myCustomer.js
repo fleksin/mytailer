@@ -4,14 +4,16 @@ var settings = require('../settings');
 var crypto = require('crypto');
 var bodyParser = require('body-parser');
 var customer = require('../model/customer');
+var Orders = require('../model/orders');
 var Item = require('../model/item');
+var CustomerShow = require('../model/customerShow');
 var multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/uploads/' + file.fieldname)
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
+    cb(null, file.fieldname + '-' + Date.now() + '.jpg')
   }
 })
 var upload = multer({storage: storage});
@@ -33,7 +35,22 @@ function checkFields(model) {
 
 
 router.get('/',function(req, res) {
-	res.render('customerHome', {Customer : req.session.customer});
+	Orders.getByBuyer(req.session.customer.email, function(err, order){
+        var data = {
+            customer: req.session.customer,
+            orders: order,
+            numOfOrder: order.length
+        };		
+		req.session.Data = data;
+		console.log("this customer");
+		console.dir(req.session.Data.customer);
+		console.log("this data");
+	    console.dir(req.session.Data);
+		console.log("this myShows");
+	    console.dir(req.session.Data.customer.myShows);
+        res.render('customerHome', {Data : req.session.Data});
+	});	
+	
 });
 
 router.post('/login', function(req,res,next){
@@ -49,7 +66,6 @@ router.post('/login', function(req,res,next){
 		if(Customer){			
 			if(password == Customer.password){
 			   req.session.customer = Customer;
-			   req.flash('success', 'Log in successfully');
 				var dest = req.session.dest;
 				console.log(dest);
 			   if(dest){
@@ -84,8 +100,18 @@ router.get('/chooseType', function(req, res, next){
 	res.render('chooseType');
 });
 
+router.get('/showOrderForCustomer', function(req, res, next){
+	Orders.getByID(req.query.orderID, function(err, order){
+        res.render('showOrderForCustomer', {Order : order});
+	});
+});
+
 router.get('/customerHomeEdit', function(req, res, next){ 		
 	res.render('customerHomeEdit', {Customer : req.session.customer});
+});
+
+router.get('/myShow', function(req, res, next){ 		
+	res.render('myShow', {Data : req.session.Data});
 });
 
 router.get('/signup', function(req, res){
@@ -145,7 +171,7 @@ router.post('/customerHomeEdit', function(req, res){
 		req.session.customer.city = req.body.city;
 		req.session.customer.state = req.body.state;
 		req.session.customer.country = req.body.country;
-        res.render('customerHome', {Customer : req.session.customer});	
+        res.redirect('/myCustomer');	
 	});		
 });
 
@@ -153,37 +179,36 @@ router.get('/logout', function(req, res){
 	if(req.session){
 		req.session.customer = null;
 	}
-	res.redirect('/');
+	res.redirect('/myCustomer/login');
 });
 
-router.post('/upload', upload.single('itemImage'),function(req, res, next){
+router.post('/myShow', upload.single('itemImage'),function(req, res, next){
+    console.log(req.body.eva1);
 	if(!checkFields(req.body)){
 		req.flash('error', 'Please fill out the fields!');
-		res.render('customerHome');
+		res.redirect('/myCustomer');
 		return;
 	}
 	console.log(util.inspect(req.file));
 	if(req.file){ 
-		var item = {
-			showImgTitle: req.body.showImgTitle,
-			img: '/uploads/' + req.file.fieldname + '/' + req.file.filename,
-			showDescription: req.body.showDescription,
+		var show = {
+			title: req.body.showImgTitle,
+			img: '/uploads/itemImage/' + req.file.filename,
+			description: req.body.showDescription,
 			ownerName: req.session.customer.id,
-			ownerEmail: req.session.customer.email,
 			uploadTime: Date.now()
-			};
-		var newItem = new Item(item);
-		newItem.create(null);
-		console.log('in myTailer.js after create function');
-		var User = new user(req.session.user);
-		User.pushItem(newItem);
-		req.flash('success', 'Post done!');
-		res.redirect('/');
+        };		
+		var newShow = new CustomerShow(show);
+		newShow.create(null);
+		var newCustomer = new customer(req.session.customer);
+		newCustomer.addShow(newShow);
+		req.session.customer.myShows = newCustomer.myShows;
+		res.redirect('/myCustomer');
 		//res.render('upload', {img: item.img});
 	}	
 	else{
 		req.flash('error', 'Post failed!');
-		res.redirect('/upload');
+		res.redirect('/myCustomer/myShow');
 	}
 });
 

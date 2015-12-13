@@ -1,7 +1,13 @@
 extends layout_Customer
 
 block content
-    if Customer
+    if Data
+        form(class="form-customerHome" style="background-color: white;")
+            div(style="text-align: center")                 
+                a(class="btn btn-primary" type="button" href="/myCustomer/customerEntry") 
+                    h4				
+                        随&nbsp&nbsp&nbsp&nbsp&nbsp便&nbsp&nbsp&nbsp&nbsp&nbsp逛&nbsp&nbsp&nbsp&nbsp&nbsp逛
+        p
         form(class="form-customerHome" )
             div
                 h3  基本信息
@@ -15,58 +21,100 @@ block content
                             td(width="30%")
                                 h4(class="customerInfo-label") 邮箱
                             td(width="70%")
-                                button(name="email" class="btn btn-primary" type="button")= Customer.email
+                                button(name="email" class="btn btn-primary" type="button")= Data.customer.email
                         tr
                             td(width="30%")
                                 h4(class="customerInfo-label") 用户名
                             td(width="70%" valign="middle")
-                                button(name="id" class="btn btn-primary" type="button")= Customer.id
+                                button(name="id" class="btn btn-primary" type="button")= Data.customer.id
                         tr
                             td(width="30%")
                                 h4(name="weChat" class="customerInfo-label") 微信
                             td(width="70%")
-                                if Customer.weChat                            
-                                    button(name="weChat" class="btn btn-primary" type="button")= Customer.weChat
+                                if Data.customer.weChat                            
+                                    button(name="weChat" class="btn btn-primary" type="button")= Data.customer.weChat
                         tr
                             td(width="30%")
                                 h4(name="apt" class="customerInfo-label") 住宅
                             td(width="70%")
-                                if Customer.apt                            
-                                    button(name="apt" class="btn btn-primary" type="button")= Customer.apt
+                                if Data.customer.apt                            
+                                    button(name="apt" class="btn btn-primary" type="button")= Data.customer.apt
                         tr
                             td(width="30%")
                                 h4(name="street" class="customerInfo-label") 街道
                             td(width="70%")
-                                if Customer.street                            
-                                    button(name="street" class="btn btn-primary" type="button")= Customer.street
+                                if Data.customer.street                            
+                                    button(name="street" class="btn btn-primary" type="button")= Data.customer.street
                         tr
                             td(width="30%")
                                 h4(name="city" class="customerInfo-label") 市县
                             td(width="70%")
-                                if Customer.city                            
-                                    button(name="city" class="btn btn-primary" type="button")= Customer.city
+                                if Data.customer.city                            
+                                    button(name="city" class="btn btn-primary" type="button")= Data.customer.city
                         tr
                             td(width="30%")
                                 h4(name="state" class="customerInfo-label") 省
                             td(width="70%")
-                                if Customer.state                            
-                                    button(name="state" class="btn btn-primary" type="button")= Customer.state
+                                if Data.customer.state                            
+                                    button(name="state" class="btn btn-primary" type="button")= Data.customer.state
                         tr
                             td(width="30%")
                                 h4(name="country" class="customerInfo-label") 国家
                             td(width="70%")
-                                if Customer.country                            
-                                    button(name="country" class="btn btn-primary" type="button")= Customer.country
+                                if Data.customer.country                            
+                                    button(name="country" class="btn btn-primary" type="button")= Data.customer.country
+        p
         form(class="form-customerHome" )
             div
                 h3  订单信息
                     &nbsp&nbsp
-                    button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#billInfo" aria-expanded="false" aria-controls="billInfo") 展开
+                    button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#billInfo" aria-expanded="false" aria-controls="billInfo" onClick="showBillList()") 展开
             div(class="collapse" id="billInfo")
+                div(id="jsonData" data=Data)
                 div(id="billList" class="container")
+        p
+        form(class="form-customerHome" )
+            div
+                h3  我的美秀
+                    &nbsp&nbsp
+                    button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#showInfo" aria-expanded="false" aria-controls="showInfo" onClick="showShowList()") 展开
+            div(class="collapse" id="showInfo")                
+                div(id="showList" class="container")
 
         script.
-            document.getElementById("billList").innerHTML = "haha" + Customer.weChat;
-            
+            var showBillList = function(){
+                var listOutput = '';
+                var json = document.getElementById("jsonData").getAttribute("data");
+                var data = JSON.parse(json);
+                listOutput += '<table class="table"><tbody>';
+                for(var i = 1; i <= data.numOfOrder; ++i){
+                    listOutput += '<tr><td width="8%"><h5 class="customerInfo-label">' + i + '</h5></td>';
+                    listOutput += '<td width="70%"><h5 class="customerInfo-label" width="100%"><b>卖家：</b>'+ data["orders"][i-1].seller;
+                    listOutput += '<br/><b>价钱：</b>'+ data["orders"][i-1].price;
+                    listOutput += '<br/><b>订单：</b><a href="/myCustomer/showOrderForCustomer?orderID='+ data["orders"][i-1].orderID +'">'+ data["orders"][i-1].orderID + '</a></h5></td>';
+                    if("#{Data.orders[0].status}" == "买家已付款"){
+                        listOutput += '<td width="22%"><h5 class="customerInfo-label"><a href="/myCustomer/myShow">#{Data.orders[0].status}</a></h5></td></tr>';
+                    }
+                    else{
+                        listOutput += '<td width="22%"><h5 class="customerInfo-label">#{Data.orders[0].status}</h5></td></tr>';
+                    }
+                }
+                listOutput += '</tbody></table>';
+                document.getElementById("billList").innerHTML = listOutput;
+            }
+            var showShowList = function(){
+                var listOutput = '';
+                var json = document.getElementById("jsonData").getAttribute("data");
+                var data = JSON.parse(json);
+                //alert(data["customer"]["myShows"].length);
+                listOutput += '<table class="table"><tbody>';
+                for(var i = 0; i < data["customer"]["myShows"].length; ++i){
+                    listOutput += '<tr><td width="60%"><img src="'+ data["customer"]["myShows"][i].img + '" height="128px" width="100%"></td>';
+                    listOutput += '<td width="40%"><h5 class="customerInfo-label"><b>标题：</b>'+ data["customer"]["myShows"][i].title;
+                    listOutput += '<br/><b>描述：</b>'+ data["customer"]["myShows"][i].description+ '</h5></td></tr>';
+                }
+                listOutput += '</tbody></table>';
+                document.getElementById("showList").innerHTML = listOutput;
+            }            
     else
-        p Oops cannot find anything, Try again!
+        p 该用户不存在，无法进入其主页！

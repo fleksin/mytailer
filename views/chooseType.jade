@@ -1,32 +1,23 @@
 extends layout_Customer
 
 block content
-  div(class="container logo-costumerEntry")
-    h4(style="font-weight: bold; text-align:center")   请选择您心怡的服装款式
-    table(class="table table-hover")
-        thead
-            tr
-                th   款式
-                th   样品
+  div(class="logo-costumerEntry")
+    h3(style="font-weight: bold; text-align:center")   请选择您心怡的服装款式
+    hr(style="border-top:7px dotted #3366CC;")
+    table(style="background-color: #FFFF00; margin: 0 auto;")
         tbody
-            tr(onclick="location.href='/cata/suit'")
-                td(width="30%")
-                    img(src='/images/xizhuang.jpg' alt="logo" height="60px" width="100%")
-                td(width="70%")
-                    img(src='/images/xizhuang1.jpeg' alt="logo" height="60px" width="30%")
-                    img(class="typeExample" src='/images/xizhuang2.jpeg' alt="logo" height="60px" width="30%")
-                    img(src='/images/xizhuang3.jpg' alt="logo" height="60px" width="30%")
-            tr(onclick="location.href='/login'")
-                td(width="30%")
-                    img(src='/images/qipao.jpg' alt="logo" height="60px" width="100%")
-                td(width="70%")
-                    img(src='/images/qipao1.jpg' alt="logo" height="60px" width="30%")
-                    img(class="typeExample" src='/images/qipao.jpg' alt="logo" height="60px" width="30%")
-                    img(src='/images/qipao3.jpeg' alt="logo" height="60px" width="30%")
-            tr(onclick="location.href='/login'")
-                td(width="30%")
-                    img(src='/images/yangmaoshan.jpg' alt="logo" height="60px" width="100%")
-                td(width="70%")
-                    img(src='/images/yangmaoshan1.jpg' alt="logo" height="60px" width="30%")
-                    img(class="typeExample" src='/images/yangmaoshan2.jpg' alt="logo" height="60px" width="30%")
-                    img(src='/images/yangmaoshan3.jpg' alt="logo" height="60px" width="30%")					
+            tr(height="130px")
+                td(class="choiceTdLeft" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
+                    西装
+                td(class="choiceTdRight" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
+                    旗袍
+            tr(height="130px")
+                td(class="choiceTdLeft" width="50%" onclick="location.href='/login'")
+                    大衣
+                td(class="choiceTdRight" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/sweater'")
+                    羊毛衫
+            tr(height="130px")
+                td(class="choiceTdLeftBottom" width="50%" onclick="location.href='/login'")
+                    时装
+                td(class="choiceTdRightBottom" width="50%" onclick="location.href='/login'")
+                    啥都要					

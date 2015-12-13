@@ -3,8 +3,10 @@ html
   head
     title= 'MyTailer'
     link(rel='stylesheet', href='/stylesheets/bootstrap/css/bootstrap.min.css')
+    link(href="/stylesheets/star-rating.min.css" media="all" rel="stylesheet" type="text/css")
     meta(name="viewport" content="width=device-width, initial-scale=1")
     script(src='/javascripts/jquery-2.1.4.js')
+    script(src="/javascripts/star-rating.min.js")
     style.
        .panel{
           max-width:600px;
@@ -14,10 +16,35 @@ html
           max-width: 70%;
           margin: 0px auto 10px auto;
         }
-       body{
-         background:url('/images/fabric.jpg');
+        body{
          background-size: contain;
-       }
+        }
+        table{
+            table-layout: fixed;
+        }
+        td{
+            word-break: break-all;
+        }
+       .choiceTdLeft{
+            border-bottom: 5px solid white;
+            border-right: 5px solid white;
+            text-align: center;
+            font-size: 50px;
+        }
+       .choiceTdLeftBottom{
+            border-right: 5px solid white;
+            text-align: center;
+            font-size: 50px;
+        }
+       .choiceTdRight{
+            border-bottom: 5px solid white;
+            text-align: center;
+            font-size: 50px;
+        }
+       .choiceTdRightBottom{
+            text-align: center;
+            font-size: 50px;
+        }
        .form-signin{
          background: rgba(235,235,235,0.7);		 
          border-radius: 10px 10px 10px 10px;
@@ -51,9 +78,23 @@ html
             padding-right: 5px;
         }
        .customerForm{
-         max-width: 330px; 
-         margin:0px auto;
-       }	   
+            max-width: 330px; 
+            margin:0px auto;
+            padding-right: 5px;
+            padding-left: 5px
+       }
+       .priceDigit{
+            text-align: right;
+        }
+       .priceSign{
+            text-align: center;
+        }
+       .priceHr{
+            width: 70%;
+            text-align: right;
+            margin : 0 0 0 auto;
+            border-top:2px solid green;
+        }	   
        @media only screen  
           and (max-device-width: 736px) { 
                .panel{
@@ -75,13 +116,28 @@ html
         th{
             text-align: center;
         }
+        .orderCustomerHr{
+            border-top:1px dashed #8c8b8b;
+        }
+        .orderCustomerHr:after{
+            content: '\002702';
+            display: inline-block;
+            position: relative;
+            top: -12px; 
+            left: 20px; 
+            padding: 0 3px; 
+            color: #8c8b8b; 
+            font-size: 18px; 
+        }
        .typeExample{
             margin: 0px 5%;
         }
        .edit{
             margin-left: 20px;
         }
-       
+    script.
+        $("#input-id").rating();
+        $("#input-id").rating({min:1, max:10, step:2, size:'lg'});
   body
     nav(class='navbar navbar-inverse navbar-fixed-top')
       .container
@@ -91,16 +147,16 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a(class="navbar-brand" href="/myCustomer") My Customer
+          a(class="navbar-brand" href="/myCustomer") <返回买家主页
         div(id="navbar" class="collapse navbar-collapse")
           ul(class="nav navbar-nav")
             li               
                if session&&session.customer
-                  a(href="/myCustomer/logout")= 'Log Out'
+                  a(href="/myCustomer/logout")= '登出'
                else 
-                  a(href="/myCustomer/login")= 'Log In/Sign Up'
+                  a(href="/myCustomer/login")= '登录/注册'
             li
-                a(href="/myCustomer/customerEntry")= 'Enter'			
+                a(href="/myCustomer/customerEntry")= '进入主页'			
     .container
      .starter-template(style='padding:40px 0px')
    

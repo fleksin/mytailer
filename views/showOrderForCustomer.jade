@@ -1,0 +1,90 @@
+extends layout_Customer
+
+block content
+    if Order
+        form(class="customerForm" )
+            h5="订单号：" + Order.orderID
+            hr(class="orderCustomerHr")
+            h5(data=Order.createDate id="orderTime")
+            hr(class="orderCustomerHr")
+            h5="卖家：" + Order.seller
+            hr(class="orderCustomerHr")
+            h5="商品名称：" + Order.title
+            hr(class="orderCustomerHr")
+            h5="用料：" + Order.fabric
+            hr(class="orderCustomerHr")
+            h5 "价格："
+            div
+                h5(class="priceDigit")=Order.price
+                h5(class="priceSign") + #[span(style="float:right;")=Order.pricePlus]
+                hr(class="priceHr")
+                h5(class="priceDigit")=Order.total
+        script.
+            var output = '下单时间(北京时间)：';
+            var input = document.getElementById("orderTime").getAttribute("data");
+            var pos1 = input.indexOf(":");
+            var hour = input.substring(pos1-2, pos1);
+            var pos2 = input.indexOf("-");
+            var year = input.substring(1, pos2);
+            var month = input.substring(pos2+1, pos2+3);
+            var day = input.substring(pos2+4, pos2+6);
+            var plus = 0;
+            if(hour >= 16){
+                hour = parseInt(hour, 10) + 8 - 24;
+                plus = 1;
+            }
+            else{
+                hour = parseInt(hour, 10) + 8;
+            }
+            if(plus == 1){
+                switch(month){
+                    case "1":
+                    case "3":
+                    case "5":
+                    case "7":
+                    case "8":
+                    case "10":
+                        if(day < 31){
+                            day = parseInt(day, 10) + 1;
+                        }
+                        else{
+                            day = 1;
+                            month = parseInt(month, 10) + 1;
+                        }
+                        break;
+                    case "4":
+                    case "6":
+                    case "9":
+                    case "11":
+                        if(day < 30){
+                            day = parseInt(day, 10) + 1;
+                        }
+                        else{
+                            day = 1;
+                            month = parseInt(month, 10) + 1;
+                        }
+                        break;
+                    case "12":
+                        if(day < 31){
+                            day = parseInt(day, 10) + 1;
+                        }
+                        else{
+                            day = 1;
+                            month = 1;
+                            year = parseInt(year, 10) + 1;
+                        }
+                        break;
+                    case "2":
+                        if(day < 28 || (day == 28 && parseInt(year, 10)%4 == 0)){
+                            day = parseInt(day, 10) + 1;
+                        }
+                        else{
+                            day = 1;
+                            month = parseInt(month, 10) + 1;
+                        }
+                }
+            }
+            output += year + "年" + month + "月" + day + "日" + " " + hour + input.substring(pos1, pos1+6);			
+            document.getElementById("orderTime").innerHTML = output;
+    else
+        h5 订单信息不存在！
