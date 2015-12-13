@@ -39,6 +39,23 @@ Orders.getByBuyer = function(email, callback){
 	});
 }
 
+Orders.create = function(order, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('orders').insert(order, function(err, result){
+		db.close();
+		callback(err, result);		
+	});
+}
+
+Orders.update = function(query, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('orders').update({orderID:query.orderID}, {$set:{status:query.status}}, 
+		function(err, result){
+			db.close();
+			callback(err, result);		
+	});
+}
+
 module.exports = Orders;
 
 
