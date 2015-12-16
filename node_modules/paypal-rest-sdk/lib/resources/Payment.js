@@ -10,7 +10,7 @@ var api = require('../api');
  */
 function payment() {
     var baseURL = '/v1/payments/payment/';
-    var operations = ['create', 'get', 'list'];
+    var operations = ['create', 'update', 'get', 'list'];
 
     var ret = {
         baseURL: baseURL,

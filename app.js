@@ -14,6 +14,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var myTailer = require('./routes/myTailer');
 var myCustomer = require('./routes/myCustomer');
+var enterprise = require('./routes/enterprise');
 
 var app = express();
 
@@ -48,6 +49,7 @@ app.use(function(req,res,next){
 app.use('/', myTailer);
 app.use('/wechat', users);
 app.use('/mycustomer', myCustomer);
+app.use('/enterprise', enterprise);
 
 
 // catch 404 and forward to error handler

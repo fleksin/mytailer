@@ -6,15 +6,11 @@ block content
    for el in data
     if el.store&&el.store.items
      -var link = "window.location.href='/store/" + el.wechat + "'"
-     div(class='store' onclick=link) 
-       //div(class="panel-heading" style="background: rgba(255,255,255,.9)")
-         //h3(class="panel-title")= el.store.name
-           //span(style='float:right;color: rgba(77,0,255,0.54)')
-            // a(href='/store/'+el.id)= el.id
-       div(style='padding:2%;display:flex')
-         img(src= el.store.items[0].preview style='max-width:70%;height:auto;margin:0;')
+     div(class='store' onclick=link)
+       div(style='padding:2%;display:flex;display:-webkit-flex')
+         img(src= el.store.items[0].preview style='margin:0;width:70%;height:70%')
          //p(class='well')= el.store.description  
-         div(id='moreItem' style='display:flex;max-width:30%;flex-direction:column;margin-left:2%')
+         div(id='moreItem' style='display:flex;display:-webkit-flex;-webkit-flex-direction:column;max-width:30%;flex-direction:column;margin-left:2%')
           if(el.store.items)
             -var i = 0
             for item in el.store.items

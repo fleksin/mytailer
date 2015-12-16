@@ -102,4 +102,27 @@ Customer.get = function(username, callback){
 	});
 }
 
+Customer.addWechat = function(query, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('customers').find({email:query.email}).toArray(function(err, result){
+		if(result.length > 0){
+			db.collection('customers').update(
+				{email:query.email},
+				{$set:{
+					wechatNick:query.wechatNick,
+					openid : query.openid, 
+					verified: query.verified,
+					headimgurl: query.headimgurl}
+				}, {upsert:false}, function(err, result){
+					db.close();
+					callback(err, result);
+			});
+		}
+		else{
+			callback('useName not found!', result);
+		}
+	});
+	
+}
+
 module.exports = Customer;
