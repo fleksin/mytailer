@@ -2,22 +2,46 @@ extends layout_Customer
 
 block content
   div(class="logo-costumerEntry")
-    h3(style="font-weight: bold; text-align:center")   请选择您心怡的服装款式
-    hr(style="border-top:7px dotted #3366CC;")
-    table(style="background-color: #FFFF00; margin: 0 auto;")
+    table(width="100%" height="150px")
         tbody
-            tr(height="130px")
-                td(class="choiceTdLeft" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
+            tr
+                td(style="border-bottom: 3px solid #EEE; text-align: center; font-size: 40px" width="20%")
+                    p 选
+                    p 择
+                td(swidth="60%")
+                    img(src="/images/typeChooseThinking2.gif" width="100%" height="100%")
+                td(style="border-bottom: 3px solid #EEE; text-align: center; font-size: 40px" width="20%")
+                    p 哪
+                    p 款
+    table(style="margin: 0 auto;")
+        tbody
+            tr(height="150px")
+                td(class="choiceTdLeftImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
+                    img(src='/images/choicexizhuang1.jpeg' alt="西装" height="170px" width="100%")
+                td(class="choiceTdRightImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
+                    img(src='/images/choiceqipao1.jpg' alt="旗袍" height="170px" width="100%")
+            tr(height="30px")
+                td(class="choiceTdLeft" style="background-color:#ffff4d" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
                     西装
-                td(class="choiceTdRight" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
+                td(class="choiceTdRight" style="background-color:#66ffff" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
                     旗袍
-            tr(height="130px")
-                td(class="choiceTdLeft" width="50%" onclick="location.href='/login'")
+            tr(height="150px")
+                td(class="choiceTdLeftImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
+                    img(src='/images/choiceDayi1.jpg' alt="大衣" height="170px" width="100%")
+                td(class="choiceTdRightImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
+                    img(src='/images/choiceYangmaoshan1.jpg' alt="羊毛衫" height="170px" width="100%")
+            tr(height="30px")
+                td(class="choiceTdLeft" style="background-color:#ff6666" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
                     大衣
-                td(class="choiceTdRight" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/sweater'")
+                td(class="choiceTdRight" style="background-color:#9fff80" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
                     羊毛衫
-            tr(height="130px")
-                td(class="choiceTdLeftBottom" width="50%" onclick="location.href='/login'")
+            tr(height="150px")
+                td(class="choiceTdLeftImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
+                    img(src='/images/choiceShizhuang1.jpg' alt="时装" height="170px" width="100%")
+                td(class="choiceTdRightImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
+                    img(src='/images/choiceAll.jpg' alt="啥都要" height="170px" width="100%")
+            tr(height="30px")
+                td(class="choiceTdLeftBottom" style="background-color:#8080ff" width="50%" onclick="location.href='/login'")
                     时装
-                td(class="choiceTdRightBottom" width="50%" onclick="location.href='/login'")
+                td(class="choiceTdRightBottom" style="background-color:#ffa366" width="50%" onclick="location.href='/login'")
                     啥都要					

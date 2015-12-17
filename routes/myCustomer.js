@@ -100,6 +100,10 @@ router.get('/chooseType', function(req, res, next){
 	res.render('chooseType');
 });
 
+router.get('/customerDataInput', function(req, res, next){ 		
+	res.render('customerDataInput');
+});
+
 router.get('/showOrderForCustomer', function(req, res, next){
 	Orders.getByID(req.query.orderID, function(err, order){
         res.render('showOrderForCustomer', {Order : order});
