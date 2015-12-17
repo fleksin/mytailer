@@ -15,12 +15,15 @@
     "express-session": "~1.11.3",
     "gm": "^1.21.1",
     "jade": "~1.11.0",
-    "mongodb": "^2.0.47",
+    "kerberos": "0.0.17",
+    "mongodb": "^2.0.51",
     "mongoskin": "^2.0.3",
     "morgan": "~1.6.1",
     "node-wechat": "^0.2.0",
     "paypal-rest-sdk": "^1.6.6",
     "serve-favicon": "~2.3.0",
-    "wechat-api": "^1.20.0"
+    "wechat": "^2.0.3",
+    "wechat-api": "^1.20.0",
+    "wechat-enterprise": "^0.1.1"
   }
 }

@@ -65,7 +65,8 @@ router.post('/loginM', function(req,res,next){
 			if(password == user[0].password){
 			   req.session.user = user[0];
 			   req.flash('success', 'Log in successfully');
-		  	   res.redirect('/privateStore');
+			   if(req.session.dest) res.redirect(req.session.dest);
+		  	   else res.redirect('/privateStore');
 				
 			}
 			else{				
@@ -261,7 +262,7 @@ router.get('/cata/:catag',function(req, res) {
 			case 'suit': hint += '西装区'; break;
 			case 'cheongsam': hint += '旗袍区'; break;
 		}
-		req.flash('success', hint);
+		//req.flash('success', hint);
 		res.render('plaza', { data: stores });		
 	});	
 });
@@ -303,7 +304,7 @@ router.get('/myorders',function(req,res){
 
 router.get('/testTem', function(req, res){
 	var templateId = '9lZRf9WlDz9mgcChIna8fZDBfbSBZPKVlRAy0jY0Meo';
-	var url = 'http://thirdtry.cloudapp.net/myorders';
+	var url = 'http://thirdtry.cloudapp.net:3100/myorders';
 	var data = {
 	   "first": {
 	     "value":"Dear tailer, you have a new order placed",
@@ -323,7 +324,8 @@ router.get('/testTem', function(req, res){
 	   }
 	};
 	var api = new wechatAPI(appid, appsecret);
-	api.sendTemplate('fleksin', templateId, url, data,   
+	api.sendTemplate('oV3oXwxgTcJ9JYb-t6P8E8HNhons', templateId, url, 
+		data,   
 		function(err, result){
 			if(err) res.send(err);
 			else res.send(result);
@@ -361,78 +363,35 @@ router.post('/placeOrder', function(req, res){
 	res.end();
 });
 
-router.get('/testPay', function(req, res){
-	var create_payment_json = {
-    "intent": "authorize",
-    "payer": {
-        "payment_method": "paypal"
-    },
-    "redirect_urls": {
-        "return_url": "http://thirdtry.cloudapp.net:3100/returnUrl",
-        "cancel_url": "http://thirdtry.cloudapp.net:3100" + req.session.lastview
-    },
-    "transactions": [{
-        "item_list": {
-            "items": [{
-                "name": "item",
-                "sku": "item",
-                "price": "1.00",
-                "currency": "USD",
-                "quantity": 1
-            }]
-        },
-        "amount": {
-            "currency": "USD",
-            "total": "1.00"
-        },
-        "description": "This is the payment description."
-    }]
-};
 
-paypal.payment.create(create_payment_json, function (error, payment) {
-    if (error) {
-        console.log(error.response);
-        throw error;
-    } else {
-        for (var index = 0; index < payment.links.length; index++) {
-        //Redirect user to this endpoint for redirect url
-            if (payment.links[index].rel === 'approval_url') {
-                console.log(payment.links[index].href);
-            }
-        }
-        //console.log(payment);
-		
-		res.redirect(payment.links[1].href);
-    }
-});
-
-
-});
 
 router.get('/returnUrl', function(req, res){
 	var payerId = req.query.PayerID;
 	var paymentId = req.query.paymentId;
 	var execute_payment_json = {
 		"payer_id": payerId,
-//     		"transactions": [{
-//			"amount": {
-//    			"currency": "USD",
-//             		"total": "1.00"
-//         		}
-//     		}]
  	};
 
-
- paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-     if (error) {
-         console.log(error.response);
-	 res.send(error.response);
-         //throw error;
-     } else {
-         console.log("Get Payment Response");
-         res.send(JSON.stringify(payment));
-     }
- });
+	paypal.payment.execute(paymentId, execute_payment_json, 
+		function (error, payment) {
+		if (error) {
+			console.log(error.response);
+		 	res.send(error.response);
+        	 //throw error;
+ 		} else {
+    		console.log("Get Payment Response");
+			var openid_cus = req.session.customer.openid;
+			var seller = req.session.order[0].seller;
+			Tailer.get(seller,function(err, tailer){
+				var openid_tai = tailer[0].openid;
+				toolkit.sendTaiTem(openid_tai);
+				req.session.order = null;
+			});
+			//var openid_tai = 
+			toolkit.sendCusTem(openid_cus);
+			res.render('dealdone');
+        }
+	});
 });
 
 router.post('/createPay', function(req, res){
@@ -459,7 +418,9 @@ router.post('/createPay', function(req, res){
 		orderID: req.session.customer.email+Date.now()+req.body.seller,
 		status:0
 	};
-	console.log('total:' + total);
+	req.session.order = [{seller: req.body.seller}];
+	console.log('total: ' + total);
+	console.log('price: ' + price);
 	var create_payment_json = {
     "intent": "authorize",
     "payer": {
@@ -474,7 +435,7 @@ router.post('/createPay', function(req, res){
             "items": [{
                 "name": title,
                 "sku": "item",
-                "price": price,
+                "price": total,
                 "currency": "USD",
                 "quantity": 1
             }]
@@ -485,48 +446,27 @@ router.post('/createPay', function(req, res){
         },
         "description": "This is the payment description."
     }]
-};
+  };
 
-var paymentId;
+  var paymentId;
 
 
-paypal.payment.create(create_payment_json, function (error, payment) {
+  paypal.payment.create(create_payment_json, function (error, payment) {
     if (error) {
         console.log(error.response);
-	res.send(error.response);
+		res.send(error.response);
     } else {
-	Orders.create(order, function(){});
-	var i = 0;
+		Orders.create(order, function(){});
+		var i = 0;
         for (var index = 0; index < payment.links.length; index++) {
         //Redirect user to this endpoint for redirect url
             if (payment.links[index].rel === 'approval_url') {
                 i = index;
             }
         }
-	res.redirect(payment.links[i].href);
+		res.redirect(payment.links[i].href);
     }
-});
-
-// var execute_payment_json = {
-    // "payer_id": "Appended to redirect url",=
-    // "transactions": [{
-        // "amount": {
-            // "currency": "USD",
-            // "total": "1.00"
-        // }
-    // }]
-// };
-
-
-// paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-    // if (error) {
-        // console.log(error.response);
-        // throw error;
-    // } else {
-        // console.log("Get Payment Response");
-        // console.log(JSON.stringify(payment));
-    // }
-// });
+  });
 });
 
 module.exports = router;

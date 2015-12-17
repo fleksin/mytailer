@@ -1,6 +1,10 @@
 PayPal Node SDK release notes
 ============================
 
+v1.6.7
+----
+* Add payment update method issue (#122)[https://github.com/paypal/PayPal-node-SDK/issues/122]
+
 v1.6.6
 ----
 * Update warning message

@@ -148,4 +148,36 @@ Tailer.getItem = function(query, callback){
 	});
 }
 
+Tailer.addWechat = function(query, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('tailers').find({wechat:query.username}).toArray(function(err, result){
+		if(result.length > 0){
+		  db.collection('tailers').update(
+			{wechat:query.username},
+			{$set:{
+				wechatNick:query.wechatNick, 
+				openid : query.openid, 
+				verified: query.verified, 
+				headimgurl: query.headimgurl}}, {upsert:false}, 
+				function(err, result){
+					db.close();
+					callback(err, result);
+		  });
+		}else{
+			callback('useName not found!', result);
+		}
+	});
+}
+
+Tailer.getOpenId = function(wechat, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('tailers').find({wechat:wechat}).toArray(function(err, result){
+		if(result.length > 0){
+			callback(null, result[0].openid);   
+		}else{
+			callback('useName not found!', result);
+		}
+	});
+}
+
 module.exports = Tailer;

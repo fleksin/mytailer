@@ -62,7 +62,7 @@ block content
         br
         //label(id='fabric')= item.fabric
         input(pos='left' name='fabric' value=item.fabric)   
-        input(pos='right' name='fabricPrice' id='fabricPrice' value='1200')
+        input(pos='right' name='fabricPrice' id='fabricPrice' value=item.price)
         br
         input(pos='left' name='style' value='no style')   
         input(pos='right' name='stylePrice' id='stylePrice' value='0')

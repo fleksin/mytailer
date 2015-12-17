@@ -5,12 +5,7 @@
 		max-width: 100%;
 		margin:0px auto 5px;
 		padding:1%;
-	}
-	.product{
-		width:48%;
-		margin:1%;
-		padding:0.5%;
-	}
+	}		
 }
 
 @media only screen  
@@ -22,6 +17,12 @@
 		margin:0px auto 5px;
 		padding:2%;
 	}
+}
+
+.product{
+	width:48%;
+	margin:1% ;
+	padding:0.5%;
 }
 
 .product,
