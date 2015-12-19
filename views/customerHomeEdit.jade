@@ -1,71 +1,121 @@
-extends layout_Customer
-
-block content
-    if Customer
-        form(method='post' action='/myCustomer/customerHomeEdit' class="form-customerHome" )
-            div
-                h3  基本信息
-                    button(class="btn btn-success edit" type="submit") 保存
-                p 请填写正确的住址，该地址将作为邮寄地址
-            table(class="table")
-                tbody
-                    tr
-                        td(width="30%")
-                            h4(class="customerInfo-label") 邮箱
-                        td(width="70%")
-                            button(name="email" class="btn btn-default" type="button" disabled="disabled" )= Customer.email
-                    tr
-                        td(width="30%")
-                            h4(class="customerInfo-label") 用户名
-                        td(width="70%")
-                            button(name="id" class="btn btn-default" type="button" disabled="disabled")= Customer.id
-                    tr
-                        td(width="30%")
-                            h4(class="customerInfo-label") 微信
-                        td(width="70%")
-                            if Customer.weChat                            
-                                input(name="weChat" type="text" class="form-control" id="customerEditWeChat" value= Customer.weChat)= Customer.weChat
-                            else
-                                input(name="weChat" type="text" class="form-control" id="customerEditWeChat" placeholder="该微信将绑定本账户")
-                    tr
-                        td(width="30%")
-                            h4(class="customerInfo-label") 住宅
-                        td(width="70%")
-                            if Customer.apt                            
-                                input(name="apt" type="text" class="form-control" id="customerEditAddress" value= Customer.apt)= Customer.apt
-                            else
-                                input(name="apt" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX大厦XX幢XX室")
-                    tr
-                        td(width="30%")
-                            h4(class="customerInfo-label") 街道
-                        td(width="70%")
-                            if Customer.street                            
-                                input(name="street" type="text" class="form-control" id="customerEditAddress" value= Customer.street)= Customer.street
-                            else
-                                input(name="street" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX街道")
-                    tr
-                        td(width="30%")
-                            h4(class="customerInfo-label") 市县
-                        td(width="70%")
-                            if Customer.city                            
-                                input(name="city" type="text" class="form-control" id="customerEditAddress" value= Customer.city)= Customer.city
-                            else
-                                input(name="city" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX市XX县")
-                    tr
-                        td(width="30%")
-                            h4(class="customerInfo-label") 省
-                        td(width="70%")
-                            if Customer.state                            
-                                input(name="state" type="text" class="form-control" id="customerEditAddress" value= Customer.state)= Customer.state
-                            else
-                                input(name="state" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX市XX县")
-                    tr
-                        td(width="30%")
-                            h4(class="customerInfo-label") 国家
-                        td(width="70%")
-                            if Customer.country                            
-                                input(name="country" type="text" class="form-control" id="customerEditAddress" value= Customer.country)= Customer.country
-                            else
-                                input(name="country" type="text" class="form-control" id="customerEditAddress" placeholder="例：中国")								
-    else
-        p Oops cannot find anything, Try again!
+doctype html
+html
+    head
+        title= 'MyTailer'
+        link(rel='stylesheet', href='/stylesheets/bootstrap/css/bootstrap.min.css')
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        script(src='/javascripts/jquery-2.1.4.js')
+        style.
+            html{ 
+                background: url(/images/cEntryBg2.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+            .alert{
+                max-width: 70%;
+                margin: 0px auto 10px auto;
+            }
+            .panel{
+                max-width:600px;
+                background-color: rgba(255,255,255,0.7);
+            }
+            body{
+                background-size: contain;
+            }
+            .form-customerEdit{   
+                max-width: 300px; 
+                margin:100px auto; 
+                padding: 15px;
+                color: #fff;
+            }
+            .P-customerEntry{ 
+                margin-left: 20%;
+                margin-top: 10%;
+                margin-bottom: 0px;
+            }	   
+            @media only screen  
+                and (max-device-width: 736px) { 
+                   .panel{
+                        max-width: 80%;
+                    }
+                }
+            .smooth-corner{
+                border-radius: 10px 10px 10px 10px; 
+                -moz-border-radius: 10px 10px 10px 10px;
+                -webkit-border-radius: 10px 10px 10px 10px;
+                border: 0px solid #000000;
+            }
+            .entryBtn{
+                width: 50%;
+                border-radius: 0;
+            }
+            .entryExp{
+                width: 20%;
+                color: #fff;
+            }
+            .entryTitle{
+                color: rgba(255,223,0,0.95);
+                font-weight: bold;
+                font-size: 64px;
+                margin-top: 30%;
+            }
+            .btn-primary {
+                color: #fff;
+                background-color: rgba(212,175,55,1);
+                border-color: rgba(212,175,55,0.8);
+            }
+            .btn-primary:disabled {
+                color: #fff;
+                background-color: rgba(212,175,55,1);
+                border-color: rgba(212,175,55,0.8);
+            }
+            .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:disabled:hover, .btn-primary.active, .open>.dropdown-toggle.btn-primary{
+                color: #fff;
+                background-color: rgba(212,175,55,1);
+                border-color: rgba(212,175,55,1);
+            }			
+        script.
+            $("#input-id").rating();
+            $("#input-id").rating({min:1, max:10, step:2, size:'lg'});
+    body(style="background-color: rgba(255,255,255,0); text-align: center;")
+        if Customer
+            form(method='post' action='/myCustomer/customerHomeEdit' class="form-customerEdit" )
+                div(style="width=80%")
+                    h3  基本信息
+                        button(class="btn btn-success edit" type="submit") 保存
+                        p(style="font-size: 16px;") 请填写正确的住址，该地址将作为邮寄地址
+                table(class="table")
+                    tbody
+                        tr
+                            td(width="30%")
+                                h4(class="customerInfo-label") 邮箱
+                            td(width="70%")
+                                button(name="email" class="btn btn-default" type="button" disabled="disabled" )= Customer.email
+                        tr
+                            td(width="30%")
+                                h4(class="customerInfo-label") 用户名
+                            td(width="70%")
+                                button(name="id" class="btn btn-default" type="button" disabled="disabled")= Customer.id
+                        tr
+                            td(width="30%")
+                                h4(class="customerInfo-label") 微信
+                            td(width="70%")
+                                if Customer.weChat                            
+                                    input(name="weChat" type="text" class="form-control" id="customerEditWeChat" value= Customer.weChat)= Customer.weChat
+                                else
+                                    input(name="weChat" type="text" class="form-control" id="customerEditWeChat" placeholder="该微信将绑定本账户")
+                        tr
+                            td(width="30%")
+                                h4(class="customerInfo-label") 住址
+                            td(width="70%")
+                                if Customer.address                            
+                                    input(name="address" type="text" class="form-control" id="customerEditAddress" value= Customer.address)=Customer.address
+                                    button(class="btn btn-success edit" type="submit") 添加新地址								
+                                else
+                                    input(name="address" type="text" class="form-control" id="customerEditAddress" placeholder="该输入住址")								
+        else
+            p 页面出错，请返回！
+        footer 
+            script(src='/stylesheets/bootstrap/js/bootstrap.min.js')

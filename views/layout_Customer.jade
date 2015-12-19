@@ -74,15 +74,28 @@ html
          margin:0px auto; 
          padding: 15px
        }
-       .logo-customerEntry{
-         max-width: 330px; 
-         margin:0px auto 20px auto;
-       }
-       .3Btn-customerEntry{
-         max-width: 300px; 
-         margin:0px auto; 
-         padding: 15px
-       }
+       .bg{
+            position: fixed; 
+            top: -50%; 
+            left: -50%; 
+            width: 200%; 
+            height: 200%;
+        }
+        #bg img {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            margin: auto; 
+            min-width: 50%;
+            min-height: 50%;
+        }
+       .3Btn-customerEntry{   
+            max-width: 300px; 
+            margin:0px auto; 
+            padding: 15px;
+        }
        .P-customerEntry{ 
          margin-left: 13px;
        }
@@ -168,25 +181,7 @@ html
     script.
         $("#input-id").rating();
         $("#input-id").rating({min:1, max:10, step:2, size:'lg'});
-  body
-    nav(class='navbar navbar-inverse navbar-fixed-top')
-      .container
-        .navbar-header
-          button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar")
-            span(class="sr-only")= 'Toggle navigation'
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a(class="navbar-brand" href="/myCustomer") <返回买家主页
-        div(id="navbar" class="collapse navbar-collapse")
-          ul(class="nav navbar-nav")
-            li               
-               if session&&session.customer
-                  a(href="/myCustomer/logout")= '登出'
-               else 
-                  a(href="/myCustomer/login")= '登录/注册'
-            li
-                a(href="/myCustomer/customerEntry")= '进入主页'			
+  body		
     .container
      .starter-template(style='padding:40px 0px')
    
