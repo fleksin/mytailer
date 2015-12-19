@@ -36,7 +36,14 @@ Tailer.pushItem = function push(wechat, item, callback){
 	var db = mongoskin.db(url, {native_parser: true});
 	db.collection('tailers').update(
 		{wechat: wechat}, 
-		{$push:{'store.items': item}},
+		{$push:{
+			'store.items': {
+				$each:[item],
+				$sort:{uploadTime: -1}
+				}
+			},
+		 $set:{lastMod : Date.now()}
+		},
 	    function(err, user){
 			if(err) console.dir(err);
 			db.close();

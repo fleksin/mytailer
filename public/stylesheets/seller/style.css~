@@ -19,13 +19,16 @@
 	}
 }
 
+.product{
+	width:48%;
+	margin:1% ;
+	padding:0.5%;
+}
+
 .product,
 .store{
 	background-color: rgba(255,255,255,0.7);
 	position:relative;
-	width:48%;
-	margin:1% ;
-	padding:0.5%;
 }
 
 .product p,
@@ -44,6 +47,23 @@ div.starter-template{
 	width:100%;
 	font-size:200%;
 	bottom: 0px;
+}
+
+div#list{
+	display: none;
+	width:100%;
+	height:100%;
+	top:0;
+	left:0;
+	position: fixed;
+	background:rgba(115,115,115,0.7);
+	z-index: 2
+}
+div#list-inner{
+	width:90%;
+	margin: 20% auto auto;
+	top: 20%;
+    background: rgba(255,255,255, 1)
 }
 
 /*.carousel img{*/

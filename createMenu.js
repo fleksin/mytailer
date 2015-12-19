@@ -13,7 +13,7 @@ var menu = {
 	   {
 	     "type":"view",
 	     "name":"买家入口",
-	     "url":"http://thirdtry.cloudapp.net:3100/mycustomer/login"
+	     "url":"http://thirdtry.cloudapp.net:3100/mycustomer/"
 	   }]
 	   
 	};

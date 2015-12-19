@@ -7,6 +7,7 @@ $(document).ready(function(){
 		}
 		else {
 			$(inputs).attr('readonly', true);
+			$(inputs).val('');
 			$('form button').hide();
 		}
 	});

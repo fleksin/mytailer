@@ -8,10 +8,10 @@ var config={
 };
 var toolkit = require('../myModules/toolkit');
 
-router.use('/',wechat(config,function(req, res, next) {
+router.use('/',wechat(config,wechat.text(function(req, res, next) {
 	if(req.weixin) console.dir(req.weixin);
 	res.reply('under construction');
-}));
+})));
 
 //router.get('/test',function(req, res){
 //	toolkit.corpMsg(function(result){res.send(result)});

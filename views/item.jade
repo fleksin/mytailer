@@ -55,7 +55,7 @@ block content
       div(class='panel-body')
         a(href=item.img)
           img(src= item.preview style='max-width:100%;margin: 0 0 10px;')
-       form(method='post' action='/createPay' class='well' style='margin:2px auto 5px;max-width:96%;')
+       form(method='post' action='/createOrder' class='well' style='margin:2px auto 5px;max-width:96%;')
         input(style='display:none' name='seller' value=seller)
         input(pos='left' name='title' value=item.title)
         input(pos='right' name='price' value=item.price)
@@ -70,6 +70,7 @@ block content
         label 总价：
         input(pos='right' name='total' value=item.price)    
         br
+        input(name='imgurl' value = item.preview style = 'display:none')
         button(type='submit' class='btn btn-success btn-block' ) 确认并付款    
        span(class='btn btn-primary' href='#myCarousel' data-slide='prev' style='width:100%') 返回
    script(src='/javascripts/seller/fixLayout.js')

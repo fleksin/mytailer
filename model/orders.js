@@ -17,7 +17,7 @@ Orders.getAll = function(callback){
 
 Orders.getByWechat = function(wechat,callback){
 	var db = mongoskin.db(url, {native_parser: true});
-	db.collection('orders').find({seller: wechat}).toArray(function(err, orders){
+	db.collection('orders').find({seller: wechat, status:{$gt:0}}).sort({_id:-1}).toArray(function(err, orders){
 		db.close();
 		callback(err, orders);		
 	});
@@ -49,7 +49,34 @@ Orders.create = function(order, callback){
 
 Orders.update = function(query, callback){
 	var db = mongoskin.db(url, {native_parser: true});
-	db.collection('orders').update({orderID:query.orderID}, {$set:{status:query.status}}, 
+	db.collection('orders').update({orderID:query.orderID}, {$set:{status:Number(query.status)}}, 
+		function(err, result){
+			db.close();
+			callback(err, result);		
+	});
+}
+
+//Orders.createList = function(query, callback){
+//	var db = mongoskin.db(url, {native_parser: true});
+//	db.collection('orders').update({orderID:query.orderID}, {$set:{list:query.list}}, 
+//		function(err, result){
+//			db.close();
+//			callback(err, result);		
+//	});
+//}
+
+Orders.updateList = function(query, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('orders').update({orderID:query.orderID}, {$set:{list:query.list}}, 
+		function(err, result){
+			db.close();
+			callback(err, result);		
+	});
+}
+
+Orders.addTrackingNum = function(query, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('orders').update({orderID:query.orderID}, {$set:{trackingNum: query.trackingNum}}, 
 		function(err, result){
 			db.close();
 			callback(err, result);		

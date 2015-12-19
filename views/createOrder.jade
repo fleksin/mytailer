@@ -1,0 +1,35 @@
+extends layout_Customer
+
+block content  
+ link(rel='stylesheet' href='/stylesheets/seller/style.css') 
+ script(src='/javascripts/seller/fixLayout.js')
+ if order
+  div(style='display:block;margin:0 auto;font-size:150%')
+   dl(class='dl-horizontal')
+    dt
+     img(src = order.imgurl style = 'width:20%;height:20%') 
+    dd= order.title
+    dt 卖家：
+    dd= order.seller
+    dt 总价：
+    dd= order.total
+    dt 面料：
+    dd= order.fabric
+    dt 其他选项：
+    dd= order.style
+  label 选择一个地址
+  div(id='address')
+   if session.customer
+    if session.customer.address && session.customer.address.length >0
+     dl
+      for val, index in session.customer.address
+       -var address = val.street + ', ' + val.city + ', ' + val.state + ', ' + val.country +', ' + val.zipcode
+       dt= val.mark
+       dd
+        input(type='radio' name='address' value=address)
+        = address
+  button(id='pay' class='btn-primary' style='margin: 0 auto;display:block') 去付款
+ script(src = '/javascripts/buyer/createOrder.js')
+  
+ 
+   

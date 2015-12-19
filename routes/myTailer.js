@@ -8,16 +8,19 @@ var Item = require('../model/item');
 var Tailer = require('../model/tailer');
 var Orders = require('../model/orders');
 var multer = require('multer');
+var fs = require('fs');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/uploads/' + req.session.user.id)
+	fs.readdir('public/uploads/' + req.session.user.id, function(err, files){
+		if(err) fs.mkdirSync('public/uploads/' + req.session.user.id);
+		cb(null, 'public/uploads/' + req.session.user.id);
+	});    
   },
   filename: function (req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now() + '.png')
   }
 })
 var upload = multer({storage: storage});
-var fs = require('fs');
 var util = require('util');
 var toolkit = require('../myModules/toolkit');
 var gm = require('gm');
@@ -298,7 +301,7 @@ router.get('/myorders',function(req,res){
 	//console.log(wechat);
 	Orders.getByWechat(wechat, function(err,orders){
 		//console.dir(orders);
-		res.render('myOrders', {orders: orders});
+		res.render('myOrders', {orders: orders, status: toolkit.OrderStatus, opt:toolkit.sellerOpt});
 	});
 })
 
@@ -359,7 +362,7 @@ router.post('/placeOrder', function(req, res){
 	for(var key in req.body){
 		order[key] = req.body[key];
 	}
-	console.log(order);
+	//console.log(order);
 	res.end();
 });
 
@@ -382,6 +385,8 @@ router.get('/returnUrl', function(req, res){
     		console.log("Get Payment Response");
 			var openid_cus = req.session.customer.openid;
 			var seller = req.session.order[0].seller;
+			var orderID = req.session.order[0].orderID;
+			Orders.update({orderID: orderID, status :1}, function(){});
 			Tailer.get(seller,function(err, tailer){
 				var openid_tai = tailer[0].openid;
 				toolkit.sendTaiTem(openid_tai);
@@ -395,30 +400,36 @@ router.get('/returnUrl', function(req, res){
 });
 
 router.post('/createPay', function(req, res){
-	var name = req.params.name;
-	var uploadTime = req.params.uploadTime;
-	if(!req.session.customer){
-		req.session.dest = null;
-		req.session.dest = req.session.lastview;
-		res.redirect('/mycustomer/login');
-		return;
-	}
-	var price = parseFloat(req.body.price).toFixed(2);
-	var total = parseFloat(req.body.total).toFixed(2);
-	var title = req.body.title;
-	var order = {
-		buyer: req.session.customer.email,
-		createDate: new Date(),
-		seller: req.body.seller,
-		title: title,
-		price: price,
-		pricePlus: req.body.pricePlus,
-		total: total,
-		fabric: req.body.fabric,
-		orderID: req.session.customer.email+Date.now()+req.body.seller,
-		status:0
-	};
-	req.session.order = [{seller: req.body.seller}];
+//	var name = req.params.name;
+//	var uploadTime = req.params.uploadTime;
+//	if(!req.session.customer){
+//		req.session.dest = null;
+//		req.session.dest = req.session.lastview;
+//		res.redirect('/mycustomer/login');
+//		return;
+//	}
+    //req.session.order[0].address = req.body.address;
+	var order = req.session.order[0];
+	var price = req.session.order[0].price;
+	var total = req.session.order[0].total;
+	var title = req.session.order[0].title;
+	order.address = req.body.address;
+	order.createDate = new Date();
+	//order.buyerWechat = req.session.customer.wechat;
+	
+//	var order = {
+//		buyer: req.session.customer.email,
+//		createDate: new Date(),
+//		seller: req.body.seller,
+//		title: title,
+//		price: price,
+//		pricePlus: req.body.pricePlus,
+//		total: total,
+//		fabric: req.body.fabric,
+//		orderID: req.session.customer.email+Date.now()+req.body.seller,
+//		status:0
+//	};
+//	req.session.order = [{seller: req.body.seller}];
 	console.log('total: ' + total);
 	console.log('price: ' + price);
 	var create_payment_json = {
@@ -456,6 +467,7 @@ router.post('/createPay', function(req, res){
         console.log(error.response);
 		res.send(error.response);
     } else {
+		console.log(order);
 		Orders.create(order, function(){});
 		var i = 0;
         for (var index = 0; index < payment.links.length; index++) {
@@ -464,9 +476,64 @@ router.post('/createPay', function(req, res){
                 i = index;
             }
         }
-		res.redirect(payment.links[i].href);
+        var data = {url:payment.links[i].href};
+		//console.log(data);
+		res.send(data);
     }
   });
+});
+
+router.post('/createOrder', function(req, res){
+	var name = req.params.name;
+	var uploadTime = req.params.uploadTime;
+	console.log(req.session.customer);
+	if(!req.session.customer){
+		req.session.dest = null;
+		req.session.dest = req.session.lastview;
+		res.redirect('/mycustomer/login');
+		return;
+	}
+	var price = parseFloat(req.body.price).toFixed(2);
+	var total = parseFloat(req.body.total).toFixed(2);
+	var title = req.body.title;
+	var order = {
+		buyer: req.session.customer.email,
+		//createDate: new Date(),
+		seller: req.body.seller,
+		title: title,
+		price: price,
+		fabricPrice: req.body.fabricPrice,
+		total: total,
+		fabric: req.body.fabric,
+		orderID: req.session.customer.email+Date.now()+req.body.seller,
+		imgurl: req.body.imgurl,
+        style: req.body.style,
+		stylePrice: req.body.stylePrice,
+		status:0,
+        buyerWechat: req.session.customer.weChat
+	};
+	req.session.order = [order];
+	res.render('createOrder', {order:order});
+});
+
+router.post('/createList',function(req, res){
+	var query = {
+		orderID:req.body.orderID,
+		list:JSON.parse(req.body.list)
+	};
+	Orders.updateList(query, function(err,result){
+		res.send(result);
+	})
+})
+
+router.post('/updateOrder', function(req,res){
+	var query = {
+		orderID: req.body.orderID,
+		status: req.body.status
+	};
+	Orders.update(query,function(err, result){
+		res.send(result);
+	})
 });
 
 module.exports = router;

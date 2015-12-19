@@ -42,7 +42,7 @@ block content
      踝围
      br
      div(id='list-option')
-      a(id='add' class='glyphicon glyphicon-plus')
+      button(id='add' class='glyphicon glyphicon-plus')
      button(type='submit') 提交
   if orders
    div(id='myCarousel' class="carousel slide" data-interval = 'false')
