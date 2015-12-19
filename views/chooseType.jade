@@ -1,47 +1,90 @@
-extends layout_Customer
-
-block content
-  div(class="logo-costumerEntry")
-    table(width="100%" height="150px")
-        tbody
-            tr
-                td(style="border-bottom: 3px solid #EEE; text-align: center; font-size: 40px" width="20%")
-                    p 选
-                    p 择
-                td(swidth="60%")
-                    img(src="/images/typeChooseThinking2.gif" width="100%" height="100%")
-                td(style="border-bottom: 3px solid #EEE; text-align: center; font-size: 40px" width="20%")
-                    p 哪
-                    p 款
-    table(style="margin: 0 auto;")
-        tbody
-            tr(height="150px")
-                td(class="choiceTdLeftImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
-                    img(src='/images/choicexizhuang1.jpeg' alt="西装" height="170px" width="100%")
-                td(class="choiceTdRightImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
-                    img(src='/images/choiceqipao1.jpg' alt="旗袍" height="170px" width="100%")
-            tr(height="30px")
-                td(class="choiceTdLeft" style="background-color:#ffff4d" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
-                    西装
-                td(class="choiceTdRight" style="background-color:#66ffff" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
-                    旗袍
-            tr(height="150px")
-                td(class="choiceTdLeftImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
-                    img(src='/images/choiceDayi1.jpg' alt="大衣" height="170px" width="100%")
-                td(class="choiceTdRightImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
-                    img(src='/images/choiceYangmaoshan1.jpg' alt="羊毛衫" height="170px" width="100%")
-            tr(height="30px")
-                td(class="choiceTdLeft" style="background-color:#ff6666" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
-                    大衣
-                td(class="choiceTdRight" style="background-color:#9fff80" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
-                    羊毛衫
-            tr(height="150px")
-                td(class="choiceTdLeftImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/suit'")
-                    img(src='/images/choiceShizhuang1.jpg' alt="时装" height="170px" width="100%")
-                td(class="choiceTdRightImg" width="50%" onclick="location.href='http://thirdtry.cloudapp.net:3100/cata/cheongsam'")
-                    img(src='/images/choiceAll.jpg' alt="啥都要" height="170px" width="100%")
-            tr(height="30px")
-                td(class="choiceTdLeftBottom" style="background-color:#8080ff" width="50%" onclick="location.href='/login'")
-                    时装
-                td(class="choiceTdRightBottom" style="background-color:#ffa366" width="50%" onclick="location.href='/login'")
-                    啥都要					
+doctype html
+html
+    head
+        title= 'MyTailer'
+        link(rel='stylesheet', href='/stylesheets/bootstrap/css/bootstrap.min.css')
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        script(src='/javascripts/jquery-2.1.4.js')
+        style.
+            html{ 
+                background: url(/images/cEntryBg2.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+            .alert{
+                max-width: 70%;
+                margin: 0px auto 10px auto;
+            }
+            .panel{
+                max-width:600px;
+                background-color: rgba(255,255,255,0.7);
+            }
+            body{
+                background-size: contain;
+            }
+            .3Btn-customerEntry{   
+                max-width: 300px; 
+                margin:100px auto; 
+                padding: 15px;
+            }
+            .P-customerEntry{ 
+                margin-left: 20%;
+                margin-top: 10%;
+            }	   
+            @media only screen  
+                and (max-device-width: 736px) { 
+                   .panel{
+                        max-width: 80%;
+                    }
+                }
+            .smooth-corner{
+                border-radius: 10px 10px 10px 10px; 
+                -moz-border-radius: 10px 10px 10px 10px;
+                -webkit-border-radius: 10px 10px 10px 10px;
+                border: 0px solid #000000;
+            }
+            .choiceBtn{
+                width: 35%;
+                border-radius: 0;
+            }
+            .choiceTitle{
+                color: rgba(237,233,169,0.95);
+                font-weight: bold;
+                font-size: 64px;
+                margin-top: 30%;
+            }
+            .btn-primary {
+                color: #fff;
+                background-color: rgba(212,175,55,0.7);
+                border-color: rgba(212,175,55,0.8);
+            }
+            .btn-primary:disabled {
+                color: #fff;
+                background-color: rgba(212,175,55,0.7);
+                border-color: rgba(212,175,55,0.8);
+            }
+            .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:disabled:hover, .btn-primary.active, .open>.dropdown-toggle.btn-primary{
+                color: #fff;
+                background-color: rgba(212,175,55,1);
+                border-color: rgba(212,175,55,1);
+            }           
+        script.
+            $("#input-id").rating();
+            $("#input-id").rating({min:1, max:10, step:2, size:'lg'});
+    body(style="background-color: rgba(255,255,255,0); text-align: center;")  
+        div(class="3Btn-customerEntry")
+            h3(class="choiceTitle")
+                款式选择
+            p(style="margin-top: 10%")
+            a(href="http://thirdtry.cloudapp.net:3100/cata/suit" class="choiceBtn btn btn-primary btn-lg " role="button") 西&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp装
+            a(style="margin-left:10%;" href="http://thirdtry.cloudapp.net:3100/cata/cheongsam" class="choiceBtn btn btn-primary btn-lg " role="button") 旗&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp袍	
+            p(style="margin-top: 10%")
+            a(href="http://thirdtry.cloudapp.net:3100/cata/suit" class="choiceBtn btn btn-primary btn-lg " role="button") 大&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp衣
+            a(style="margin-left:10%;" href="http://thirdtry.cloudapp.net:3100/cata/suit" class="choiceBtn btn btn-primary btn-lg " role="button") 羊&nbsp&nbsp毛&nbsp&nbsp衫
+            p(style="margin-top: 10%")
+            a(href="http://thirdtry.cloudapp.net:3100/cata/suit" class="choiceBtn btn btn-primary btn-lg " role="button") 时&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp装
+            a(style="margin-left:10%;" href="http://thirdtry.cloudapp.net:3100/cata/suit" class="choiceBtn btn btn-primary btn-lg " role="button") 都&nbsp&nbsp看&nbsp&nbsp看			
+        footer 
+            script(src='/stylesheets/bootstrap/js/bootstrap.min.js')

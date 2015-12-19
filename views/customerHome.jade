@@ -35,34 +35,10 @@ block content
                                     button(name="weChat" class="btn btn-primary" type="button")= Data.customer.weChat
                         tr
                             td(width="30%")
-                                h4(name="apt" class="customerInfo-label") 住宅
+                                h4(name="address" class="customerInfo-label") 住址
                             td(width="70%")
-                                if Data.customer.apt                            
-                                    button(name="apt" class="btn btn-primary" type="button")= Data.customer.apt
-                        tr
-                            td(width="30%")
-                                h4(name="street" class="customerInfo-label") 街道
-                            td(width="70%")
-                                if Data.customer.street                            
-                                    button(name="street" class="btn btn-primary" type="button")= Data.customer.street
-                        tr
-                            td(width="30%")
-                                h4(name="city" class="customerInfo-label") 市县
-                            td(width="70%")
-                                if Data.customer.city                            
-                                    button(name="city" class="btn btn-primary" type="button")= Data.customer.city
-                        tr
-                            td(width="30%")
-                                h4(name="state" class="customerInfo-label") 省
-                            td(width="70%")
-                                if Data.customer.state                            
-                                    button(name="state" class="btn btn-primary" type="button")= Data.customer.state
-                        tr
-                            td(width="30%")
-                                h4(name="country" class="customerInfo-label") 国家
-                            td(width="70%")
-                                if Data.customer.country                            
-                                    button(name="country" class="btn btn-primary" type="button")= Data.customer.country
+                                if Data.customer.address                            
+                                    h5=Data.customer.address
         p
         form(class="form-customerHome" )
             div
@@ -78,6 +54,8 @@ block content
                 h3  我的美秀
                     &nbsp&nbsp
                     button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#showInfo" aria-expanded="false" aria-controls="showInfo" onClick="showShowList()") 展开
+                    &nbsp&nbsp&nbsp
+                    button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#billInfo" aria-expanded="false" aria-controls="billInfo" onClick="showBillList()") 晒照
             div(class="collapse" id="showInfo")                
                 div(id="showList" class="container")
 
@@ -92,8 +70,11 @@ block content
                     listOutput += '<td width="70%"><h5 class="customerInfo-label" width="100%"><b>卖家：</b>'+ data["orders"][i-1].seller;
                     listOutput += '<br/><b>价钱：</b>'+ data["orders"][i-1].price;
                     listOutput += '<br/><b>订单：</b><a href="/myCustomer/showOrderForCustomer?orderID='+ data["orders"][i-1].orderID +'">'+ data["orders"][i-1].orderID + '</a></h5></td>';
-                    if("#{Data.orders[0].status}" == "买家已付款"){
-                        listOutput += '<td width="22%"><h5 class="customerInfo-label"><a href="/myCustomer/myShow">#{Data.orders[0].status}</a></h5></td></tr>';
+                    if("#{Data.orders[0].status}" == "5"){
+                        listOutput += '<td width="22%"><h5 class="customerInfo-label"><a href="/myCustomer/myShow">买家已确认收货</a></h5></td></tr>';
+                    }
+                    else if("#{Data.orders[0].status}" == "1"){
+                        listOutput += '<td width="22%"><h5 class="customerInfo-label">买家已付款</h5></td></tr>';
                     }
                     else{
                         listOutput += '<td width="22%"><h5 class="customerInfo-label">#{Data.orders[0].status}</h5></td></tr>';

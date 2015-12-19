@@ -35,6 +35,9 @@ function checkFields(model) {
 
 
 router.get('/',function(req, res) {
+    if(req.session.customer == null){
+        res.redirect('/myCustomer/login');
+	}
 	Orders.getByBuyer(req.session.customer.email, function(err, order){
         var data = {
             customer: req.session.customer,
@@ -134,25 +137,33 @@ router.post('/signup', function(req, res){
 	console.log('in myTailer.js: ');
 	
 	if(req.body.pw !== req.body.pwrepeat){
-		console.log('not the same pw');
-		
+		console.log('not the same pw');		
 		req.flash('error', 'Repeat Password is not the same as the other one');
 		//req.session.email = req.body.email;
 		res.redirect('/myCustomer/signup');
 	}
 	else{
 		console.log('will add new customer');
-		var newCustomer = new customer({
-			email: req.body.email,
-			password: password,
-            id: req.body.id
-		});
-		req.session.customer = newCustomer;
-		newCustomer.save();
-		
-		//req.flash('success', 'You are good to go!');
-		req.session.email = null;
-		res.redirect('/myCustomer');
+		customer.get(req.body.email, function(err, Customer){
+			if(Customer){
+			    console.log('haha');
+				req.flash('error', '用户名重复');
+				res.redirect('/myCustomer/signup');	
+			}
+			else{
+				var newCustomer = new customer({
+					email: req.body.email,
+					password: password,
+					id: req.body.id
+				});
+				req.session.customer = newCustomer;
+				newCustomer.save();
+				
+				//req.flash('success', 'You are good to go!');
+				req.session.email = null;
+				res.redirect('/myCustomer');
+			}
+		});	
 	}
 	
 });
@@ -161,20 +172,12 @@ router.post('/customerHomeEdit', function(req, res){
 	customer.edit({
         email: req.session.customer.email,
 		weChat: req.body.weChat,
-        apt: req.body.apt,
-        street: req.body.street,
-        city: req.body.city,
-        state: req.body.state,
-        country: req.body.country		
+        address: req.body.apt	
     });	
 	customer.get(req.session.customer.email, function(err, CustomerInDB){
 		req.session.customer = CustomerInDB;
 		req.session.customer.weChat = req.body.weChat;
-		req.session.customer.apt = req.body.apt;
-		req.session.customer.street = req.body.street;
-		req.session.customer.city = req.body.city;
-		req.session.customer.state = req.body.state;
-		req.session.customer.country = req.body.country;
+		req.session.customer.address = req.body.address;
         res.redirect('/myCustomer');	
 	});		
 });

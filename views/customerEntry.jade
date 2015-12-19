@@ -1,47 +1,118 @@
-extends layout_Customer
-
-block content
-  div(class="logo-customerEntry")
-    img(src='/images/entryLogo.jpg' alt="logo" class="img-rounded" height="100%" width="100%")  
-  div(class="3Btn-customerEntry")
-    p(class="P-customerEntry")
-        a(href="/myCustomer/chooseType" class="entryBtn btn btn-primary btn-lg" role="button") 逛裁缝铺
-        button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal1") 说明
-        //Modal
-        div(class="modal fade" id="myModal1" role="dialog")
-            div(class="modal-dialog")
-            //Modal content
-            div(class="modal-content")
-                div(class="modal-header")
-                    button(type="button" class="close" data-dismiss="modal")&times
-                    h4(class="modal-title")裁缝铺
-                div(class="modal-body")
-                    p   您可以从各式各样的裁缝铺中挑选您中意的款式，然后通过沟通，裁缝可以根据您的需求，做出最大限度的修改，定制出为您量身打造的服装
-    p(class="P-customerEntry")
-        button(class="entryBtn btn btn-primary btn-lg" disabled="disabled") 逛设计师店
-        button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal2") 说明
-        //Modal
-        div(class="modal fade" id="myModal2" role="dialog")
-            div(class="modal-dialog")
-            //Modal content
-            div(class="modal-content")
-                div(class="modal-header")
-                    button(type="button" class="close" data-dismiss="modal")&times
-                    h4(class="modal-title")设计师店（功能开发中）
-                div(class="modal-body")
-                    p   您可以浏览到各个出色设计师晒出的特制款式服装，但是设计师款的服装可以接受的修改选项相对较少
-    p(class="P-customerEntry")
-        button(class="entryBtn btn btn-primary btn-lg" disabled="disabled") 我有设计图
-        button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal3") 说明
-        //Modal
-        div(class="modal fade" id="myModal3" role="dialog")
-            div(class="modal-dialog")
-            //Modal content
-            div(class="modal-content")
-                div(class="modal-header")
-                    button(type="button" class="close" data-dismiss="modal")&times
-                    h4(class="modal-title")我有设计图（功能开发中）
-                div(class="modal-body")
-                    p   上传自己精心设计或者心怡的款式图片，我们将为您寻找出色的裁缝将其变为现实
-    script.
-        document.body.style.backgroundColor = "black";
+doctype html
+html
+    head
+        title= 'MyTailer'
+        link(rel='stylesheet', href='/stylesheets/bootstrap/css/bootstrap.min.css')
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        script(src='/javascripts/jquery-2.1.4.js')
+        style.
+            html{ 
+                background: url(/images/cEntryBg3.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+            .alert{
+                max-width: 70%;
+                margin: 0px auto 10px auto;
+            }
+            .panel{
+                max-width:600px;
+                background-color: rgba(255,255,255,0.7);
+            }
+            body{
+                background-size: contain;
+            }
+            .P-customerEntry{ 
+                margin-left: 16%;
+                margin-top: 10%;
+                margin-bottom: 0px;
+            }	   
+            @media only screen  
+                and (max-device-width: 736px) { 
+                   .panel{
+                        max-width: 80%;
+                    }
+                }
+            .smooth-corner{
+                border-radius: 10px 10px 10px 10px; 
+                -moz-border-radius: 10px 10px 10px 10px;
+                -webkit-border-radius: 10px 10px 10px 10px;
+                border: 0px solid #000000;
+            }
+            .entryBtn{
+                width: 50%;
+                border-radius: 0;
+            }
+            .entryExp{
+                width: 20%;
+                color: #fff;
+            }
+            .entryTitle{
+                color: rgba(255,223,0,0.95);
+                font-weight: bold;
+                font-size: 64px;
+                margin-top: 30%;
+            }
+            .btn-primary {
+                color: #fff;
+                background-color: rgba(212,175,55,0.7);
+                border-color: rgba(212,175,55,0.8);
+            }
+            .btn-primary:disabled {
+                color: #fff;
+                background-color: rgba(212,175,55,0.8);
+                border-color: rgba(212,175,55,0.8);
+            }
+            .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:disabled:hover, .btn-primary.active, .open>.dropdown-toggle.btn-primary{
+                color: #fff;
+                background-color: rgba(212,175,55,1);
+                border-color: rgba(212,175,55,1);
+            }			
+        script.
+            $("#input-id").rating();
+            $("#input-id").rating({min:1, max:10, step:2, size:'lg'});
+    body(style="background-color: rgba(255,255,255,0); text-align: center;")  
+        div(class="3Btn-customerEntry" style="margin-top: 73%;")
+            p(class="P-customerEntry")
+                a(href="/myCustomer/chooseType" class="entryBtn btn btn-primary btn-lg " role="button") 逛裁缝铺
+                button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal1") 说明
+            //Modal
+            div(class="modal fade" id="myModal1" role="dialog")
+                div(class="modal-dialog")
+                //Modal content
+                div(class="modal-content")
+                    div(class="modal-header")
+                        button(type="button" class="close" data-dismiss="modal")&times
+                        h4(class="modal-title")裁缝铺
+                    div(class="modal-body")
+                        p   您可以从各式各样的裁缝铺中挑选您中意的款式，然后通过沟通，裁缝可以根据您的需求，做出最大限度的修改，定制出为您量身打造的服装
+            p(class="P-customerEntry")
+                button(class="entryBtn btn btn-primary btn-lg" disabled="disabled") 逛设计师店
+                button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal2") 说明
+            div(class="modal fade" id="myModal2" role="dialog")
+                div(class="modal-dialog")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        button(type="button" class="close" data-dismiss="modal")&times
+                        h4(class="modal-title")设计师店（功能开发中）
+                    div(class="modal-body")
+                        p   您可以浏览到各个出色设计师晒出的特制款式服装，但是设计师款的服装可以接受的修改选项相对较少
+            p(style="color: rgba(212,175,55,1); margin-bottom:0px;")
+                即&nbsp&nbsp&nbsp将&nbsp&nbsp&nbsp推&nbsp&nbsp&nbsp出
+            p(class="P-customerEntry" style="margin-top: 6%;")
+                button(class="entryBtn btn btn-primary btn-lg" disabled="disabled") 我有设计图
+                button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal3") 说明
+            div(class="modal fade" id="myModal3" role="dialog")
+                div(class="modal-dialog")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        button(type="button" class="close" data-dismiss="modal")&times
+                        h4(class="modal-title")我有设计图（功能开发中）
+                    div(class="modal-body")
+                        p   上传自己精心设计或者心怡的款式图片，我们将为您寻找出色的裁缝将其变为现实
+            p(style="color: rgba(212,175,55,1);")
+                即&nbsp&nbsp&nbsp将&nbsp&nbsp&nbsp推&nbsp&nbsp&nbsp出
+        footer 
+            script(src='/stylesheets/bootstrap/js/bootstrap.min.js')
