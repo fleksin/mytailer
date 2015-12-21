@@ -27,6 +27,7 @@ Orders.getByID = function(ID, callback){
 	var db = mongoskin.db(url, {native_parser: true});
 	db.collection('orders').find({orderID: ID}).toArray(function(err, orders){
 		db.close();
+		//console.log(orders);
 		callback(err, orders[0]);		
 	});
 }

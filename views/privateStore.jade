@@ -7,11 +7,15 @@ block content
     button(class='btn btn-primary btn-xs' type = 'submit' style='display: none;float:right;margin:0 20px 10px') 保存
     a(id='edit' class='glyphicon glyphicon-pencil' style='float:right')
     lable 店铺名称:
-    input(id='name' name='name' style='text-align:center' class='form-control' readonly='true' placeholder=session.user.store.name)
+    input(id='name' name='name' style='text-align:center' class='form-control' readonly='true' placeholder='暂无' value=session.user.store.name)
     lable 店铺描述:
-    input(id='description' name='description' style='text-align:center' class='form-control' readonly='true' placeholder=session.user.store.description)
+    input(id='description' name='description' style='text-align:center' class='form-control' readonly='true' placeholder='暂无' value=session.user.store.description)
     lable 商品类型:
-    input(id='description' name='catag' style='text-align:center' class='form-control' readonly='true' placeholder=session.user.catag)
+    div(id='catag-area' catag = JSON.stringify(session.user.catag))
+     div(class='unlock')
+       each val, index in enToch
+        input(type='checkbox' onclick='return false' value=index)
+        = val
    a(href='/myorders')
     button(class='btn btn-success' style='margin:0px auto 30px;display:block;width:50%' ) 查看订单
    a(href = '/upload')

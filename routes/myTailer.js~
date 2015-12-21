@@ -203,7 +203,7 @@ router.get('/privateStore', function(req, res){
 	if(!req.session.user) {res.redirect('/loginM'); return;}
 	Tailer.get(req.session.user.wechat, function(err, userprofile){
 		req.session.user = userprofile[0];
-		res.render('privateStore', {private:true});
+		res.render('privateStore', {private:true, enToch: toolkit.catag_enToch});
 	})
 });
 
@@ -280,6 +280,8 @@ router.get('/checkName/:name', function(req, res){
 
 router.post('/updateStore', function(req,res){
 	var profile = req.body;		
+    profile.catag = req.body['catag[]'];
+	console.log(profile);
 	profile.wechat = req.session.user.wechat;
 	//console.log(profile);	
 	Tailer.updateStore(profile, function(success){
@@ -517,12 +519,14 @@ router.post('/createOrder', function(req, res){
 });
 
 router.post('/createList',function(req, res){
+    console.log(req.body.list);
 	var query = {
 		orderID:req.body.orderID,
 		list:JSON.parse(req.body.list)
 	};
-	console.log(query);
+    console.log(query);
 	Orders.updateList(query, function(err,result){
+		console.log(result);
 		res.send(result);
 	})
 })
@@ -537,4 +541,13 @@ router.post('/updateOrder', function(req,res){
 	})
 });
 
+router.get('/list/:orderID', function(req, res){
+	var orderID = req.params.orderID;
+	Orders.getByID(orderID, function(err, result){
+		//console.log(orderID);
+		var list = result.list;
+        var status = result.status;
+		res.render('bodydata',{orderID: orderID, list: list});
+	});
+});
 module.exports = router;

@@ -3,21 +3,15 @@ html
   head
     title= 'MyTailer'
     link(rel='stylesheet', href='/stylesheets/bootstrap/css/bootstrap.min.css')
-    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1" charset = 'utf-8')
     script(src='/javascripts/jquery-2.1.4.js')
+    script(src='/stylesheets/bootstrap/js/bootstrap.min.js')
     style.
-       .panel{
-          max-width:600px;
-          background-color: rgba(255,255,255,0.7);
-       }
+       
        .alert{
           max-width: 70%;
           margin: 0px auto 10px auto;
         }
-       body{
-         background:url('/images/fabric.jpg');
-         background-size: contain;
-       }
        form{
          background: rgba(235,235,235,0.7);		 
          border-radius: 10px 10px 10px 10px;
@@ -28,12 +22,7 @@ html
          margin:0px auto; 
          padding: 15px
        }
-       @media only screen  
-          and (max-device-width: 736px) { 
-               .panel{
-                  max-width: 80%;
-            }
-       }
+       
        .smooth-corner{
            border-radius: 10px 10px 10px 10px; 
            -moz-border-radius: 10px 10px 10px 10px;
@@ -52,19 +41,17 @@ html
             span.icon-bar
           a(class="navbar-brand" href="/") My Tailer
         div(id="navbar" class="collapse navbar-collapse")
-          ul(class="nav navbar-nav")
-            li(class="active")
-               a(href="/upload")= 'Post Your Design!'
+          ul(class="nav navbar-nav")           
             li               
                if session&&session.user
                   a(href="/logout")= 'Log Out'
                else 
-                  a(href="/login")= 'Log In/Sign Up'
+                  a(href="/loginM")= 'Log In/Sign Up'
             li(style='color:white;') 
                 if session&&session.user
-                   a(href='/store')= session.user.id
+                   a(href='/privateStore')= session.user.id
                 else 
-                   = 'Hey New Guy!'
+                   a= 'Hey New Guy!'
     .container
      .starter-template(style='padding:40px 0px')
    
@@ -76,6 +63,4 @@ html
         - session.flash = null
     block content    
     
-    footer 
-      //p= JSON.stringify(session)
-      script(src='/stylesheets/bootstrap/js/bootstrap.min.js')
+    footer     

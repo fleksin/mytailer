@@ -1,0 +1,35 @@
+extends layout_Customer
+
+block content
+ if status < 2
+  form(orderID = orderID)
+   for val, index in list
+     = index + ':'
+     input(class='form-control' type='text' name=index value = val)
+     br
+   button(type='submit') 提交
+ else 
+   = 卖家已经开始制作无法修改
+ script.
+  $(document).ready(function(){
+     $('form').submit(function(event){
+        event.preventDefault();
+        var inputs = $('input').toArray();
+        var data = {};
+        for(var i in inputs){
+           var key = $(inputs[i]).attr('name');
+           var value = $(inputs[i]).val();
+           data[key] = value;
+        }
+        console.log(data);
+        var query = {
+           orderID: $('form').attr('orderID'),
+           list : JSON.stringify(data)
+        };
+        console.log(query);
+        $.post('/createList', query, function(res){
+          if(res.ok == 1) $('body').html('已完成');
+          else $('body').html('出错');
+        })
+     })
+  })

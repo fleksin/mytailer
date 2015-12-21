@@ -123,7 +123,7 @@ Tailer.updateStore = function(profile, callback){
 	var db = mongoskin.db(url, {native_parser: true});	
 	db.collection('tailers').update(
 		{wechat: profile.wechat},
-		{$set:{'store.name':profile.name, 'store.description': profile.description}},
+		{$set:{'store.name':profile.name, 'store.description': profile.description, catag: profile.catag}},
 		function(err,result){
 			db.close();
 			if(err) callback(false);

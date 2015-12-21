@@ -1,11 +1,19 @@
 @media only screen 
 	and (max-device-width: 736px) { 
-	.fullsize,	
 	.store{
 		max-width: 100%;
 		margin:0px auto 5px;
 		padding:1%;
-	}		
+/*        color:rgba(237,233,169,1)*/
+	}	
+    .fullsize{
+		max-width: 100%;
+		margin:0px auto 5px;
+		padding:0
+	}	
+	.panel{
+          max-width: 80%;
+    }
 }
 
 @media only screen  
@@ -49,6 +57,12 @@ div.starter-template{
 	bottom: 0px;
 }
 
+.append-bottom{
+	text-align: center;
+	font-size: 150%;
+	font-weight:120
+}
+
 div#list{
 	display: none;
 	width:100%;
@@ -63,17 +77,91 @@ div#list-inner{
 	width:90%;
 	margin: 20% auto auto;
 	top: 20%;
-    background: rgba(255,255,255, 1)
+    background: rgba(255,255,255,1)
 }
 
 #list dl{
 	padding: 5%;
 }
-/*.carousel img{*/
-/*	max-height:250px;*/
-/*	width: 100%;*/
-/*}*/
 
-/*.carousel {*/
-/*	margin-bottom: 50px;*/
-/*}*/
+.store-inner{
+	padding:2%;
+	display:flex;
+	display:-webkit-flex;
+	height: 340px;
+}
+.store-innerRight{
+	display:flex;
+	display:-webkit-flex;
+	-webkit-flex-direction:column;
+	width:30%;
+	flex-direction:column;
+	margin-left:2%;
+}
+.store-innerLeft{
+	margin:0;
+	width:70%;
+    background-repeat:no-repeat;
+	background-size: 100%;
+}
+
+.store-innerRight .item{
+	height:170px;
+	margin:0px 0px 2px;
+	background-repeat:no-repeat;
+	background-size:auto 100%;
+}
+
+.gold-bg{
+	background: rgba(237,233,169,0.7);
+}
+.well{
+	color:black;
+	background: rgba(255,255,255, 0.7);
+	font-size:80%;
+	padding:5px;
+}
+body{
+	background-repeat: no-repeat;
+	background-size:cover
+}
+.panel-title{
+	background:transparent;
+	text-align:center;
+}
+
+input[pos='right']{
+    width:50%;
+    float:right;
+    text-align:right;
+}
+
+input[pos='left']{
+    width:50%;
+    float:left;
+    text-align:left;
+}
+
+.item .item-img{
+	background-repeat: no-repeat;
+	background-size: 100%;
+	width:100%;
+	height:300px;
+}
+
+.border-bottom{
+	border-bottom: thin solid white
+}
+
+.panel{
+	max-width:600px;
+	background-color: rgba(255,255,255,0.7);
+}
+
+
+.smooth-corner{
+	border-radius: 10px 10px 10px 10px; 
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border: 0px solid #000000;
+}

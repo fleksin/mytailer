@@ -1,6 +1,6 @@
 extends layout_Customer
 
-block content 
+block content   
  div(class='carousel slide' id='carousel-example-generic' data-ride='carousel')
   ol(class="carousel-indicators")
    li(class="active" data-target="#carousel-example-generic" data-slide-to="0")
@@ -19,24 +19,24 @@ block content
    a(class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next")
     span(class="glyphicon glyphicon-chevron-right" aria-hidden="true")
     span(class="sr-only") Next
- div(style='height:50px;background:white')
+ div()
   link(rel='stylesheet' href='/stylesheets/seller/style.css') 
   if data
     - console.log(data)
    for el in data
-    if el.store&&el.store.items
+    if el.store&&el.store.items&&el.store.items.length >0
      -var link = "window.location.href='/store/" + el.wechat + "'"
      div(class='store' onclick=link)
-       div(style='padding:2%;display:flex;display:-webkit-flex')
-         img(src= el.store.items[0].preview style='margin:0;width:70%;height:70%')
+       div(class='store-inner')
+         div(class='store-innerLeft' src= el.store.items[0].preview style="background-image:url('" + el.store.items[0].preview + "')")
          //p(class='well')= el.store.description  
-         div(id='moreItem' style='display:flex;display:-webkit-flex;-webkit-flex-direction:column;max-width:30%;flex-direction:column;margin-left:2%')
+         div(class = 'store-innerRight')
           if(el.store.items)
             -var i = 1
             each val, index in el.store.items
-              if(index > 0 && index <=3)
-               img(src=val.preview style='width:100%;margin:0 0px 2px')
-        div(class="float-bottom")= el.store.name
+              if(index > 0 && index <=2)
+               div(class='item' src=val.preview style="background-image:url('" +val.preview  + "')")
+        div(class="append-bottom gold-bg")= el.store.name
   else
     p Oops cannot find anything, Try again!
   script(src='/javascripts/seller/fixLayout.js')

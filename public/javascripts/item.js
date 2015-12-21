@@ -1,4 +1,6 @@
 function fillForm(){
+	console.log('!');
+	//$('form').show();
 	var fabric = $("input[name='fabric']:checked");
 	var style = $("input[name='style']:checked");
 	if(fabric.val()){
@@ -18,6 +20,7 @@ function fillForm(){
 }
 
 $(document).ready(function(){
+	$('form').hide();
 	$('input').prop('readonly', true);
 	$('button#next').click(fillForm);
     $('form').submit(null);

@@ -171,4 +171,5 @@ exports.sendTaiTem = function(openid){
 
 exports.OrderStatus = ['买家未付款','买家已付款','卖家正在制作','卖家已发货','买家确认收货','买家已评价']
 exports.sellerOpt = ['','开始制作','发货','','','']
+exports.catag_enToch = {'suit': '西装', 'sweater':'羊毛衫', 'cheongsam':'旗袍', 'fashion':'时装', 'coat':'大衣'}
 

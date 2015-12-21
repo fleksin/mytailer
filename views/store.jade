@@ -4,14 +4,14 @@ block content
  link(rel='stylesheet' href='/stylesheets/seller/style.css') 
  p(style='text-align:center;font-size:200%;padding:10px 0 0')= 'Welcome to '+ storename
  if items
-  div(style='display:flex;display:-webkit-flex;flex:1;-webkit-flex:1;flex-wrap:wrap;-webkit-flex-wrap:wrap;background:white;padding:1%') 
+  div(style='display:flex;display:-webkit-flex;flex:1;-webkit-flex:1;flex-wrap:wrap;-webkit-flex-wrap:wrap;padding:1%') 
    for el in items
     -var href = '/items/'+wechat+'/'+el.uploadTime
     div(class='product' data=el onclick="window.location.href='"+href+"'")
       img(src= el.preview style='max-width:100%;margin:0px auto 5px;')
       h3(style='font-weight: 600;margin:0 3px 2px;font-size:100%;text-align:center')
        p= el.title
-       p(style='color:rgba(77,0,255,0.54)')= '$ ' + el.price 
+       p(style='color:rgba(77,0,255,0.54)')= '$' + el.price 
   script(src='/javascripts/seller/fixLayout.js')
   
  
