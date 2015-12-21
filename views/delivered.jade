@@ -1,0 +1,61 @@
+doctype html
+html
+    head
+        title= 'MyTailer'
+        link(rel='stylesheet', href='/stylesheets/bootstrap/css/bootstrap.min.css')
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        script(src='/javascripts/jquery-2.1.4.js')
+        style.
+            html{ 
+                background: url(/images/cEntryBg2.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+            .alert{
+                max-width: 70%;
+                margin: 0px auto 10px auto;
+            }
+            .panel{
+                max-width:600px;
+                background-color: rgba(255,255,255,0.7);
+            }
+            body{
+                background-size: contain;
+            }   
+            @media only screen  
+                and (max-device-width: 736px) { 
+                   .panel{
+                        max-width: 80%;
+                    }
+                }
+            .smooth-corner{
+                border-radius: 10px 10px 10px 10px; 
+                -moz-border-radius: 10px 10px 10px 10px;
+                -webkit-border-radius: 10px 10px 10px 10px;
+                border: 0px solid #000000;
+            }
+            .deliveredTitle{
+                color: rgba(237,233,169,0.95);
+                margin-top: 40%;
+            }
+            .btn-primary {
+                color: #fff;
+                background-color: rgba(212,175,55,0.7);
+                border-color: rgba(212,175,55,0.8);
+                border-radius: 0;
+            }
+            .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:disabled:hover, .btn-primary.active, .open>.dropdown-toggle.btn-primary{
+                color: #fff;
+                background-color: rgba(212,175,55,1);
+                border-color: rgba(212,175,55,1);
+            }
+    body(style="background-color: rgba(255,255,255,0); text-align: center;")
+        form(method='post' action='/myCustomer/delivered')
+            h3(class="deliveredTitle") 请确认是否收到该订单的货物
+            button(class="btn btn-primary btn-lg" type="submit" style="margin-top: 10%") 确认收货
+            a(class="btn btn-primary btn-lg" href="/myCustomer" role="button" style="margin-top: 10%; margin-left: 5%;") 还未收到
+        footer 
+            script(src='/stylesheets/bootstrap/js/bootstrap.min.js')
+      

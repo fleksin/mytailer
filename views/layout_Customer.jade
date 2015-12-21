@@ -8,16 +8,23 @@ html
     script(src='/javascripts/jquery-2.1.4.js')
     script(src="/javascripts/star-rating.min.js")
     style.
-       .panel{
-          max-width:600px;
-          background-color: rgba(255,255,255,0.7);
-       }
-       .alert{
+        html{ 
+            background: url(/images/cEntryBg2.jpg) no-repeat center center fixed; 
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .panel{
+            max-width:600px;
+            background-color: rgba(255,255,255,0.7);
+        }
+        .alert{
           max-width: 70%;
           margin: 0px auto 10px auto;
         }
         body{
-         background-size: contain;
+            background-size: contain;
         }
         table{
             table-layout: fixed;
@@ -25,56 +32,46 @@ html
         td{
             word-break: break-all;
         }
-       .choiceTdLeft{
+        .choiceTdLeft{
             border-bottom: 5px solid white;
             border-right: 5px solid white;
             text-align: center;
             font-size: 20px;
         }
-       .choiceTdLeftImg{
+        .choiceTdLeftImg{
             border-right: 5px solid white;
             text-align: center;
             font-size: 20px;
         }
-       .choiceTdLeftBottom{
+        .choiceTdLeftBottom{
             border-right: 5px solid white;
             text-align: center;
             font-size: 20px;
         }
-       .choiceTdRight{
+        .choiceTdRight{
             border-bottom: 5px solid white;
             text-align: center;
             font-size: 20px;
         }
-       .choiceTdRightImg{
+        .choiceTdRightImg{
             text-align: center;
             font-size: 20px;
         }
-       .choiceTdRightBottom{
+        .choiceTdRightBottom{
             text-align: center;
             font-size: 20px;
         }
-       .form-signin{
-         background: rgba(235,235,235,0.7);		 
-         border-radius: 10px 10px 10px 10px;
-         -moz-border-radius: 10px 10px 10px 10px;
-         -webkit-border-radius: 10px 10px 10px 10px;
-         border: 0px solid #000000;
-         max-width: 330px; 
-         margin:0px auto; 
-         padding: 15px
-       }
-       .form-customerHome{
-         background: rgba(235,235,235,0.7);		 
-         border-radius: 10px 10px 10px 10px;
-         -moz-border-radius: 10px 10px 10px 10px;
-         -webkit-border-radius: 10px 10px 10px 10px;
-         border: 0px solid #000000;
-         max-width: 330px; 
-         margin:0px auto; 
-         padding: 15px
-       }
-       .bg{
+        .form-signin{
+            background: rgba(235,235,235,0.7);		 
+            border-radius: 10px 10px 10px 10px;
+            -moz-border-radius: 10px 10px 10px 10px;
+            -webkit-border-radius: 10px 10px 10px 10px;
+            border: 0px solid #000000;
+            max-width: 330px; 
+            margin:0px auto; 
+            padding: 15px
+        }
+        .bg{
             position: fixed; 
             top: -50%; 
             left: -50%; 
@@ -91,15 +88,15 @@ html
             min-width: 50%;
             min-height: 50%;
         }
-       .3Btn-customerEntry{   
+        .3Btn-customerEntry{   
             max-width: 300px; 
             margin:0px auto; 
             padding: 15px;
         }
-       .P-customerEntry{ 
-         margin-left: 13px;
-       }
-       .typeChooseImg{
+        .P-customerEntry{ 
+            margin-left: 13px;
+        }
+        .typeChooseImg{
             background-image: url("/images/typeChooseThinking2.gif");
             background-size: 70% 100%;
             background-position:center;
@@ -108,59 +105,53 @@ html
             background-repeat: no-repeat;
             margin: 0px auto;
         }
-       .typeChooseTitle{
+        .typeChooseTitle{
             padding-top: 55px;
         }
-       .typeChooseHr{
+        .typeChooseHr{
             border-top:15px solid #EEE;
             width: 100%;
             margin-top:60px;
             margin-bottom: 0px;
         }
-       .customerInfo-label{
+        .customerInfo-label{
             padding-right: 5px;
         }
-       .customerForm{
-            max-width: 330px; 
-            margin:0px auto;
-            padding-right: 5px;
-            padding-left: 5px
-       }
-       .priceDigit{
+        .priceDigit{
             text-align: right;
         }
-       .priceSign{
+        .priceSign{
             text-align: center;
         }
-       .priceHr{
+        .priceHr{
             width: 70%;
             text-align: right;
             margin : 0 0 0 auto;
             border-top:2px solid green;
         }	   
-       @media only screen  
+        @media only screen  
           and (max-device-width: 736px) { 
                .panel{
                   max-width: 80%;
             }
-       }
-       .smooth-corner{
+        }
+        .smooth-corner{
            border-radius: 10px 10px 10px 10px; 
            -moz-border-radius: 10px 10px 10px 10px;
            -webkit-border-radius: 10px 10px 10px 10px;
            border: 0px solid #000000;
         }
-       .entryBtn{
+        .entryBtn{
             width: 80%;
         }
-       .entryExp{
+        .entryExp{
             width: 20%;
         }
         th{
             text-align: center;
         }
         .orderCustomerHr{
-            border-top:1px dashed #8c8b8b;
+            border-top:1px dashed rgba(237,233,169,0.95);;
         }
         .orderCustomerHr:after{
             content: '\002702';
@@ -169,21 +160,19 @@ html
             top: -12px; 
             left: 20px; 
             padding: 0 3px; 
-            color: #8c8b8b; 
+            color: rgba(237,233,169,0.95);; 
             font-size: 18px; 
         }
-       .typeExample{
+        .typeExample{
             margin: 0px 5%;
         }
-       .edit{
+        .edit{
             margin-left: 20px;
         }
     script.
         $("#input-id").rating();
         $("#input-id").rating({min:1, max:10, step:2, size:'lg'});
-  body		
-    .container
-     .starter-template(style='padding:40px 0px')
+  body(style="background-color: rgba(255,255,255,0); text-align: center;")
    
     if(session&&session.flash)	
         if(session.flash.success)        

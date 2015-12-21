@@ -41,8 +41,7 @@ router.get('/',function(req, res) {
 	Orders.getByBuyer(req.session.customer.email, function(err, order){
         var data = {
             customer: req.session.customer,
-            orders: order,
-            numOfOrder: order.length
+            orders: order
         };		
 		req.session.Data = data;
 		console.log("this customer");
@@ -121,6 +120,13 @@ router.get('/showOrderForCustomer', function(req, res, next){
 	Orders.getByID(req.query.orderID, function(err, order){
         res.render('showOrderForCustomer', {Order : order});
 	});
+});
+
+router.get('/delivered', function(req, res, next){
+	Orders.getByID(req.query.orderID, function(err, order){
+        req.session.curOrderID = order.orderID;
+        res.render('delivered');
+	});	
 });
 
 router.get('/customerHomeEdit', function(req, res, next){ 		
@@ -203,6 +209,16 @@ router.get('/logout', function(req, res){
 		req.session.customer = null;
 	}
 	res.redirect('/myCustomer/login');
+});
+
+router.post('/delivered', function(req, res){
+    var temp = {
+		orderID: req.session.curOrderID,
+		status: 4
+	}
+	Orders.update(temp, function(err, order){
+		res.redirect('/myCustomer');
+	});
 });
 
 router.post('/myShow', upload.single('itemImage'),function(req, res, next){
