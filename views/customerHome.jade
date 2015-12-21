@@ -70,14 +70,14 @@ block content
                     listOutput += '<td width="70%"><h5 class="customerInfo-label" width="100%"><b>卖家：</b>'+ data["orders"][i-1].seller;
                     listOutput += '<br/><b>价钱：</b>'+ data["orders"][i-1].price;
                     listOutput += '<br/><b>订单：</b><a href="/myCustomer/showOrderForCustomer?orderID='+ data["orders"][i-1].orderID +'">'+ data["orders"][i-1].orderID + '</a></h5></td>';
-                    if("#{Data.orders[0].status}" == "5"){
+                    if(data.orders[i].status == "5"){
                         listOutput += '<td width="22%"><h5 class="customerInfo-label"><a href="/myCustomer/myShow">买家已确认收货</a></h5></td></tr>';
                     }
-                    else if("#{Data.orders[0].status}" == "1"){
+                    else if(data.orders[i].status == "1"){
                         listOutput += '<td width="22%"><h5 class="customerInfo-label">买家已付款</h5></td></tr>';
                     }
                     else{
-                        listOutput += '<td width="22%"><h5 class="customerInfo-label">#{Data.orders[0].status}</h5></td></tr>';
+                        listOutput += '<td width="22%"><h5 class="customerInfo-label">data.orders[i].status</h5></td></tr>';
                     }
                 }
                 listOutput += '</tbody></table>';

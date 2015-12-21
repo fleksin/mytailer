@@ -1,64 +1,106 @@
-extends layout_Customer
-
-block content
-    form(method='post' action='/myCustomer/customerDataInput' class="form-customerHome" )
-        div
-            h4  请输入身体数据
+doctype html
+html
+    head
+        title= 'MyTailer'
+        link(rel='stylesheet', href='/stylesheets/bootstrap/css/bootstrap.min.css')
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        script(src='/javascripts/jquery-2.1.4.js')
+        style.
+            html{ 
+                background: url(/images/cDataBg1.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+            .alert{
+                max-width: 70%;
+                margin: 0px auto 10px auto;
+            }
+            .panel{
+                max-width:600px;
+                background-color: rgba(255,255,255,0.7);
+            }
+            body{
+                background-size: contain;
+            }
+            .P-customerEntry{ 
+                margin-left: 16%;
+                margin-top: 10%;
+                margin-bottom: 0px;
+            }	   
+            @media only screen  
+                and (max-device-width: 736px) { 
+                   .panel{
+                        max-width: 80%;
+                    }
+                }
+            .smooth-corner{
+                border-radius: 10px 10px 10px 10px; 
+                -moz-border-radius: 10px 10px 10px 10px;
+                -webkit-border-radius: 10px 10px 10px 10px;
+                border: 0px solid #000000;
+            }
+            .entryBtn{
+                width: 50%;
+                border-radius: 0;
+            }
+            .entryExp{
+                width: 20%;
+                color: #fff;
+            }
+            .dataTitle{
+                color: rgba(255,223,0,0.95);
+                font-weight: bold;
+                font-size: 32px;
+                margin-top: 10%;
+            }
+            .btn-primary {
+                color: #fff;
+                background-color: rgba(212,175,55,0.7);
+                border-color: rgba(212,175,55,0.8);
+            }
+            .btn-primary:disabled {
+                color: #fff;
+                background-color: rgba(212,175,55,0.8);
+                border-color: rgba(212,175,55,0.8);
+            }
+            .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:disabled:hover, .btn-primary.active, .open>.dropdown-toggle.btn-primary{
+                color: #fff;
+                background-color: rgba(212,175,55,1);
+                border-color: rgba(212,175,55,1);
+            }
+    body(style="background-color: rgba(255,255,255,0); text-align: center;")
+        if Data.order
+            form(method='post' action='/myCustomer/customerDataInput' class="form-customerHome" )
+                h4(class="entryTitle")  请输入身体数据
+                div(id="dataList" data=Data)
                 button(class="btn btn-success edit" type="submit") 保存
-        table(class="table")
-            tbody
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 肩宽
-                    td(width="70%")
-                        input(name="jiankuan" type="text" class="form-control" id="customerEditAddress" placeholder="例：单位cm")							
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 三围
-                    td(width="70%")
-                        input(name="sanwei" type="text" class="form-control" id="customerEditAddress" placeholder="例：胸围-腰围-臀围(cm)")
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 衣长
-                    td(width="70%")
-                        input(name="yichang" type="text" class="form-control" id="customerEditAddress" placeholder="例：单位cm")
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 臀长
-                    td(width="70%")
-                        input(name="tunchang" type="text" class="form-control" id="customerEditAddress" placeholder="例：单位cm")
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 裤长
-                    td(width="70%")
-                        input(name="kuchang" type="text" class="form-control" id="customerEditAddress" placeholder="例：单位cm")
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 脖围
-                    td(width="70%")
-                        input(name="bowei" type="text" class="form-control" id="customerEditAddress" placeholder="例：单位cm")
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 立档
-                    td(width="70%")
-                        input(name="lidang" type="text" class="form-control" id="customerEditAddress" placeholder="例：单位cm")
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 大腿围
-                    td(width="70%")
-                        input(name="datuiwei" type="text" class="form-control" id="customerEditAddress" placeholder="例：单位cm")
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 袖口
-                    td(width="70%")
-                        input(name="xiukou" type="text" class="form-control" id="customerEditAddress" placeholder="例：单位cm")
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 身高
-                    td(width="70%")
-                        input(name="shengao" type="text" class="form-control" id="customerEditAddress" placeholder="例：单位cm")
-                tr
-                    td(width="30%")
-                        h4(class="customerInfo-label") 体重
-                    td(width="70%")
-                        input(name="tizhong" type="text" class="form-control" id="customerEditAddress" placeholder="例：单位kg")
+            script.
+                var listOutput = '';
+                var json = document.getElementById("dataList").getAttribute("data");
+                var data = JSON.parse(json);
+                listOutput += '<table class="table"><tbody>';
+                if(data.customer.bodyInfo == null){
+                    for(var key in data.order.list){
+                        listOutput += '<tr><td width="30%"><h4 class="dataLabel">' + key + '</h4></td>';
+                        listOutput += '<td width="70%"><input name="'+ key + '" type="text" class="form-control" placeholder="单位cm"></input></td></tr>';
+                    }
+                }
+                else{
+                    for(var key in data.order.list){
+                        listOutput += '<tr><td width="30%"><h4 class="dataLabel">' + key + '</h4></td>';
+                        if(data.customer.bodyInfo[key] == null){
+                            listOutput += '<td width="70%"><input name="'+ key + '" type="text" class="form-control" placeholder="单位cm"></input></td></tr>';
+                        }
+                        else{
+                            listOutput += '<td width="70%"><input name="'+ key + '" type="text" class="form-control" placeholder="'+ data.customer.bodyInfo[key] +'cm"></input></td></tr>';
+                        }
+                    }                    
+                }
+                listOutput += '</tbody></table>';
+                document.getElementById("dataList").innerHTML = listOutput;
+        else
+            h4  订单不存在，请返回！
+        footer 
+            script(src='/stylesheets/bootstrap/js/bootstrap.min.js')
