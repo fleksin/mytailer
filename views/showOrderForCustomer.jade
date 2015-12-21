@@ -2,7 +2,7 @@ extends layout_Customer
 
 block content
     if Order
-        form(class="customerForm" )
+        div(class="orderInfo" style="text-align: left; color: rgba(237,233,169,0.95);")
             h5="订单号：" + Order.orderID
             hr(class="orderCustomerHr")
             h5(data=Order.createDate id="orderTime")

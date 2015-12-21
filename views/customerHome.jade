@@ -1,101 +1,181 @@
-extends layout_Customer
-
-block content
-    if Data
-        form(class="form-customerHome" style="background-color: white;")
-            div(style="text-align: center")                 
-                a(class="btn btn-primary" type="button" href="/myCustomer/customerEntry") 
-                    h4				
-                        随&nbsp&nbsp&nbsp&nbsp&nbsp便&nbsp&nbsp&nbsp&nbsp&nbsp逛&nbsp&nbsp&nbsp&nbsp&nbsp逛
-        p
-        form(class="form-customerHome" )
-            div
-                h3  基本信息
-                    a(class="btn btn-success edit" href="/myCustomer/customerHomeEdit" role="button") 编辑
-                    &nbsp&nbsp&nbsp
-                    button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#basicInfo" aria-expanded="false" aria-controls="basicInfo") 展开
-            div(class="collapse" id="basicInfo")
-                table(class="table")
-                    tbody
-                        tr
-                            td(width="30%")
-                                h4(class="customerInfo-label") 邮箱
-                            td(width="70%")
-                                button(name="email" class="btn btn-primary" type="button")= Data.customer.email
-                        tr
-                            td(width="30%")
-                                h4(class="customerInfo-label") 用户名
-                            td(width="70%" valign="middle")
-                                button(name="id" class="btn btn-primary" type="button")= Data.customer.id
-                        tr
-                            td(width="30%")
-                                h4(name="weChat" class="customerInfo-label") 微信
-                            td(width="70%")
-                                if Data.customer.weChat                            
-                                    button(name="weChat" class="btn btn-primary" type="button")= Data.customer.weChat
-                        tr
-                            td(width="30%")
-                                h4(name="address" class="customerInfo-label") 住址
-                            td(width="70%")
-                                if Data.customer.address                            
-                                    h5=Data.customer.address
-        p
-        form(class="form-customerHome" )
-            div
-                h3  订单信息
-                    &nbsp&nbsp
-                    button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#billInfo" aria-expanded="false" aria-controls="billInfo" onClick="showBillList()") 展开
-            div(class="collapse" id="billInfo")
-                div(id="jsonData" data=Data)
-                div(id="billList" class="container")
-        p
-        form(class="form-customerHome" )
-            div
-                h3  我的美秀
-                    &nbsp&nbsp
-                    button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#showInfo" aria-expanded="false" aria-controls="showInfo" onClick="showShowList()") 展开
-                    &nbsp&nbsp&nbsp
-                    button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#billInfo" aria-expanded="false" aria-controls="billInfo" onClick="showBillList()") 晒照
-            div(class="collapse" id="showInfo")                
-                div(id="showList" class="container")
-
-        script.
-            var showBillList = function(){
-                var listOutput = '';
-                var json = document.getElementById("jsonData").getAttribute("data");
-                var data = JSON.parse(json);
-                listOutput += '<table class="table"><tbody>';
-                for(var i = 1; i <= data.numOfOrder; ++i){
-                    listOutput += '<tr><td width="8%"><h5 class="customerInfo-label">' + i + '</h5></td>';
-                    listOutput += '<td width="70%"><h5 class="customerInfo-label" width="100%"><b>卖家：</b>'+ data["orders"][i-1].seller;
-                    listOutput += '<br/><b>价钱：</b>'+ data["orders"][i-1].price;
-                    listOutput += '<br/><b>订单：</b><a href="/myCustomer/showOrderForCustomer?orderID='+ data["orders"][i-1].orderID +'">'+ data["orders"][i-1].orderID + '</a></h5></td>';
-                    if("#{Data.orders[0].status}" == "5"){
-                        listOutput += '<td width="22%"><h5 class="customerInfo-label"><a href="/myCustomer/myShow">买家已确认收货</a></h5></td></tr>';
-                    }
-                    else if("#{Data.orders[0].status}" == "1"){
-                        listOutput += '<td width="22%"><h5 class="customerInfo-label">买家已付款</h5></td></tr>';
-                    }
-                    else{
-                        listOutput += '<td width="22%"><h5 class="customerInfo-label">#{Data.orders[0].status}</h5></td></tr>';
-                    }
-                }
-                listOutput += '</tbody></table>';
-                document.getElementById("billList").innerHTML = listOutput;
+doctype html
+html
+    head
+        title= 'MyTailer'
+        link(rel='stylesheet', href='/stylesheets/bootstrap/css/bootstrap.min.css')
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        script(src='/javascripts/jquery-2.1.4.js')
+        style.
+            html{ 
+                background: url(/images/cEntryBg2.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
             }
-            var showShowList = function(){
+            .alert{
+                max-width: 70%;
+                margin: 0px auto 10px auto;
+            }
+            .panel{
+                max-width:600px;
+                background-color: rgba(255,255,255,0.7);
+            }
+            .table{
+                word-break: break-all;
+            }
+            body{
+                background-size: contain;
+            }   
+            @media only screen  
+                and (max-device-width: 736px) { 
+                   .panel{
+                        max-width: 80%;
+                    }
+                }
+            .smooth-corner{
+                border-radius: 10px 10px 10px 10px; 
+                -moz-border-radius: 10px 10px 10px 10px;
+                -webkit-border-radius: 10px 10px 10px 10px;
+                border: 0px solid #000000;
+            }
+            .table>tbody>tr>td{
+                border-top: 1px solid rgba(237,233,169,0.1);
+                text-align: left;
+                color: rgba(237,233,169,0.95);
+            }
+            .btn-primary {
+                color: #fff;
+                background-color: rgba(212,175,55,0.7);
+                border-color: rgba(212,175,55,0.8);
+                border-radius: 0;
+            }
+            .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:disabled:hover, .btn-primary.active, .open>.dropdown-toggle.btn-primary{
+                color: #fff;
+                background-color: rgba(212,175,55,1);
+                border-color: rgba(212,175,55,1);
+            }
+    body(style="background-color: rgba(255,255,255,0); text-align: center;")  
+        if Data
+            div(style="text-align: center; margin-top: 20%;")                 
+                a(class="btn btn-primary" type="button" href="/myCustomer/customerEntry") 
+                    h4(style="font-size: 24px;")	随&nbsp&nbsp&nbsp&nbsp&nbsp便&nbsp&nbsp&nbsp&nbsp&nbsp逛&nbsp&nbsp&nbsp&nbsp&nbsp逛
+            p
+            form(class="form-customerHome" )
+                div(style="margin-top: 20%;")
+                    h3(style="color: rgba(237,233,169,0.95);")  基本信息
+                        &nbsp&nbsp
+                        a(class="btn btn-primary" href="/myCustomer/customerHomeEdit" role="button") 编辑
+                        &nbsp&nbsp&nbsp
+                        button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#basicInfo" aria-expanded="false" aria-controls="basicInfo") 展开
+                div(class="collapse" id="basicInfo")
+                    table(class="table" style="width: 70%; margin: 0 auto;")
+                        tbody
+                            tr
+                                td(width="30%")
+                                    h4(class="customerInfo-label") 邮箱
+                                td(width="70%")
+                                    h4(name="email" class="customerInfo")= Data.customer.email
+                            tr
+                                td(width="30%")
+                                    h4(class="customerInfo-label") 用户名
+                                td(width="70%" valign="middle")
+                                    h4(name="id" class="customerInfo")= Data.customer.id
+                            tr
+                                td(width="30%")
+                                    h4(name="weChat" class="customerInfo-label") 微信
+                                td(width="70%")
+                                    if Data.customer.weChat                            
+                                        h4(name="weChat" class="customerInfo")= Data.customer.weChat
+                            tr
+                                td(width="30%")
+                                    h4(name="address" class="customerInfo-label") 住址
+                                td(width="70%")
+                                    if Data.customer.address                            
+                                        div(id="addressList")
+            p
+            form(class="form-customerHome" )
+                div(style="margin-top: 20%;")
+                    h3(style="color: rgba(237,233,169,0.95);")  订单信息
+                        &nbsp&nbsp&nbsp&nbsp&nbsp
+                        button(class="btn btn-primary" style="margin-left: 54px;" type="button" data-toggle="collapse" data-target="#billInfo" aria-expanded="false" aria-controls="billInfo" onClick="showBillList()") 展开
+                div(class="collapse" id="billInfo")
+                    div(id="jsonData" data=Data)
+                    div(id="billList" class="container" style="width: 70%; margin: 0 auto;")
+            p
+            form(class="form-customerHome" )
+                div(style="margin-top: 20%;")
+                    h3(style="color: rgba(237,233,169,0.95);")  我的美秀
+                        &nbsp&nbsp
+                        button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#billInfo" aria-expanded="false" aria-controls="billInfo" onClick="showBillList()") 晒照
+                        &nbsp&nbsp&nbsp
+                        button(class="btn btn-primary" type="button" data-toggle="collapse" data-target="#showInfo" aria-expanded="false" aria-controls="showInfo" onClick="showShowList()") 展开
+                div(class="collapse" id="showInfo")                
+                    div(id="showList" class="container" style="width: 70%; margin: 0 auto;")
+
+            script.
                 var listOutput = '';
                 var json = document.getElementById("jsonData").getAttribute("data");
                 var data = JSON.parse(json);
-                //alert(data["customer"]["myShows"].length);
-                listOutput += '<table class="table"><tbody>';
-                for(var i = 0; i < data["customer"]["myShows"].length; ++i){
-                    listOutput += '<tr><td width="60%"><img src="'+ data["customer"]["myShows"][i].img + '" height="128px" width="100%"></td>';
-                    listOutput += '<td width="40%"><h5 class="customerInfo-label"><b>标题：</b>'+ data["customer"]["myShows"][i].title;
-                    listOutput += '<br/><b>描述：</b>'+ data["customer"]["myShows"][i].description+ '</h5></td></tr>';
+                if(data.customer.address != null){
+                    for(var i = 0; i < data.customer.address.length; ++i){
+                        listOutput += '<p class="add">' + data.customer.address[i] +'</p>';
+                    }
                 }
-                listOutput += '</tbody></table>';
-                document.getElementById("showList").innerHTML = listOutput;
-            }            
-    else
-        p 该用户不存在，无法进入其主页！
+                document.getElementById("addressList").innerHTML = listOutput;
+
+                var showBillList = function(){
+                    var listOutput = '';
+                    var json = document.getElementById("jsonData").getAttribute("data");
+                    var data = JSON.parse(json);
+                    if(data.orders != null){
+                        listOutput += '<table class="table"><tbody>';
+                        for(var i = 1; i <= data.orders.length; ++i){
+                            listOutput += '<tr><td width="8%"><h5 class="customerInfo-label">' + i + '</h5></td>';
+                            listOutput += '<td width="70%"><h5 class="customerInfo-label" width="100%"><b>卖家：</b>'+ data["orders"][i-1].seller;
+                            listOutput += '<br/><b>价钱：</b>'+ data["orders"][i-1].price;
+                            listOutput += '<br/><b>订单：</b><a href="/myCustomer/showOrderForCustomer?orderID='+ data["orders"][i-1].orderID +'">'+ data["orders"][i-1].orderID + '</a></h5></td>';
+                            if(data.orders[i-1].status == "5"){
+                                listOutput += '<td width="22%"><h5 class="customerInfo-label">买家已评价</h5></td></tr>';
+                            }
+                            else if(data.orders[i-1].status == "4"){
+                                listOutput += '<td width="22%"><h5 class="customerInfo-label"><a href="/myCustomer/myShow">买家确认收货</a></h5></td></tr>';
+                            }
+                            else if(data.orders[i-1].status == "3"){
+                                listOutput += '<td width="22%"><h5 class="customerInfo-label"><a href="/myCustomer/delivered?orderID='+ data["orders"][i-1].orderID +'">卖家已发货</a></h5></td></tr>';
+                            }
+                            else if(data.orders[i-1].status == "2"){
+                                listOutput += '<td width="22%"><h5 class="customerInfo-label">卖家正在制作</h5></td></tr>';
+                            }
+                            else if(data.orders[i-1].status == "1"){
+                                listOutput += '<td width="22%"><h5 class="customerInfo-label">买家已付款</h5></td></tr>';
+                            }
+                            else{
+                                listOutput += '<td width="22%"><h5 class="customerInfo-label">买家未付款</h5></td></tr>';
+                            }
+                        }
+                        listOutput += '</tbody></table>';
+                    }
+                    document.getElementById("billList").innerHTML = listOutput;
+                }
+
+                var showShowList = function(){
+                    var listOutput = '';
+                    var json = document.getElementById("jsonData").getAttribute("data");
+                    var data = JSON.parse(json);
+                    //alert(data["customer"]["myShows"].length);
+                    if(data.customer.myShows != null){
+                        listOutput += '<table class="table"><tbody>';
+                        for(var i = 0; i < data.customer.myShows.length; ++i){
+                            listOutput += '<tr><td width="60%"><img src="'+ data["customer"]["myShows"][i].img + '" height="128px" width="100%"></td>';
+                            listOutput += '<td width="40%"><h5 class="customerInfo-label"><b>标题：</b>'+ data["customer"]["myShows"][i].title;
+                            listOutput += '<br/><b>描述：</b>'+ data["customer"]["myShows"][i].description+ '</h5></td></tr>';
+                        }
+                        listOutput += '</tbody></table>';
+                    }                    
+                    document.getElementById("showList").innerHTML = listOutput;
+                }            
+        else
+            p 该用户不存在，无法进入其主页！
+        footer 
+            script(src='/stylesheets/bootstrap/js/bootstrap.min.js')

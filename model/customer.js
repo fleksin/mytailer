@@ -29,19 +29,32 @@ Customer.prototype.save = function save(){
 
 Customer.edit = function(data){
     var db = mongoskin.db(url, {native_parser: true});
-    db.collection('customers').update(
-	    {email: data.email},
-        {
-            $set:{
-                weChat: data.weChat,
-                apt: data.apt,
-                street: data.street,
-                city: data.city,
-                state: data.state,
-                country: data.country
+	console.log("c: " + data.address);
+    if(data.address == ''){
+		console.log("c1");
+        db.collection('customers').update(
+	        {email: data.email},
+            {
+                $set:{
+                    weChat: data.weChat
+                }
             }
-        }
-    );
+        );
+    }
+    else{
+		console.log("c2");
+        db.collection('customers').update(
+	        {email: data.email},
+            {
+                $set:{
+                    weChat: data.weChat
+                },
+				$push:{
+					address: data.address
+				}
+            }
+        );
+	}
 }
 
 Customer.prototype.pushItem = function push(item){

@@ -41,8 +41,7 @@ router.get('/',function(req, res) {
 	Orders.getByBuyer(req.session.customer.email, function(err, order){
         var data = {
             customer: req.session.customer,
-            orders: order,
-            numOfOrder: order.length
+            orders: order
         };		
 		req.session.Data = data;
 		console.log("this customer");
@@ -51,9 +50,8 @@ router.get('/',function(req, res) {
 	    console.dir(req.session.Data);
 		console.log("this myShows");
 	    console.dir(req.session.Data.customer.myShows);
-        res.render('customerHome', {Data : req.session.Data});
-	});	
-	
+        res.render('customerHome', {Data : data});
+	});		
 });
 
 router.post('/login', function(req,res,next){
@@ -103,14 +101,32 @@ router.get('/chooseType', function(req, res, next){
 	res.render('chooseType');
 });
 
-router.get('/customerDataInput', function(req, res, next){ 		
-	res.render('customerDataInput');
+router.get('/customerDataInput', function(req, res, next){
+	Orders.getByID(req.query.orderID, function(err, order){
+		customer.get(req.query.email, function(err, Customer){
+			var data = {
+				customer: Customer,
+				order: order
+			};
+			console.log(req.query.orderID);
+			console.log(req.query.email);
+			console.dir(data);
+			res.render('customerDataInput', {Data : data});
+		});
+	});
 });
 
 router.get('/showOrderForCustomer', function(req, res, next){
 	Orders.getByID(req.query.orderID, function(err, order){
         res.render('showOrderForCustomer', {Order : order});
 	});
+});
+
+router.get('/delivered', function(req, res, next){
+	Orders.getByID(req.query.orderID, function(err, order){
+        req.session.curOrderID = order.orderID;
+        res.render('delivered');
+	});	
 });
 
 router.get('/customerHomeEdit', function(req, res, next){ 		
@@ -169,15 +185,21 @@ router.post('/signup', function(req, res){
 });
 
 router.post('/customerHomeEdit', function(req, res){
+	var add = '';
+	if(req.body.apt != ''){
+		console.log("1, apt: " + req.body.apt);
+		add += req.body.city +" "+ req.body.street +" "+ req.body.apt +", "+ req.body.state +", "+ req.body.country +", 邮编: "+ req.body.zipcode;
+	}
+	console.log("add: " + add);
 	customer.edit({
         email: req.session.customer.email,
 		weChat: req.body.weChat,
-        address: req.body.apt	
+        address: add	
     });	
 	customer.get(req.session.customer.email, function(err, CustomerInDB){
 		req.session.customer = CustomerInDB;
-		req.session.customer.weChat = req.body.weChat;
-		req.session.customer.address = req.body.address;
+		req.session.customer.weChat = CustomerInDB.weChat;
+		req.session.customer.address = CustomerInDB.address;
         res.redirect('/myCustomer');	
 	});		
 });
@@ -187,6 +209,16 @@ router.get('/logout', function(req, res){
 		req.session.customer = null;
 	}
 	res.redirect('/myCustomer/login');
+});
+
+router.post('/delivered', function(req, res){
+    var temp = {
+		orderID: req.session.curOrderID,
+		status: 4
+	}
+	Orders.update(temp, function(err, order){
+		res.redirect('/myCustomer');
+	});
 });
 
 router.post('/myShow', upload.single('itemImage'),function(req, res, next){

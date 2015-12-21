@@ -29,12 +29,7 @@ html
                 margin:100px auto; 
                 padding: 15px;
                 color: #fff;
-            }
-            .P-customerEntry{ 
-                margin-left: 20%;
-                margin-top: 10%;
-                margin-bottom: 0px;
-            }	   
+            }   
             @media only screen  
                 and (max-device-width: 736px) { 
                    .panel{
@@ -47,19 +42,19 @@ html
                 -webkit-border-radius: 10px 10px 10px 10px;
                 border: 0px solid #000000;
             }
-            .entryBtn{
+            .table{
+                word-break: break-all;
+            }
+            .editBtn{
                 width: 50%;
                 border-radius: 0;
             }
-            .entryExp{
-                width: 20%;
-                color: #fff;
-            }
-            .entryTitle{
-                color: rgba(255,223,0,0.95);
+            .customerInfo-label{
+                color: rgba(237,233,169,0.95);
                 font-weight: bold;
-                font-size: 64px;
-                margin-top: 30%;
+            }
+            .customerInfo{
+                color: rgba(237,233,169,0.95);
             }
             .btn-primary {
                 color: #fff;
@@ -75,46 +70,87 @@ html
                 color: #fff;
                 background-color: rgba(212,175,55,1);
                 border-color: rgba(212,175,55,1);
-            }			
-        script.
-            $("#input-id").rating();
-            $("#input-id").rating({min:1, max:10, step:2, size:'lg'});
+            }
     body(style="background-color: rgba(255,255,255,0); text-align: center;")
         if Customer
             form(method='post' action='/myCustomer/customerHomeEdit' class="form-customerEdit" )
-                div(style="width=80%")
-                    h3  基本信息
-                        button(class="btn btn-success edit" type="submit") 保存
+                div(style="width=80%;")
+                    h3(style="color: rgba(237,233,169,0.95); text-align: left; font-weight: bold;")  基本信息
                         p(style="font-size: 16px;") 请填写正确的住址，该地址将作为邮寄地址
                 table(class="table")
                     tbody
                         tr
-                            td(width="30%")
+                            td(style="width:30%; border-color: rgba(237,233,169,0.1);")
                                 h4(class="customerInfo-label") 邮箱
-                            td(width="70%")
-                                button(name="email" class="btn btn-default" type="button" disabled="disabled" )= Customer.email
+                            td(style="width:70%; border-color: rgba(237,233,169,0.1); text-align: left;")
+                                h4(name="email" class="customerInfo")= Customer.email
                         tr
-                            td(width="30%")
+                            td(style="width:30%; border-color: rgba(237,233,169,0.1);")
                                 h4(class="customerInfo-label") 用户名
-                            td(width="70%")
-                                button(name="id" class="btn btn-default" type="button" disabled="disabled")= Customer.id
+                            td(style="width:70%; border-color: rgba(237,233,169,0.1); text-align: left;")
+                                h4(name="id" class="customerInfo")= Customer.id
                         tr
-                            td(width="30%")
+                            td(style="width:30%; border-color: rgba(237,233,169,0.1);")
                                 h4(class="customerInfo-label") 微信
-                            td(width="70%")
+                            td(style="width:70%; border-color: rgba(237,233,169,0.1); text-align: left;")
                                 if Customer.weChat                            
                                     input(name="weChat" type="text" class="form-control" id="customerEditWeChat" value= Customer.weChat)= Customer.weChat
                                 else
                                     input(name="weChat" type="text" class="form-control" id="customerEditWeChat" placeholder="该微信将绑定本账户")
                         tr
-                            td(width="30%")
+                            td(style="width:30%; border-color: rgba(237,233,169,0.1);")
                                 h4(class="customerInfo-label") 住址
-                            td(width="70%")
-                                if Customer.address                            
-                                    input(name="address" type="text" class="form-control" id="customerEditAddress" value= Customer.address)=Customer.address
-                                    button(class="btn btn-success edit" type="submit") 添加新地址								
-                                else
-                                    input(name="address" type="text" class="form-control" id="customerEditAddress" placeholder="该输入住址")								
+                            td(style="width:70%; border-color: rgba(237,233,169,0.1); text-align: left;")
+                                div(id="jsonData" data=Customer)
+                                div(id="addressList")
+                div(class="collapse" id="addressInfo")
+                    table(class="table")
+                        tbody
+                            tr
+                                td(style="width:30%; border-color: rgba(237,233,169,0.1);")
+                                    h4(class="customerInfo-label") 住宅
+                                td(style="width:70%; border-color: rgba(237,233,169,0.1); text-align: left;")
+                                    input(name="apt" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX大厦XX幢XX室")
+                            tr
+                                td(style="width:30%; border-color: rgba(237,233,169,0.1);")
+                                    h4(class="customerInfo-label") 街道
+                                td(style="width:70%; border-color: rgba(237,233,169,0.1); text-align: left;")
+                                    input(name="street" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX街道")
+                            tr
+                                td(style="width:30%; border-color: rgba(237,233,169,0.1);")
+                                    h4(class="customerInfo-label") 市县
+                                td(style="width:70%; border-color: rgba(237,233,169,0.1); text-align: left;")
+                                    input(name="city" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX市XX县")
+                            tr
+                                td(style="width:30%; border-color: rgba(237,233,169,0.1);")
+                                    h4(class="customerInfo-label") 省
+                                td(style="width:70%; border-color: rgba(237,233,169,0.1); text-align: left;")
+                                    input(name="state" type="text" class="form-control" id="customerEditAddress" placeholder="例：XX市XX县")
+                            tr
+                                td(style="width:30%; border-color: rgba(237,233,169,0.1);")
+                                    h4(class="customerInfo-label") 国家
+                                td(style="width:70%; border-color: rgba(237,233,169,0.1); text-align: left;")
+                                    input(name="country" type="text" class="form-control" id="customerEditAddress" placeholder="例：中国")
+                            tr
+                                td(style="width:30%; border-color: rgba(237,233,169,0.1);")
+                                    h4(class="customerInfo-label") 邮编
+                                td(style="width:70%; border-color: rgba(237,233,169,0.1); text-align: left;")
+                                    input(name="zipcode" type="text" class="form-control" id="customerEditAddress" placeholder="例：325000")
+                button(class="editBtn btn btn-primary btn-lg" type="submit" style="float: right") 保存
+            script.
+                var listOutput = '';
+                var json = document.getElementById("jsonData").getAttribute("data");
+                var data = JSON.parse(json);
+                if(data.address != null){
+                    for(var i = 0; i < data.address.length; ++i){
+                        listOutput += '<p><h4 class="customerInfo">'+ data.address[i] +'</h4></p>';
+                    }
+                    listOutput += '<button class="editBtn btn btn-primary" type="button" data-toggle="collapse" data-target="#addressInfo" aria-expanded="false" aria-controls="addressInfo">添加地址</button>';
+                }
+                else{
+                    listOutput += '<button class="editBtn btn btn-primary" type="button" data-toggle="collapse" data-target="#addressInfo" aria-expanded="false" aria-controls="addressInfo">添加地址</button>';
+                }
+                document.getElementById("addressList").innerHTML = listOutput;
         else
             p 页面出错，请返回！
         footer 
