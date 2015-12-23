@@ -27,9 +27,12 @@ block content
        dt= val.mark
        dd
         input(type='radio' name='address' value=address)
-        = address
+        = val
+    p 你可以添加新地址
+    input(type='text' id='newAddress' placeholder ='新地址') 
+    button(class='btn gold-bg' id='pushAddress') 添加
   button(id='pay' class='btn-primary' style='margin: 0 auto;display:block') 去付款
- script(src = '/javascript/buyer/createOrder.js')
+ script(src = '/javascripts/buyer/createOrder.js')
   
  
    

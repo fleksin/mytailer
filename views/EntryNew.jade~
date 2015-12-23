@@ -22,7 +22,7 @@ html
                     div(class="modal-body")
                         p   您可以从各式各样的裁缝铺中挑选您中意的款式，然后通过沟通，裁缝可以根据您的需求，做出最大限度的修改，定制出为您量身打造的服装
             div(class="P-customerEntry")
-                button(class="entryBtn btn btn-primary" disabled="disabled") 逛设计师店(敬请期待）
+                button(class="entryBtn btn btn-primary" disabled="disabled") 逛设计师店(敬请期待)
                // button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal2") 说明
                 //p(style="color: rgba(212,175,55,1); margin-bottom:0px;") 即将推出
             div(class="modal fade" id="myModal2" role="dialog")
@@ -34,8 +34,8 @@ html
                     div(class="modal-body")
                         p   您可以浏览到各个出色设计师晒出的特制款式服装，但是设计师款的服装可以接受的修改选项相对较少
             p(class="P-customerEntry" style="margin-top: 6%;")
-                button(class="entryBtn btn btn-primary" disabled="disabled") 我有设计图
-                button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal3") 说明
+                button(class="entryBtn btn btn-primary" disabled="disabled") 我有设计图(敬请期待)
+                //button(type="button" class="entryExp btn btn-link" data-toggle="modal" data-target="#myModal3") 说明
             div(class="modal fade" id="myModal3" role="dialog")
                 div(class="modal-dialog")
                 div(class="modal-content")
@@ -44,7 +44,5 @@ html
                         h4(class="modal-title")我有设计图（功能开发中）
                     div(class="modal-body")
                         p   上传自己精心设计或者心怡的款式图片，我们将为您寻找出色的裁缝将其变为现实
-            p(style="color: rgba(212,175,55,1);")
-                即&nbsp&nbsp&nbsp将&nbsp&nbsp&nbsp推&nbsp&nbsp&nbsp出
         footer 
             script(src='/stylesheets/bootstrap/js/bootstrap.min.js')

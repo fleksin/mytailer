@@ -19,12 +19,12 @@ block content
    a(class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next")
     span(class="glyphicon glyphicon-chevron-right" aria-hidden="true")
     span(class="sr-only") Next
- div()
+ div
   link(rel='stylesheet' href='/stylesheets/seller/style.css') 
   if data
     - console.log(data)
    for el in data
-    if el.store&&el.store.items&&el.store.items.length >0
+    if el.store&&el.store.items&&el.store.items.length > 0
      -var link = "window.location.href='/store/" + el.wechat + "'"
      div(class='store' onclick=link)
        div(class='store-inner')

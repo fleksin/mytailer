@@ -24,7 +24,8 @@ block content
   if data
     - console.log(data)
    for el in data
-    if el.store&&el.store.items&&el.store.items.length >0
+    if el.store&&el.store.items&&el.store.items.length > 0
+     -console.log(el.store)
      -var link = "window.location.href='/store/" + el.wechat + "'"
      div(class='store' onclick=link)
        div(class='store-inner')

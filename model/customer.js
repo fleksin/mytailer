@@ -38,7 +38,10 @@ Customer.edit = function(data){
                 $set:{
                     weChat: data.weChat
                 }
-            }
+            },
+			function(err, result){
+				db.close();
+			}
         );
     }
     else{
@@ -52,7 +55,10 @@ Customer.edit = function(data){
 				$push:{
 					address: data.address
 				}
-            }
+            },
+			function(err, result){
+				db.close();
+			}
         );
 	}
 }
@@ -134,8 +140,21 @@ Customer.addWechat = function(query, callback){
 		else{
 			callback('useName not found!', result);
 		}
+	});	
+}
+
+Customer.pushAddress = function(query, callback){
+	console.log(query);
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('customers').update(
+		{email:query.email},
+		{$push:{
+			address: query.address}
+		}, {upsert:false},
+		function(err, result){
+			db.close();
+			callback(err, result);
 	});
-	
 }
 
 module.exports = Customer;

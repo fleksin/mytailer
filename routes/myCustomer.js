@@ -251,4 +251,21 @@ router.post('/myShow', upload.single('itemImage'),function(req, res, next){
 	}
 });
 
+router.post('/pushAddress', function(req, res){
+	var query = {
+		email: req.session.customer.email,
+		address: req.body.address
+	};
+	customer.pushAddress(query, function(err, result){
+		customer.get(req.session.customer.email,function(err, customer){
+			req.session.customer = customer;
+			res.send(result);
+		});		
+	});
+});
+
+router.get('/test', function(req,res){
+	res.render('EntryNew');
+})
+
 module.exports = router;

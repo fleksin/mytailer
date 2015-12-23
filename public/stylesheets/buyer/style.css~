@@ -1,0 +1,65 @@
+ html{ 
+    background: url(/images/cEntryBg2.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.alert{
+    max-width: 70%;
+    margin: 0px auto 10px auto;
+}
+.panel{
+    max-width:600px;
+    background-color: rgba(255,255,255,0.7);
+}
+body{
+    background-size: contain;
+}
+.P-customerEntry{ 
+/*    margin-left: 16%;*/
+/*    margin-top: 10%;*/
+/*    margin-bottom: 0px;*/
+	margin:0 auto;
+}	   
+@media only screen  
+and (max-device-width: 736px) { 
+	.panel{
+	    max-width: 80%;
+	}
+}
+.smooth-corner{
+    border-radius: 10px 10px 10px 10px; 
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 0px solid #000000;
+}
+.entryBtn{
+    width: 50%;
+    border-radius: 0;
+}
+.entryExp{
+    width: 20%;
+    color: #fff;
+}
+.entryTitle{
+    color: rgba(255,223,0,0.95);
+    font-weight: bold;
+    font-size: 64px;
+    margin-top: 30%;
+}
+.btn-primary {
+color: #fff;
+background-color: rgba(212,175,55,0.7);
+border-color: rgba(212,175,55,0.8);
+}
+.btn-primary:disabled {
+	color: #fff;
+    background-color: rgba(212,175,55,0.8);
+    border-color: rgba(212,175,55,0.8);
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:disabled:hover, .btn-primary.active, .open>.dropdown-toggle.btn-primary{
+    color: #fff;
+    background-color: rgba(212,175,55,1);
+    border-color: rgba(212,175,55,1);
+}

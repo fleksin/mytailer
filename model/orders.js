@@ -80,6 +80,15 @@ Orders.addTrackingNum = function(query, callback){
 	db.collection('orders').update({orderID:query.orderID}, {$set:{trackingNum: query.trackingNum}}, 
 		function(err, result){
 			db.close();
+			callback(err, result);	
+	});
+}
+
+Orders.updateAddress = function(query, callback){
+	var db = mongoskin.db(url, {native_parser: true});
+	db.collection('orders').update({orderID:query.orderID}, {$set:{address:query.address}}, 
+		function(err, result){
+			db.close();
 			callback(err, result);		
 	});
 }

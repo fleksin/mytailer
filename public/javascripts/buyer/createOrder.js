@@ -15,4 +15,24 @@ $(document).ready(function(){
        $(this).html('请选择一个地址!');
      }
     });
+	$('button#pushAddress').click(function(){
+		var btn = this;
+		$(this).prop('disabled','true');
+		var address = $('input#newAddress').val();
+		$('input#newAddress').val('');
+		if(address && address != ''){
+		  var data = {address: address};
+		  $.post('/mycustomer/pushAddress', data).done(function(res){
+			if(res.ok == 1){ //document.location.reload(true);
+				alert('添加成功！');
+ 				$('dl#address').append("<dd><input type='radio' name='address' value="+ address +">"+ address +"</dd>");
+				$(button).prop('disabled','false');
+			}
+			else alert('try again!'); 
+		  });
+``		}
+		else{
+			 $(this).html('请输入地址!');
+		}
+	});
 });

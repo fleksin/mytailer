@@ -80,7 +80,7 @@ router.post('/loginM', function(req,res,next){
 		}
 		else{				
 			req.flash('error', "Email doesn't exist, Sign Up?");
-			res.redirect('/signupM');
+			res.redirect('/loginM');
 		}		
 	});	
 });
@@ -488,7 +488,7 @@ router.post('/createPay', function(req, res){
 router.post('/createOrder', function(req, res){
 	var name = req.params.name;
 	var uploadTime = req.params.uploadTime;
-	console.log(req.session.customer);
+	//console.log(req.session.customer);
 	if(!req.session.customer){
 		req.session.dest = null;
 		req.session.dest = req.session.lastview;
