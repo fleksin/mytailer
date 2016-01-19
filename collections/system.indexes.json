@@ -1,0 +1,12 @@
+{ "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "test.projects" }
+{ "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "test.sessions" }
+{ "v" : 1, "key" : { "expires" : 1 }, "name" : "expires_1", "ns" : "test.sessions", "expireAfterSeconds" : 0 }
+{ "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "test.users" }
+{ "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "test.items" }
+{ "v" : 1, "key" : { "uploadTime" : 1 }, "name" : "uploadTime_1", "ns" : "test.items" }
+{ "v" : 1, "key" : { "items.0.uploadTime" : -1 }, "name" : "items.0.uploadTime_-1", "ns" : "test.users" }
+{ "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "test.tailers" }
+{ "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "test.customers" }
+{ "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "test.orders" }
+{ "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "test.customerShows" }
+{ "v" : 1, "key" : { "createDate" : -1 }, "name" : "createDate_-1", "ns" : "test.orders" }
